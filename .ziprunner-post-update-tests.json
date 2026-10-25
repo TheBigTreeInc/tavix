@@ -1,0 +1,24 @@
+{
+  "schema": "ziprunner.post-update-tests.v1",
+  "version": "0.1.0",
+  "tests": [
+    {
+      "kind": "command",
+      "semantic_id": "tavix-repository-integrity",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python tools/repository.py check --repository .",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-publisher-unit-tests",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -v",
+      "attention_on_failure": true,
+      "gating": false
+    }
+  ]
+}

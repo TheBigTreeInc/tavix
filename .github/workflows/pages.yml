@@ -1,0 +1,47 @@
+name: Publish TaviX repository
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'extensions/**'
+      - 'tavi.repository.json'
+      - 'index.html'
+      - 'tools/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: tavix-pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Validate release assets and exact catalog
+        run: |
+          python -m unittest discover -s tests -v
+          python tools/repository.py check --repository .
+      - name: Assemble public-only static output
+        run: |
+          mkdir -p site
+          cp index.html tavi.repository.json site/
+          cp -R extensions site/
+          touch site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - uses: actions/deploy-pages@v4
+        id: deploy

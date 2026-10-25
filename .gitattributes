@@ -1,0 +1,8 @@
+# Integrity hashes are computed from exact publisher bytes: never normalize
+# compiled extension assets, manifests, lockfiles or release metadata.
+extensions/** -text
+*.tavix binary
+*.png binary
+*.webp binary
+# The catalog itself is regenerated deterministically and checked on Windows.
+tavi.repository.json text eol=lf

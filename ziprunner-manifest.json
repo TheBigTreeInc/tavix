@@ -1,0 +1,116 @@
+{
+  "schema": "ziprunner.update-manifest/v1",
+  "spec_version": "1.0.0",
+  "project": {
+    "key": "tavix",
+    "version": "0.1.0",
+    "base_version": "0.0.0"
+  },
+  "update": {
+    "id": "TAVIX-20261025-001",
+    "kind": "source_update",
+    "created_at": "2026-10-25T11:11:00+01:00",
+    "summary": "Establish central versioned compiled TaviX application repository and ZipRunner Git-reviewed publication."
+  },
+  "planned_work": [
+    {
+      "id": "TAVIX-001",
+      "title": "Initial centralized Git-reviewed TaviX extension repository",
+      "priority": "high",
+      "acceptance_criteria": "Create separate tavix ZipRunner project, stage Atrium and Companion compiled releases under root extensions/, validate immutable manifests/hashes and feed index; verify local tests; operator review and push separate."
+    },
+    {
+      "id": "TAVIX-002",
+      "title": "Connect published static TaviX repository to Tavi App Store",
+      "priority": "high",
+      "acceptance_criteria": "After Git-reviewed push enable Pages and confirm HTTPS public index/assets/CORS, then subscribe on Windows/Android/web and check consented install/update/source transitions."
+    }
+  ],
+  "done_work": [
+    {
+      "id": "TAVIX-001",
+      "summary": "Source candidate includes deterministic package tooling, no-Git staging, immutable release index, initial Atrium 1.0.2 and Companion 0.6.30 compiled assets, Pages workflow, and regression tests.",
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "tools/repository.py",
+          "description": "Verified output staged under versioned extensions paths"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_repository.py",
+          "description": "Collision, tamper, index and multi-version regression checks"
+        }
+      ]
+    }
+  ],
+  "todo_work": [
+    {
+      "id": "TAVIX-001",
+      "status": "review",
+      "next_action": "Import ZipRunner package, inspect source/compiled assets and live Git diff; push only after operator approval."
+    },
+    {
+      "id": "TAVIX-002",
+      "status": "planned",
+      "next_action": "Enable GitHub Actions Pages and connect Tavi App Store to the central HTTPS index; validate installed publisher/source transitions."
+    }
+  ],
+  "validation": {
+    "model_reported": "partial",
+    "checks": [
+      {
+        "id": "TAVIX-LOCAL-001",
+        "description": "Local Python validator + staging test suite",
+        "status": "passed",
+        "command": "python -m unittest discover -s tests -v && python tools/repository.py check --repository .",
+        "environment": "Linux Python 3.13 with supplied Atrium/Companion compiled extension assets"
+      },
+      {
+        "id": "TAVIX-WIN-001",
+        "description": "Windows ZipRunner build and Git repository binding",
+        "status": "not_run",
+        "reason": "Requires operator ZipRunner environment."
+      },
+      {
+        "id": "TAVIX-PAGES-001",
+        "description": "Actual GitHub Pages deployment, HTTPS/CORS, Tavi Windows/Android installation",
+        "status": "not_run",
+        "reason": "Requires operator-approved Git push and live clients."
+      }
+    ]
+  },
+  "handover": {
+    "next_pass": "Operator review/push the new TaviX project, then migrate Tavi first-party subscription and host generic Atrium->Life launch.",
+    "risks": [
+      "Companion source 0.6.30 was not provided; initial candidate uses compiled bundle only.",
+      "Published static Tavi extension assets are not signed by a separate publisher signing root.",
+      "Tavi 0.3.108 has an older Atrium first-party repo; explicitly accept new source and avoid implicit migration."
+    ],
+    "blockers": [
+      "Git push/Pages/Windows/Android acceptance not performed."
+    ],
+    "notes": [
+      "The TaviX ZipRunner checkout is intended to be adjacent to Atrium and Companion; scripts do not invoke Git."
+    ]
+  },
+  "operator_actions": [
+    {
+      "id": "TAVIX-OP-001",
+      "description": "Create a new ZipRunner project with key tavix, bind exact GitHub remote and import the attached ZIP."
+    },
+    {
+      "id": "TAVIX-OP-002",
+      "description": "Review diff and push with existing ZipRunner Git controls only after approving staged assets and licenses."
+    },
+    {
+      "id": "TAVIX-OP-003",
+      "description": "Enable GitHub Pages GitHub Actions source for tavix, confirm public index and subscribe with user consent."
+    }
+  ],
+  "release": {
+    "requested": false,
+    "requires_operator_approval": true,
+    "notes": "Source/compiled distribution staging only; not a published release."
+  }
+}

@@ -1,0 +1,18 @@
+= Companion TaviX post-build integration
+:revdate: 2026-10-25
+
+The latest attached Companion source is a compiled 0.6.30 `tavi-extension-bundle` (19 packaged assets), not the current editable 0.6.30 source tree. The TaviX project contains the reusable producer-side adapter `tools/stage-companion.mjs` so the source project can opt into this workflow without copying source from an older Companion release.
+
+After the existing Companion `npm run build` succeeds (it runs check, source package build, `tavi:bundle` verification), append this command to its ZipRunner `project.zr` *build* list:
+
+[source,json]
+----
+"build": [
+  "npm run build",
+  "node ../tavix/tools/stage-companion.mjs"
+]
+----
+
+The command uses `dist/tavi-extension-bundle` from the actual source build. It does not read/wipe other project sources or rewrite game assets. If the sibling TaviX checkout is absent it reports `TAVIX_STAGE_SKIPPED`, unless `TAVIX_STAGE_REQUIRED=1` is configured by the operator. If the checkout exists, validation/staging errors stop the recipe. Existing same-version releases are immutable. The current Companion 0.6.30 *compiled* bundle has already been staged as an initial distribution candidate in this TaviX ZipRunner project, with its catalog source pointing to the compiled assets in this repository, not claiming upstream source ownership.
+
+Before publishing, review both source-to-built provenance and legal right/license metadata, test Windows/Android UI, and push the reviewed **tavix** Git project separately. The central staging script does not commit or push.

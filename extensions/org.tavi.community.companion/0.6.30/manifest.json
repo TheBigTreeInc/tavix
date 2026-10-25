@@ -1,0 +1,35 @@
+{
+  "schema": "tavi.extension/v1",
+  "id": "org.tavi.community.companion",
+  "version": "0.6.30",
+  "name": "Companion",
+  "summary": "An individual painted companion with evolving habits, experiences, and server-owned saves in Tavi.",
+  "publisher": "tavi-community",
+  "kind": "app",
+  "hostApi": {
+    "min": "1.0.0",
+    "maxExclusive": "2.0.0"
+  },
+  "entrypoints": {
+    "panel": "ui/index.html"
+  },
+  "contributions": [
+    {
+      "slot": "app.launcher",
+      "id": "companion",
+      "label": "Companion",
+      "action": "openPanel"
+    }
+  ],
+  "permissions": [
+    "ui.panel",
+    "ui.toast",
+    "storage.private"
+  ],
+  "platforms": [
+    "web",
+    "windows",
+    "android"
+  ],
+  "icon": "ui/icon.svg"
+}

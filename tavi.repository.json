@@ -1,0 +1,89 @@
+{
+  "extensions": [
+    {
+      "entrypoint": "https://thebigtreeinc.github.io/tavix/extensions/inc.thebigtree.tavi.atrium/1.0.2/ui/index.html",
+      "license": "NOASSERTION",
+      "manifest": {
+        "contributions": [
+          {
+            "action": "openPanel",
+            "id": "games",
+            "label": "Atrium Games",
+            "slot": "app.launcher"
+          }
+        ],
+        "entrypoints": {
+          "panel": "ui/index.html"
+        },
+        "hostApi": {
+          "maxExclusive": "2.0.0",
+          "min": "1.0.0"
+        },
+        "id": "inc.thebigtree.tavi.atrium",
+        "kind": "app",
+        "name": "Atrium",
+        "permissions": [
+          "ui.panel"
+        ],
+        "platforms": [
+          "web",
+          "windows",
+          "android"
+        ],
+        "publisher": "thebigtreeinc",
+        "schema": "tavi.extension/v1",
+        "summary": "Browse approved social games and resume through their own authorized services. Tavi stays your messenger.",
+        "version": "1.0.2"
+      },
+      "release": {
+        "revision": "0317d9ddc69166b346f775730ac7a2354bad41fa3bb0110a009a24ede823b411"
+      },
+      "source": "https://github.com/TheBigTreeInc/atrium"
+    },
+    {
+      "entrypoint": "https://thebigtreeinc.github.io/tavix/extensions/org.tavi.community.companion/0.6.30/ui/index.html",
+      "license": "NOASSERTION",
+      "manifest": {
+        "contributions": [
+          {
+            "action": "openPanel",
+            "id": "companion",
+            "label": "Companion",
+            "slot": "app.launcher"
+          }
+        ],
+        "entrypoints": {
+          "panel": "ui/index.html"
+        },
+        "hostApi": {
+          "maxExclusive": "2.0.0",
+          "min": "1.0.0"
+        },
+        "icon": "ui/icon.svg",
+        "id": "org.tavi.community.companion",
+        "kind": "app",
+        "name": "Companion",
+        "permissions": [
+          "ui.panel",
+          "ui.toast",
+          "storage.private"
+        ],
+        "platforms": [
+          "web",
+          "windows",
+          "android"
+        ],
+        "publisher": "tavi-community",
+        "schema": "tavi.extension/v1",
+        "summary": "An individual painted companion with evolving habits, experiences, and server-owned saves in Tavi.",
+        "version": "0.6.30"
+      },
+      "release": {
+        "revision": "424edc15f8b748644ffaa062f241664036caffe8cb0e7e12d80265305034a78c"
+      },
+      "source": "https://github.com/TheBigTreeInc/tavix"
+    }
+  ],
+  "name": "TheBigTreeInc TaviX extensions",
+  "schema": "tavi.repository/v1"
+}

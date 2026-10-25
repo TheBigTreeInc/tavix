@@ -1,0 +1,26 @@
+{
+  "schema": "ziprunner.workboard-update.v1",
+  "project": "tavix",
+  "version": "0.1.0",
+  "summary": "First standalone TaviX Git-reviewed compiled application repository, containing versioned Atrium and Companion payloads and one static App Store index.",
+  "implemented": [
+    {
+      "id": "TAVIX-001",
+      "title": "Central versioned TaviX distribution and ZipRunner project",
+      "summary": "Includes two staged compiled extension candidates, GitHub Pages publication workflow, deterministic packaging and no-Git producer staging.",
+      "operator_checks": [
+        "Install on Windows ZipRunner without overwriting other projects.",
+        "Run local test suite and inspect immutable compiled files under extensions/.",
+        "Review Git diff and push through tavix Git integration only after operator approval."
+      ]
+    }
+  ],
+  "remaining": [
+    {
+      "id": "TAVIX-002",
+      "title": "Approve static publication and Tavi App Store installation",
+      "summary": "Verify exact Git push, Pages HTTPS asset/CORS hosting, Tavi client opt-in source transition and native Windows/Android acceptance.",
+      "next_action": "Configure ZipRunner Git remote and approve push, enable GitHub Pages GitHub Actions, then subscribe URL in Tavi and test."
+    }
+  ]
+}

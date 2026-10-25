@@ -1,0 +1,41 @@
+{
+  "schema": "ziprunner.zr/v1",
+  "project_key": "tavix",
+  "label": "TaviX \u2014 reviewed extension distribution repository",
+  "match": [
+    "tavix-*-ziprunner.zip"
+  ],
+  "command_subdir": ".",
+  "stop": [],
+  "stop_ports": [],
+  "build": [
+    "python -m unittest discover -s tests -v",
+    "python tools/repository.py check --repository ."
+  ],
+  "start": [],
+  "build_window": "hidden",
+  "start_window": "managed",
+  "delete_missing": false,
+  "strip_single_root": false,
+  "protected_paths": [
+    ".git/**",
+    ".env",
+    ".env.*",
+    "*.sqlite",
+    "*.sqlite3",
+    "data/**",
+    "logs/**",
+    "state/**",
+    "secrets/**",
+    "node_modules/**",
+    ".venv/**",
+    "runtime/**",
+    "target/**",
+    "ziprunner.config.json",
+    "ziprunner.project-state.json"
+  ],
+  "require_clean_git_before_overlay": false,
+  "mechanisms_require_build_success": true,
+  "post_build_mechanisms": [],
+  "version": "0.1.0"
+}

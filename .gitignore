@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+*.tmp
+extensions/.staging-*/
+node_modules/
+.pytest_cache/
