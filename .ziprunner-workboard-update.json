@@ -1,8 +1,8 @@
 {
   "schema": "ziprunner.workboard-update.v1",
   "project": "tavix",
-  "version": "0.1.0",
-  "summary": "First standalone TaviX Git-reviewed compiled application repository, containing versioned Atrium and Companion payloads and one static App Store index.",
+  "version": "0.1.1",
+  "summary": "Repair Windows build/test portability for the central TaviX distribution repository; preserve both staged app releases and their catalog.",
   "implemented": [
     {
       "id": "TAVIX-001",
@@ -12,6 +12,16 @@
         "Install on Windows ZipRunner without overwriting other projects.",
         "Run local test suite and inspect immutable compiled files under extensions/.",
         "Review Git diff and push through tavix Git integration only after operator approval."
+      ]
+    },
+    {
+      "id": "TAVIX-REPAIR-011",
+      "title": "Windows LF fixture repair for TaviX repository verification",
+      "summary": "The 0.1.0 test fixture used Path.write_text(), which translates LF to CRLF on Windows. Seed from canonical build_index() bytes, add negative CRLF regression and retain strict bytewise catalog verification. No published extension files or hashes changed.",
+      "operator_checks": [
+        "Import 0.1.1 into existing tavix ZipRunner project after the failed 0.1.0 attempt.",
+        "Confirm 10 repository unit tests and repository check pass on Windows.",
+        "Review both compiled releases and Git diff; do not push before operator approval."
       ]
     }
   ],

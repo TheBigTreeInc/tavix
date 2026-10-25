@@ -21,7 +21,7 @@ The **root `extensions/` directory** contains packaged releases and the root `ta
 
 ## ZipRunner
 
-Unzip `tavix-0.1.0-ziprunner.zip` into a new ZipRunner project with key `tavix` at `C:\Users\dorbi\source\tavix`, bound to `https://github.com/TheBigTreeInc/tavix.git` through the existing Git profile. Keep its normal Git review/push step; **no build script commits or pushes**.
+Import `tavix-0.1.1-ziprunner.zip` into the existing ZipRunner project with key `tavix` at `C:\Users\dorbi\source\tavix`, bound to `https://github.com/TheBigTreeInc/tavix.git` through the existing Git profile. Keep its normal Git review/push step; **no build script commits or pushes**.
 
 ## Producer staging
 
@@ -59,3 +59,7 @@ Until a Tavi client explicitly adds that URL to its default repositories, add it
 ## Initial Companion release provenance
 
 The initial `org.tavi.community.companion` **0.6.30** payload is the supplied *compiled* Tavi extension bundle. Its catalog source points to this `tavix` distribution repository, where the exact distributed JavaScript/HTML assets are browsable. It is **not a claim** that the original uncompiled Companion engine source is hosted in this repository. The independent Companion source project's current build must adopt the post-build staging helper before future releases become fully automated. Do not publish a claimed open-source license until its publisher supplies one.
+
+## Windows build repair (0.1.1)
+
+The 0.1.0 test fixture created its empty catalog with `Path.write_text()`. On Windows, default newline translation introduced CRLF bytes; `check_index()` correctly rejected them because the generated catalog is canonical LF. The fixture now uses `build_index()` and `write_bytes()` on every OS. Strict verification, compiled release checksums, and the published catalog remain unchanged.

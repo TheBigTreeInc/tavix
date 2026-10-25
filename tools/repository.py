@@ -176,7 +176,7 @@ def write_index(root):
 def check_index(root):
     target=root/INDEX
     if not target.is_file():raise ValueError('Missing repository index')
-    if target.read_bytes()!=build_index(root):raise ValueError('Stale or modified repository index')
+    if target.read_bytes()!=build_index(root):raise ValueError('Stale or modified repository index (regenerate with python tools/repository.py index --repository .; LF bytes required)')
     return True
 
 def main():

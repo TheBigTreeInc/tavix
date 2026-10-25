@@ -1,4 +1,4 @@
-# TaviX 0.1.0 — ZipRunner intake and first release staging
+# TaviX 0.1.1 — ZipRunner intake and first release staging
 
 **Project:** `tavix` · **Git remote:** `https://github.com/TheBigTreeInc/tavix.git` · **local checkout:** sibling to Atrium/Companion at `C:\Users\dorbi\source\tavix`.
 
@@ -19,3 +19,7 @@ Every release directory contains compiled UI, `manifest.json`, a deterministic `
 **Operator checks:** import this ZIP under `tavix` without replacing any existing different checkout; attach Git remote in ZipRunner Git profiles; run tests and inspect both releases; run same Atrium build twice and confirm idempotence; try a changed same-version artifact and verify rejection; inspect Git diff (source+compiled assets) and push after review; enable GitHub Pages via GitHub Actions; open `https://thebigtreeinc.github.io/tavix/tavi.repository.json` and add this URL in Tavi App Store. Existing 0.3.108 first-party Atrium repository link is separate, so account/source migrations must remain opt-in.
 
 **Not performed:** Git push/commit, GitHub Pages deployment, native Windows/Android acceptance, Companion 0.6.30 source build, backend migration, release approval or installation into user's Tavi.
+
+## Windows build repair, 0.1.1
+
+ZipRunner 0.1.0 failed seven of eight tests under Windows because the test fixture seeded `tavi.repository.json` in text mode, converting canonical LF to CRLF. No actual staged release was identified as broken. Version 0.1.1 seeds the fixture with `build_index()` bytes instead, adds two regression tests (10 total), and leaves all compiled files, their hashes, and the root index byte-identical. Re-import this as a source update over the installed 0.1.0 project. Check `python -m unittest discover -s tests -v` and `python tools/repository.py check --repository .`. Do not delete the checkout, Git worktree or user configuration. Only review/push after Windows acceptance.

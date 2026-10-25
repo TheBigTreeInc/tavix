@@ -3,14 +3,14 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.0",
-    "base_version": "0.0.0"
+    "version": "0.1.1",
+    "base_version": "0.1.0"
   },
   "update": {
-    "id": "TAVIX-20261025-001",
+    "id": "TAVIX-20261025-011",
     "kind": "source_update",
     "created_at": "2026-10-25T11:11:00+01:00",
-    "summary": "Establish central versioned compiled TaviX application repository and ZipRunner Git-reviewed publication."
+    "summary": "Windows-compatible repository test fixture and exact index-byte regression coverage; preserve staged extensions."
   },
   "planned_work": [
     {
@@ -24,6 +24,12 @@
       "title": "Connect published static TaviX repository to Tavi App Store",
       "priority": "high",
       "acceptance_criteria": "After Git-reviewed push enable Pages and confirm HTTPS public index/assets/CORS, then subscribe on Windows/Android/web and check consented install/update/source transitions."
+    },
+    {
+      "id": "TAVIX-REPAIR-011",
+      "title": "Repair Windows TaviX repository build checks",
+      "priority": "high",
+      "acceptance_criteria": "On Windows ZipRunner 0.1.1, run 10 tests and the strict repository index integrity check successfully. Verify application assets and published index remain unchanged."
     }
   ],
   "done_work": [
@@ -42,6 +48,17 @@
           "description": "Collision, tamper, index and multi-version regression checks"
         }
       ]
+    },
+    {
+      "id": "TAVIX-REPAIR-011",
+      "summary": "Initialize the catalog fixture with canonical bytes, avoiding Windows CRLF transformation, add explicit CRLF negative/repair test and preserve integrity failure on altered repositories.",
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "tests/test_repository.py",
+          "description": "Portable canonical index fixture and cross-platform line-ending tests"
+        }
+      ]
     }
   ],
   "todo_work": [
@@ -54,6 +71,11 @@
       "id": "TAVIX-002",
       "status": "planned",
       "next_action": "Enable GitHub Actions Pages and connect Tavi App Store to the central HTTPS index; validate installed publisher/source transitions."
+    },
+    {
+      "id": "TAVIX-REPAIR-011",
+      "status": "review",
+      "next_action": "Operator import and run 10 Python tests plus index check in native Windows ZipRunner, then approve Git review."
     }
   ],
   "validation": {
@@ -61,7 +83,7 @@
     "checks": [
       {
         "id": "TAVIX-LOCAL-001",
-        "description": "Local Python validator + staging test suite",
+        "description": "Local validator + 10 tests including Windows CRLF simulation",
         "status": "passed",
         "command": "python -m unittest discover -s tests -v && python tools/repository.py check --repository .",
         "environment": "Linux Python 3.13 with supplied Atrium/Companion compiled extension assets"
@@ -70,7 +92,7 @@
         "id": "TAVIX-WIN-001",
         "description": "Windows ZipRunner build and Git repository binding",
         "status": "not_run",
-        "reason": "Requires operator ZipRunner environment."
+        "reason": "0.1.0 failed with Windows test fixture CRLF mismatch; 0.1.1 needs new operator ZipRunner run."
       },
       {
         "id": "TAVIX-PAGES-001",
@@ -81,11 +103,12 @@
     ]
   },
   "handover": {
-    "next_pass": "Operator review/push the new TaviX project, then migrate Tavi first-party subscription and host generic Atrium->Life launch.",
+    "next_pass": "Import 0.1.1 on the existing tavix project, run 10 tests and strict index check on Windows, review Git changes, then approve publication.",
     "risks": [
       "Companion source 0.6.30 was not provided; initial candidate uses compiled bundle only.",
       "Published static Tavi extension assets are not signed by a separate publisher signing root.",
-      "Tavi 0.3.108 has an older Atrium first-party repo; explicitly accept new source and avoid implicit migration."
+      "Tavi 0.3.108 has an older Atrium first-party repo; explicitly accept new source and avoid implicit migration.",
+      "Native Windows 0.1.1 build acceptance not yet observed; previous 0.1.0 failure reproduced by CRLF fixture simulation."
     ],
     "blockers": [
       "Git push/Pages/Windows/Android acceptance not performed."
