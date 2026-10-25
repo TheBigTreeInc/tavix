@@ -1,0 +1,103 @@
+{
+  "applicationId": "org.tavi.community.companion",
+  "files": [
+    {
+      "path": "manifest.json",
+      "sha256": "d578151e73bb10b21d130838c4dd82bd37c28bf97f6b91da4e79ddbc240624f3",
+      "size": 722
+    },
+    {
+      "path": "ui/cat-study.html",
+      "sha256": "5d468de0146fd6a794325ee62ee6acf2dca33478e554156b9742a920dfa0282e",
+      "size": 4223
+    },
+    {
+      "path": "ui/chunks/000.js",
+      "sha256": "26b37db2b24b0b4b497abf6683d01fda8134d8a5a3ee9154f9b30bb645d660ce",
+      "size": 700145
+    },
+    {
+      "path": "ui/chunks/001.js",
+      "sha256": "84eae944aaba3c954967c460450b1b786067c248678e586ab79b79049b34fde6",
+      "size": 700145
+    },
+    {
+      "path": "ui/chunks/002.js",
+      "sha256": "7ed61bed67abb8cc7f1607db35100d3b8722b26083f2056afa8a49fc1629246a",
+      "size": 632313
+    },
+    {
+      "path": "ui/chunks/003.js",
+      "sha256": "7e2240a55df6216ec2d3420c33d7d90212805decd6e400e1363dbc96f4d6bbf7",
+      "size": 91056
+    },
+    {
+      "path": "ui/chunks/004.js",
+      "sha256": "854ada3a0025caf44766aecf244e8ab4e73447c32345c150af41d3df0c6f3bea",
+      "size": 119080
+    },
+    {
+      "path": "ui/chunks/005.js",
+      "sha256": "ff6fdc605bb92d54e399e990c56a4d8efe3bc148ef69f9d6bc9db457a19dd5e5",
+      "size": 700141
+    },
+    {
+      "path": "ui/chunks/006.js",
+      "sha256": "1ae7cf69118678c3554337ff8d1ea1b7481dd940588f4ff9d7fb7cc707c8d889",
+      "size": 700141
+    },
+    {
+      "path": "ui/chunks/007.js",
+      "sha256": "ed54897213022a6d822bc812b8c052481e6278cd432fc8e678ed6d3ad712197f",
+      "size": 428293
+    },
+    {
+      "path": "ui/chunks/008.js",
+      "sha256": "3cdfc8cd3661245a76930c34c5304eae27edb4fe37520f79507ef0a28e3b06fe",
+      "size": 231471
+    },
+    {
+      "path": "ui/collection.html",
+      "sha256": "23a70090a94a0cc8be34081721b87a5180bfb62a7efa0f35ebecb9b721131dce",
+      "size": 206
+    },
+    {
+      "path": "ui/credits.html",
+      "sha256": "022fad09d1a13a3ba18649a2b9628595de7bad53bd5743449e68122d35376dd3",
+      "size": 7079
+    },
+    {
+      "path": "ui/icon.svg",
+      "sha256": "0922f4ede35406289efc8692596e61f8a0eac63d0d92c41738ac854eb8876c9d",
+      "size": 324
+    },
+    {
+      "path": "ui/index.html",
+      "sha256": "03fb7979f8ed44f5e59c82911b3b6ab45a4d974f25f842806ee387a3c3411f68",
+      "size": 8206
+    },
+    {
+      "path": "ui/studio-main.js",
+      "sha256": "3ca27f08fcda5fa88b90dafbb804aa7221c26aa8bf136f9bd8c6cd7dac09ee03",
+      "size": 46622
+    },
+    {
+      "path": "ui/world/studio.css",
+      "sha256": "27433b0148b0bad006919e13ebcb8cc0ecfd4df07097e9a1cf23180cfd27a9ac",
+      "size": 744
+    },
+    {
+      "path": "ui/world/style.css",
+      "sha256": "251678ba29f6988a4e5a65ab5dcf88186a3ec0c041ca3b3c88cd512d8da32f66",
+      "size": 9624
+    },
+    {
+      "path": "ui/world-main.js",
+      "sha256": "bcdfa6c4f83720441336baa5b53100353210a2b84ca14c3b41a2208c00c64ea9",
+      "size": 119412
+    }
+  ],
+  "schema": "tavix.package/v1",
+  "standard": "tavix/1.0",
+  "version": "0.6.33"
+}

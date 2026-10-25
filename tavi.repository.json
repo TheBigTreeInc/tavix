@@ -41,7 +41,7 @@
       "source": "https://github.com/TheBigTreeInc/atrium"
     },
     {
-      "entrypoint": "https://thebigtreeinc.github.io/tavix/extensions/org.tavi.community.companion/0.6.30/ui/index.html",
+      "entrypoint": "https://thebigtreeinc.github.io/tavix/extensions/org.tavi.community.companion/0.6.33/ui/index.html",
       "license": "NOASSERTION",
       "manifest": {
         "contributions": [
@@ -76,10 +76,10 @@
         "publisher": "tavi-community",
         "schema": "tavi.extension/v1",
         "summary": "An individual painted companion with evolving habits, experiences, and server-owned saves in Tavi.",
-        "version": "0.6.30"
+        "version": "0.6.33"
       },
       "release": {
-        "revision": "424edc15f8b748644ffaa062f241664036caffe8cb0e7e12d80265305034a78c"
+        "revision": "c4d0dd3822df08da845100cb4266c7003cd9f71e8429ae948b1c9226d7b5090d"
       },
       "source": "https://github.com/TheBigTreeInc/tavix"
     }
