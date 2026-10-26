@@ -1,7 +1,7 @@
 {
   "extensions": [
     {
-      "entrypoint": "https://thebigtreeinc.github.io/tavix/extensions/inc.thebigtree.tavi.atrium/1.0.4/ui/index.html",
+      "entrypoint": "https://thebigtreeinc.github.io/tavix/extensions/inc.thebigtree.tavi.atrium/1.0.5/ui/index.html",
       "license": "NOASSERTION",
       "manifest": {
         "contributions": [
@@ -33,10 +33,10 @@
         "publisher": "thebigtreeinc",
         "schema": "tavi.extension/v1",
         "summary": "Browse approved social games and resume through their own authorized services. Tavi stays your messenger.",
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "release": {
-        "revision": "4dea56a0e3bb1421d3cc4c7f38f6598ad6a8846139cf0460bba15b0f9504656d"
+        "revision": "f1aa37a78c68bcbb9faad7955cf7eaba441b553237f6dedb8a2b6241d111a66d"
       },
       "source": "https://github.com/TheBigTreeInc/atrium"
     },
