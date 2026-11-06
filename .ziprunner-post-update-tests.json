@@ -1,11 +1,20 @@
 {
   "schema": "ziprunner.post-update-tests.v1",
-  "version": "0.1.1",
+  "version": "0.1.8",
   "tests": [
     {
       "kind": "command",
+      "semantic_id": "tavix-ziprunner-catalog-preflight",
+      "definition_revision": "2",
+      "rerun_policy": "every_update",
+      "command": "python tools/ziprunner_catalog_preflight.py --repository .",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
       "semantic_id": "tavix-repository-integrity",
-      "definition_revision": "1",
+      "definition_revision": "2",
       "rerun_policy": "every_update",
       "command": "python tools/repository.py check --repository .",
       "attention_on_failure": true,
@@ -17,6 +26,51 @@
       "definition_revision": "2",
       "rerun_policy": "every_update",
       "command": "python -m unittest discover -s tests -v",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-local-client-tests",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_local_client.py -v",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-exact-package-qa",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python tools/local-client/qa.py --repository . --extension inc.thebigtree.tavi.atrium --version 1.0.5",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-local-package-install-tests",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_local_install.py -v",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-repository-integrity-strict",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python tools/repository.py check --repository . --strict",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-c4-source-contract",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_c4_architecture.py -v",
       "attention_on_failure": true,
       "gating": false
     }

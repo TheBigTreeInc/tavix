@@ -6,3 +6,5 @@ extensions/** -text
 *.webp binary
 # The catalog itself is regenerated deterministically and checked on Windows.
 tavi.repository.json text eol=lf
+architecture/c4/*.dsl text eol=lf
+architecture/c4/*.adoc text eol=lf

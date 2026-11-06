@@ -9,8 +9,9 @@
   "stop": [],
   "stop_ports": [],
   "build": [
+    "python tools/ziprunner_catalog_preflight.py --repository .",
     "python -m unittest discover -s tests -v",
-    "python tools/repository.py check --repository ."
+    "python tools/repository.py check --repository . --strict"
   ],
   "start": [],
   "build_window": "hidden",
@@ -37,5 +38,5 @@
   "require_clean_git_before_overlay": false,
   "mechanisms_require_build_success": true,
   "post_build_mechanisms": [],
-  "version": "0.1.1"
+  "version": "0.1.8"
 }

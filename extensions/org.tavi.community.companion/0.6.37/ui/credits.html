@@ -1,0 +1,61 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Companion asset credits</title><style>body{font:16px system-ui;margin:2rem;background:#edf1e6;color:#263b29;white-space:pre-wrap;overflow-wrap:anywhere}</style><body><a href="./index.html">← Companion</a><pre>
+## Three newly authored companion sprite sheets (0.6.1)
+
+- Creator: **Tavi Companions original artwork**.
+- Original art source: `tools/create-new-species-art.py` (authoring script using Pillow, not a runtime dependency).
+- Included files: `squirrel-sheet.png`, `penguin-sheet.png`, `ferret-sheet.png`. Transparent 192 × 48 pixel sheets, each with four hand-authored frames for a 48 × 48 sprite.
+- License: CC0-1.0 — https://creativecommons.org/publicdomain/zero/1.0/ — project-controlled rights.
+- Changes: source-generated original pixel sprites; runtime frame selection and nearest-neighbor scaling. No third-party image source or downloaded art is used.
+- Full resolution original sheets are in `ui/assets/`, and generating instructions are in `docs/RELEASE_0.6.1.md`.
+
+
+# Companion sprite credits
+
+## Modular upright unicorn companion
+
+- Creator: OpenAI image generation for Tavi Companions, 2026-10-21.
+- Included files: `unicorn-atlas.png` and `unicorn-mane-v2.png`; source/provenance: `art-reference/unicorn-v1/README.md`.
+- The original unicorn parts were generated with the built-in image generation tool, using this project's generated cat atlas as a style and shared-rig reference. No third-party character art was supplied. Original image and exact prompt are retained in `art-reference/unicorn-v1/`.
+- Runtime atlas resized to 1280 × 1024. Complete connected-part crop bounds and pivots are registered in `world/unicorn-layout.json`. The shared renderer caches painted colors, masks arm joints, blends the near ear base, and animates the pack with the existing cat-v1 clips. Coat, mane/tail, horn and hoof colors can be edited independently; eyes and muzzle retain their source colors.
+- The replacement mane sheet was generated with the built-in image generation tool using the project unicorn atlas as its style reference. Four separate parts provide short front/profile forelocks and back/neck manes. The transparent runtime sheet is 512 × 512; original source and exact prompt remain in the provenance folder. Shared head origins and painter order fit the hair to the portrait and live skull, with neck locks behind and forelocks above. Every hair part uses the core mane color channel.
+- License: CC0-1.0 — https://creativecommons.org/publicdomain/zero/1.0/ — project-controlled rights to the extent they exist.
+
+## Ginger cat profile ear pair
+
+- Creator: OpenAI image generation for Tavi Companions, 2026-10-21.
+- Included file: `cat-profile-ears.png`; source/provenance: `art-reference/companion-cat-v1/README.md`.
+- Generated using the project's generated cat atlas as reference. Original: `art-reference/companion-cat-v1/profile-ears-source.png`; exact prompt: `profile-ears-prompt.txt` in that directory.
+- Runtime sheet resized to 384 × 256; near and far ears have separate registered bounds/pivots. The side near ear shows a narrow inner surface and the far ear its furry back. The front ears retain their original artwork.
+- Current runtime fit uses a broader, shorter near ear and a smaller far ear. A cached alpha fade softens the near ear's lower edge into the crown; the source artwork is unchanged.
+- License: CC0-1.0 — https://creativecommons.org/publicdomain/zero/1.0/ — project-controlled rights to the extent they exist.
+
+## Ginger cat side-profile legs
+
+- Creator: OpenAI image generation for Tavi Companions, 2026-10-21.
+- Included file: `cat-profile-legs.png`; source/provenance: `art-reference/companion-cat-v1/README.md`.
+- AI-generated using the project's generated cat design as reference. Original retained as `art-reference/companion-cat-v1/profile-legs-source.png`; exact prompt in `profile-legs-prompt.txt` in that directory.
+- Runtime sheet resized to 512 × 256; registered crop bounds and pivots assemble true side-view paws independently of the head's viewing direction.
+- License: CC0-1.0 — https://creativecommons.org/publicdomain/zero/1.0/ — project-controlled rights to the extent they exist.
+
+## Detailed modular ginger cat atlas
+
+- Creator: OpenAI image generation for Tavi Companions, 2026-10-21.
+- Source/provenance: `art-reference/companion-cat-v1/README.md`; exact prompt in `art-reference/companion-cat-v1/painted-atlas-prompt.txt`.
+- Included file: `cat-painted-atlas.png`. Generated from this project's original AI-generated concept; no third-party character image was supplied.
+- License: CC0-1.0 — https://creativecommons.org/publicdomain/zero/1.0/ — to the extent project-controlled rights exist. This is AI-generated artwork, not an OpenGameArt pack.
+- Adaptations: source atlas unchanged; alpha bounds and joint pivots registered in `world/cat-painted-layout.json`, crops resized into cached raster parts, animated by independent JSON keyframes. Used in both the art studio and the main world.
+- Fur, stripes, muzzle/paws and inner ears now use the shared asset-defined palette engine. Eye protection regions preserve iris colors; the original default palette preserves source pixels. Colors are prepared in the cache for both portrait and body.
+- The arm renderer additionally caches upper/lower crops with rounded overlapping elbow masks. Ear perspective is assembled using placement, rotation and scaling of the same source sprites. No new external artwork is introduced by these changes.
+
+# Detailed painted companion artwork
+
+The main world and character study use only the **original detailed painted Cat and Unicorn** rigs. No older pixel sprites or procedural creature shapes are included in the active application.
+
+- `../assets/cat-painted-atlas.png` — original generated painted Cat parts; provenance and exact authoring prompts are in `art-reference/companion-cat-v1/` at the repository root.
+- `../assets/cat-profile-legs.png` and `../assets/cat-profile-ears.png` — additional painted side-profile components derived for this Cat pack.
+- `../assets/unicorn-atlas.png` and `../assets/unicorn-mane-v2.png` — original generated painted Unicorn components; provenance and prompts in `art-reference/unicorn-v1/`.
+
+These images were generated with OpenAI image generation for Tavi Companions using the project's own companion design/style references. No third-party sprite sheets are used. Project-controlled rights are dedicated under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) to the extent they exist. The full text is in `../licenses/CC0-1.0.txt` and per-file credits in `../assets/CREDITS.md`.
+
+Both characters use `cat-painted.mjs`, rig metadata and `cat-clips.json` for animations. Future species must have their own comparable complete painted part pack before being selectable. Squirrel, Penguin and Ferret are not currently playable: the earlier low-resolution versions were removed.
+</pre></body></html>

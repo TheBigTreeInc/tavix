@@ -25,3 +25,7 @@ Read in this order before changing code:
 - Never apply, promote, publish, push, tag, or release without explicit authority.
 
 Machine-readable thresholds live in `ziprunner.quality.json`.
+
+## TaviX architecture maintenance (from 0.1.8)
+
+Maintain `architecture/c4/workspace.dsl` (Structurizr DSL) and `architecture/c4/README.adoc` (AsciiDoc) in the same pass when component responsibilities, exposed interfaces, storage or deployment change. Start with source evidence. Keep external Tavi, Atrium, Companion, ZipRunner and GitHub internals out of TaviX-owned containers. Preserve established C4 element IDs and view keys. Validate with Structurizr CLI if installed; distinguish a Python source-contract test from DSL parser validation.

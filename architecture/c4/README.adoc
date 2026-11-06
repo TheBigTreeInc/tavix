@@ -1,0 +1,103 @@
+= TaviX C4 architecture
+:toc:
+:sectnums:
+
+== Scope and authoritative model
+
+`workspace.dsl` is the source of truth for TaviX C4 architecture (initial model for version 0.1.8, based on the TaviX 0.1.7 implementation). The model starts at Level 3 and includes minimum Level 1/2 views, two important dynamic flows and a source-supported local-development deployment view.
+
+TaviX is an independent software system: immutable extension-package staging, a canonical static catalog, validation and QA, and a loopback developer preview/installer. It is *not* the Tavi messenger, the Atrium game lobby, Companion's engine, a game server, an identity provider, or an authenticated Tavi host runtime. Hosted/compiled extension payloads are distributed artifacts, not implementation of TaviX's own functional components.
+
+The model does not invent remote services beyond observed source contracts. Relationships to GitHub Pages and Tavi are at the integration boundary; their internals are deliberately omitted. The hosted deployment topology is not modeled, because this source archive contains no source-controlled `.github/workflows/` or cloud configuration. A GitHub Pages workflow was observed separately for an older remote commit, but it is not a TaviX-owned executable in this source ZIP.
+
+== Views
+
+[cols="1,2,3",options="header"]
+|===
+|View key |Level |Purpose
+|`tavixPublisherComponents` |C4 L3 |Python publishing, immutable archive checks, canonical catalog and bounded QA
+|`tavixPreviewServerComponents` |C4 L3 |Loopback API, discovery, local installation and asset serving
+|`tavixPreviewUiComponents` |C4 L3 |Developer UI, installation controls and sandboxed panel
+|`tavixAdapterComponents` |C4 L3 |Optional producer post-build adapter
+|`tavixContainers` |C4 L2 |Executable process and storage boundaries within TaviX
+|`tavixContext` |C4 L1 |Tavi, external producers, ZipRunner, GitHub/Pages and operator
+|`tavixReleaseStage` |Dynamic |Compiled bundle -> reviewed staging -> approval-gated distribution
+|`tavixLocalInstall` |Dynamic |Developer uploads, validates and installs local `.tavix` package
+|`tavixLocalDeployment` |Deployment |Loopback-only developer workstation, browser and files
+|===
+
+== TaviX-owned containers and components
+
+[cols="2,2,3,3",options="header"]
+|===
+|Container |Component (stable identifier) |Responsibility and exposed/consumed interface |Source evidence
+|Repository and validation toolchain (`cli`) |`stage` |`repository.py stage`; verifies input and stages immutable versioned release; invokes package codec and catalog writer; writes release filesystem |`tools/repository.py` (`run_stage`)
+|`cli` |`package` |`validate`, `pack`, `validate-archive` CLI and Python functions; lockfile SHA-256 and ZIP structure; consumed by staging and local installer |`tools/tavix_package.py`
+|`cli` |`catalog` |Generates canonical `tavi.repository.json`, checks every release, enforces publisher/source consistency |`tools/repository.py` (`build_index`, `check_index`)
+|`cli` |`preflight` |Safe reconciliation on recognized catalog drift; consumes catalog builder and validated releases; never authorizes publication |`tools/ziprunner_catalog_preflight.py`; `tools/repository.py` `check`
+|`cli` |`packageQa` |Checks exact staged package identity, contained panel, ZIP CRC and hash evidence; JSON CLI output |`tools/local-client/qa.py`
+|Companion post-build staging adapter (`adapter`) |`stageInvocation` |Optional `node` adapter; passes compiled bundle to Python stage command and explicitly does not push |`tools/stage-companion.mjs`
+|Local preview HTTP server (`previewServer`) |`api` |GET `/__local_client/apps` and `/__local_client/installed`; POST `/__local_client/install`; DELETE `/__local_client/install/{id}/{version}` |`tools/local-client/server.py` `Handler`
+|`previewServer` |`discovery` |Enumerates staged versioned manifests and valid panel paths; filesystem reads |`tools/local-client/server.py` `discover`
+|`previewServer` |`installer` |Archive size limits, verification, extraction, versioned install/remove; calls shared package codec |`tools/local_client/local_packages.py`
+|`previewServer` |`assets` |Serves staged checkout files and local installed `__local_packages` files over HTTP |`tools/local-client/server.py` `do_GET`
+|Local preview browser UI (`previewUi`) |`libraryUi` |Discovers staged/installed apps; opens selected panel |`tools/local-client/index.html` (`scan`, `localScan`)
+|`previewUi` |`installUi` |Uploads selected `.tavix` bytes to local API, removes chosen package and shows errors |`tools/local-client/index.html` (`install`, `remove` controls)
+|`previewUi` |`panelUi` |Sandboxed iframe preview via HTTP, not a production host API; basic host diagnostics |`tools/local-client/index.html` (`iframe`)
+|Versioned release repository (`releases`) |not decomposed |Git-tracked file store for reviewed manifests, lock files, `.tavix` archives, UI assets and root catalog |`extensions/`; `tavi.repository.json`
+|Local installed package store (`localStore`) |not decomposed |Unpublished runtime data under `.tavix-local/<id>/<version>/`; never in the source ZIP |`tools/local-client/server.py` `STORAGE`; `tools/local_client/local_packages.py`
+|===
+
+The small browser UI currently lives in one HTML file, but its three functional responsibilities are separate logical components, *not* claims about separate deployables or JavaScript modules. The Python package codec is source-reused by the loopback installer; this is a library call, not a network hop. The adapter is limited to the Companion producer's current build convention and is not a generic Atrium build service.
+
+== System boundaries and external contracts
+
+* *Extension producer* (external): supplies compiled extension bundle for optional post-build staging. A producer's own build, assets and business logic are not TaviX components.
+* *Tavi* (external): discovers published catalog/assets over HTTPS and owns production embedded loading, SDK permissions, authentication and runtime sandboxing; none is modeled inside TaviX.
+* *ZipRunner* (external): applies source ZIPs, invokes configured Python verification commands, tracks review/workboard state and gates authorized Git actions. TaviX source tools do not push themselves.
+* *GitHub repository and Pages* (external): provides Git versioning and approved static distribution of catalog/assets. Source code references canonical base `https://thebigtreeinc.github.io/tavix/`. Do not treat local index updates as publication.
+* *Extension maintainer*: invokes CLI and browser preview, reviews exact Git diffs and approves or rejects publication manually.
+
+== Critical workflows
+
+=== Stage a compiled release
+
+A producer executes optional adapter -> Python `repository.py stage` -> archive validation/packing -> immutable versioned `extensions/<id>/<version>/` -> atomic canonical `tavi.repository.json` update. ZipRunner and operator Git review are separate. The model shows an *approval gate*, not an automatic Git push.
+
+=== Install and preview a local package
+
+Browser sends the `.tavix` bytes to loopback HTTP POST -> installer validates archive and extraction limits -> files are stored under `.tavix-local` -> browser lists installed metadata and loads the panel using local HTTP paths. File-picker behavior is a browser file input. The chosen "test account" is a *visual marker only*. The preview iframe is sandboxed but the local origin is not a hardened trust boundary.
+
+== Verified deployment scope
+
+The local preview server binds `127.0.0.1` and defaults to port `8765` (`tools/local-client/server.py`); the HTML UI runs in a local browser, while the Python runtime reads static checkout files and local installed packages. The operator's Windows host is a known environment from ZipRunner reports, but the same source is not Windows-exclusive. Remote GitHub Actions / Pages deployment internals, Tavi Windows/Android integration and LoopRD servers are outside the verifiable source topology.
+
+== Explicit limitations and exclusions
+
+* Archive hashes validate file integrity but do *not* prove publisher authenticity or trust. Permissions are shown as metadata; this is not production permission enforcement.
+* The current archive codec validates included file hashes and main panel/icon existence, but does not yet comprehensively validate every transitive HTML/CSS/JS asset reference. There is a known improvement ticket to add missing-reference detection.
+* Local preview does not expose the real Tavi host SDK, real identities, or multiplayer. No claim is made about Checkers logic, authoritative game servers or two-client acceptance.
+* No independent SQL database, queue, background worker, WebView2 desktop executable or hosted API is present in this TaviX source. Source-bound release files and local development storage are modeled as file stores.
+* A remote GitHub Pages deployment was observed for an earlier commit; the current source ZIP does not itself include `.github/workflows/pages.yml`. No new deployment or CI claim should be inferred from this architecture model.
+* The precise Windows startup and browser memory behavior of Companion 0.6.37 is not captured by this source; it belongs to the Tavi/Companion runtime investigation, not the TaviX C4 baseline.
+
+== Validation and maintenance
+
+To validate with a separately installed Structurizr CLI (not bundled in the ZIP):
+
+[source,powershell]
+----
+structurizr validate -workspace architecture/c4/workspace.dsl
+----
+
+With the legacy CLI distribution, use `structurizr.bat validate -workspace architecture/c4/workspace.dsl` on Windows or `./structurizr.sh validate -workspace architecture/c4/workspace.dsl` on Linux. The documented CLI should be independently installed and trusted; ZipRunner does not download it and no new release gate is silently introduced.
+
+Local source sanity checks:
+
+[source,powershell]
+----
+python -m unittest discover -s tests -v
+python tools/repository.py check --repository . --strict
+----
+
+Whenever a TaviX-owned component, communication path, persistence dependency or external contract changes, update both this AsciiDoc and `workspace.dsl` within the same source pass. Preserve view keys and stable element identifiers. Reference an ODPS capability description if one is added in future rather than copying its body into C4. The test fixture asserts that these architecture documents remain at their root-relative paths; this does not substitute for Structurizr validation.

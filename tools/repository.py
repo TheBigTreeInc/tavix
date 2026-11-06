@@ -182,13 +182,34 @@ def check_index(root):
 def main():
     p=argparse.ArgumentParser();sub=p.add_subparsers(dest='action',required=True)
     stage=sub.add_parser('stage');stage.add_argument('--repository',required=True);stage.add_argument('--input',required=True);stage.add_argument('--source-url',required=True);stage.add_argument('--license',default='NOASSERTION')
+    # Historical ZipRunner installations may retain an older, operator-owned
+    # build command (`python tools/repository.py check --repository .`).  The
+    # 0.1.6 project.zr preflight is not necessarily executed in that case.
+    # Keep the pure check_index() API strict/read-only; the CLI alone may do
+    # a bounded, validated recovery from a stale catalog.  --strict opts out.
     chk=sub.add_parser('check');chk.add_argument('--repository',default='.')
+    chk.add_argument('--strict',action='store_true',
+                     help='Read-only, byte-for-byte catalog check; never reconcile')
     gen=sub.add_parser('index');gen.add_argument('--repository',default='.')
     ns=p.parse_args()
     try:
         if ns.action=='stage':r=run_stage(Path(ns.repository),Path(ns.input),ns.source_url,ns.license)
         elif ns.action=='index':r={'updated':write_index(Path(ns.repository))}
-        else:r={'valid':check_index(Path(ns.repository))}
+        else:
+            root=Path(ns.repository)
+            try:
+                check_index(root)
+                r={'valid':True, 'index_preflight':'not_needed'}
+            except ValueError as exc:
+                if ns.strict or not str(exc).startswith('Stale or modified repository index'):
+                    raise
+                # Explicitly re-run the strict check after the *same* bounded
+                # preflight that project.zr uses.  Never accept an unchecked
+                # index, regenerate an unreviewed app, or stage/push any release.
+                from ziprunner_catalog_preflight import preflight
+                outcome=preflight(root)
+                check_index(root)
+                r={'valid':True, 'index_preflight':outcome}
         print(json.dumps(r,sort_keys=True))
     except (OSError,ValueError,TypeError,KeyError,RuntimeError,json.JSONDecodeError) as e:
         print('TAVIX_REPOSITORY_ERROR: '+str(e),file=sys.stderr);return 1

@@ -3,14 +3,14 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.1",
-    "base_version": "0.1.0"
+    "version": "0.1.8",
+    "base_version": "0.1.7"
   },
   "update": {
-    "id": "TAVIX-20261025-011",
+    "id": "TAVIX-20261106-018",
     "kind": "source_update",
-    "created_at": "2026-10-25T11:11:00+01:00",
-    "summary": "Windows-compatible repository test fixture and exact index-byte regression coverage; preserve staged extensions."
+    "created_at": "2026-11-06T13:28:43+01:00",
+    "summary": "Add source-grounded Structurizr DSL C4 components and AsciiDoc at architecture/c4/, with stable views and documentation regression tests. No extension or runtime changes."
   },
   "planned_work": [
     {
@@ -30,88 +30,126 @@
       "title": "Repair Windows TaviX repository build checks",
       "priority": "high",
       "acceptance_criteria": "On Windows ZipRunner 0.1.1, run 10 tests and the strict repository index integrity check successfully. Verify application assets and published index remain unchanged."
-    }
-  ],
-  "done_work": [
-    {
-      "id": "TAVIX-001",
-      "summary": "Source candidate includes deterministic package tooling, no-Git staging, immutable release index, initial Atrium 1.0.2 and Companion 0.6.30 compiled assets, Pages workflow, and regression tests.",
-      "evidence": [
-        {
-          "kind": "source",
-          "ref": "tools/repository.py",
-          "description": "Verified output staged under versioned extensions paths"
-        },
-        {
-          "kind": "test",
-          "ref": "tests/test_repository.py",
-          "description": "Collision, tamper, index and multi-version regression checks"
-        }
-      ]
     },
     {
-      "id": "TAVIX-REPAIR-011",
-      "summary": "Initialize the catalog fixture with canonical bytes, avoiding Windows CRLF transformation, add explicit CRLF negative/repair test and preserve integrity failure on altered repositories.",
-      "evidence": [
-        {
-          "kind": "source",
-          "ref": "tests/test_repository.py",
-          "description": "Portable canonical index fixture and cross-platform line-ending tests"
-        }
-      ]
+      "id": "TAVIX-REPAIR-016",
+      "title": "Safe Windows overlay index reconciliation",
+      "priority": "high",
+      "acceptance_criteria": "Run original 0.1.5 installer tests and the strict catalog check successfully on Windows after bounded preflight; reject tampering and publisher changes; operator reviews index diff before any publication."
+    },
+    {
+      "id": "TAVIX-REPAIR-017",
+      "title": "Fix repository-index check in persisted ZipRunner build sequence",
+      "priority": "high",
+      "acceptance_criteria": "Existing Windows ZipRunner two-command build succeeds on safe canonical or validated older-index overlay, but fails closed on missing/tampered/unreviewed releases; report index change and require operator diff review; preserve installer and approval gates."
+    },
+    {
+      "id": "TAVIX-C4-001",
+      "title": "Establish and maintain source-based C4 model",
+      "priority": "high",
+      "acceptance_criteria": "Provide architecture/c4/workspace.dsl and README.adoc at source ZIP root with verified TaviX components, L1/L2 context, relevant dynamic/deployment diagrams, source evidence, explicit limitations, reusable stable identifiers; validate using Structurizr CLI if available; maintain in future component changes."
     }
   ],
+  "done_work": [],
   "todo_work": [
+    {
+      "id": "TAVIX-REPAIR-017",
+      "status": "review",
+      "next_action": "Import 0.1.7 on Windows, capture executed commands and index-preflight reason, rerun post-update checks and obtain separate operator acceptance. Do not infer Done."
+    },
+    {
+      "id": "TAVIX-REPAIR-016",
+      "status": "review",
+      "next_action": "Import 0.1.6 in ZipRunner on Windows; inspect preflight diagnostics and rerun fresh verification and operator checks."
+    },
     {
       "id": "TAVIX-001",
       "status": "review",
-      "next_action": "Import ZipRunner package, inspect source/compiled assets and live Git diff; push only after operator approval."
+      "next_action": "Retain existing operator review status; do not infer Done from the build."
+    },
+    {
+      "id": "TAVIX-REPAIR-011",
+      "status": "review",
+      "next_action": "Retain existing operator review status and strict catalog regression coverage."
+    },
+    {
+      "id": "DGN-M1-TAVIX-AUTOMATED-QA-001",
+      "status": "review",
+      "next_action": "Retain existing review status; no multiplayer acceptance claimed."
     },
     {
       "id": "TAVIX-002",
       "status": "planned",
-      "next_action": "Enable GitHub Actions Pages and connect Tavi App Store to the central HTTPS index; validate installed publisher/source transitions."
+      "next_action": "Verify operator-approved publication and actual Tavi installation separately."
     },
     {
-      "id": "TAVIX-REPAIR-011",
+      "id": "TAVIX-C4-001",
       "status": "review",
-      "next_action": "Operator import and run 10 Python tests plus index check in native Windows ZipRunner, then approve Git review."
+      "next_action": "Operator reviews component ownership and source evidence; validates Structurizr DSL in installed CLI if available; records acceptance separately. No automatic publication."
     }
   ],
   "validation": {
     "model_reported": "partial",
     "checks": [
       {
-        "id": "TAVIX-LOCAL-001",
-        "description": "Local validator + 10 tests including Windows CRLF simulation",
+        "id": "TAVIX-017-PYTHON",
         "status": "passed",
-        "command": "python -m unittest discover -s tests -v && python tools/repository.py check --repository .",
-        "environment": "Linux Python 3.13 with supplied Atrium/Companion compiled extension assets"
+        "description": "Historical 0.1.7 evidence only: All 30 Python unit/integration tests including six CLI legacy-command regression cases",
+        "command": "python -m unittest discover -s tests -v",
+        "environment": "Linux Python 3.13; local source checkout (earlier version)"
       },
       {
-        "id": "TAVIX-WIN-001",
-        "description": "Windows ZipRunner build and Git repository binding",
-        "status": "not_run",
-        "reason": "0.1.0 failed with Windows test fixture CRLF mismatch; 0.1.1 needs new operator ZipRunner run."
+        "id": "TAVIX-017-STRICT",
+        "status": "passed",
+        "description": "Historical 0.1.7 evidence only: Strict repository index check and immutable release integrity",
+        "command": "python tools/repository.py check --repository . --strict",
+        "environment": "Linux Python 3.13; local source checkout (earlier version)"
       },
       {
-        "id": "TAVIX-PAGES-001",
-        "description": "Actual GitHub Pages deployment, HTTPS/CORS, Tavi Windows/Android installation",
+        "id": "TAVIX-017-WINDOWS",
         "status": "not_run",
-        "reason": "Requires operator-approved Git push and live clients."
+        "description": "Real ZipRunner persisted-command build and post-update verification",
+        "reason": "Windows host not available here"
+      },
+      {
+        "id": "TAVIX-017-OPERATOR",
+        "status": "not_run",
+        "description": "Operator acceptance and any authorized publication",
+        "reason": "Requires operator review, no Git operation was performed"
+      },
+      {
+        "id": "TAVIX-018-C4-CLI",
+        "status": "not_run",
+        "description": "Validate Structurizr DSL using Structurizr CLI",
+        "reason": "Structurizr CLI not available in authoring environment; Java alone is not a DSL validator"
+      },
+      {
+        "id": "TAVIX-018-SOURCE-TESTS",
+        "status": "passed",
+        "description": "35 tests including five C4 source-documentation contract tests, executed against pre-package source tree. This is not DSL parser validation.",
+        "command": "python -m unittest discover -s tests -v",
+        "environment": "Linux; Python runtime in authoring environment"
+      },
+      {
+        "id": "TAVIX-018-INDEX-STRICT",
+        "status": "passed",
+        "description": "Repository package/hash and canonical catalog checks against pre-package source tree",
+        "command": "python tools/repository.py check --repository . --strict",
+        "environment": "Linux; authoring environment"
       }
     ]
   },
   "handover": {
-    "next_pass": "Import 0.1.1 on the existing tavix project, run 10 tests and strict index check on Windows, review Git changes, then approve publication.",
+    "next_pass": "Verify 0.1.8 on Windows ZipRunner, review architecture/c4 model and source evidence, validate with locally installed Structurizr CLI if available, then explicitly accept or reject. No automatic release.",
     "risks": [
-      "Companion source 0.6.30 was not provided; initial candidate uses compiled bundle only.",
-      "Published static Tavi extension assets are not signed by a separate publisher signing root.",
-      "Tavi 0.3.108 has an older Atrium first-party repo; explicitly accept new source and avoid implicit migration.",
-      "Native Windows 0.1.1 build acceptance not yet observed; previous 0.1.0 failure reproduced by CRLF fixture simulation."
+      "0.1.6 failed because persistent Windows ZipRunner build commands did not execute its new preflight command; actual catalog drift cause still unknown.",
+      "For a mismatched catalog, legacy check performs only the bounded validated reconciliation; unexpected releases/publisher changes fail closed.",
+      "A local catalog adjustment requires an operator diff review before any Git action.",
+      "Production Tavi Apps installation remains separate and not implemented."
     ],
     "blockers": [
-      "Git push/Pages/Windows/Android acceptance not performed."
+      "Windows 0.1.8 candidate checks and operator acceptance not yet executed",
+      "Structurizr CLI validation requires available CLI installation"
     ],
     "notes": [
       "The TaviX ZipRunner checkout is intended to be adjacent to Atrium and Companion; scripts do not invoke Git."
@@ -119,21 +157,21 @@
   },
   "operator_actions": [
     {
-      "id": "TAVIX-OP-001",
-      "description": "Create a new ZipRunner project with key tavix, bind exact GitHub remote and import the attached ZIP."
+      "id": "TAVIX-OP-018-1",
+      "description": "Import exact 0.1.8 source ZIP into existing tavix ZipRunner project; preserve existing protected config and current Workboard state."
     },
     {
-      "id": "TAVIX-OP-002",
-      "description": "Review diff and push with existing ZipRunner Git controls only after approving staged assets and licenses."
+      "id": "TAVIX-OP-018-2",
+      "description": "Run fresh Windows post-update verification and inspect architecture/c4/workspace.dsl against source. When Structurizr CLI is installed, run validate and record result."
     },
     {
-      "id": "TAVIX-OP-003",
-      "description": "Enable GitHub Pages GitHub Actions source for tavix, confirm public index and subscribe with user consent."
+      "id": "TAVIX-OP-018-3",
+      "description": "Review diffs and manually accept or reject TAVIX-C4-001. Do not interpret build/CI as approval or automatically push/tag/release."
     }
   ],
   "release": {
     "requested": false,
     "requires_operator_approval": true,
-    "notes": "Source/compiled distribution staging only; not a published release."
+    "notes": "Source-only ZipRunner repair; no push/tag/release automatically authorized."
   }
 }

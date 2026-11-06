@@ -5,3 +5,5 @@ __pycache__/
 extensions/.staging-*/
 node_modules/
 .pytest_cache/
+
+.tavix-local/
