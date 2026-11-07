@@ -1,0 +1,39 @@
+{
+  "schema": "tavi.extension/v1",
+  "id": "example.org.solitaire",
+  "version": "0.1.0",
+  "name": "Solitaire Demo",
+  "summary": "Classification and local-preview sample; no game rules or privileged host integration.",
+  "publisher": "example-org",
+  "kind": "app",
+  "classification": {
+    "type": "game",
+    "categories": [
+      "cards",
+      "solitaire"
+    ]
+  },
+  "hostApi": {
+    "min": "1.0.0",
+    "maxExclusive": "2.0.0"
+  },
+  "entrypoints": {
+    "panel": "ui/index.html"
+  },
+  "contributions": [
+    {
+      "slot": "app.launcher",
+      "id": "solitaire-demo",
+      "label": "Solitaire Demo",
+      "action": "openPanel"
+    }
+  ],
+  "permissions": [
+    "ui.panel"
+  ],
+  "platforms": [
+    "web",
+    "windows",
+    "android"
+  ]
+}

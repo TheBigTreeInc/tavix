@@ -1,0 +1,90 @@
+= TaviX 1.0 package and distribution contract
+:toc:
+:sectnums:
+
+== Authority and boundaries
+
+The TaviX Python source `tools/tavix_package.py` implements the deterministic `.tavix` archive and `tavix.package/v1` lock. `tools/repository.py` validates reviewed release directories and assembles the canonical static `tavi.repository/v1` index. These are separate from Tavi's native runtime loader. This document describes source-grounded TaviX behavior through 0.1.10 (classification addition). Tavi runtime behavior is a separate contract.
+
+== Minimal source layout
+
+[source,text]
+----
+manifest.json
+ui/index.html
+ui/style.css
+ui/main.js
+----
+
+A production package consists of a ZIP archive with `.tavix` suffix containing the files from the validated source tree and a generated `tavix.lock.json`. `release.metadata.json` is repository administration metadata, not part of the `.tavix` archive.
+
+[source,json]
+----
+{
+  "schema": "tavi.extension/v1",
+  "id": "example.org.hello",
+  "version": "0.1.0",
+  "name": "Hello TaviX",
+  "summary": "Small local extension for host and packaging checks.",
+  "publisher": "example-org",
+  "kind": "app",
+  "hostApi": {"min":"1.0.0","maxExclusive":"2.0.0"},
+  "entrypoints": {"panel":"ui/index.html"},
+  "contributions": [{"slot":"app.launcher","id":"hello","label":"Hello","action":"openPanel"}],
+  "permissions": ["ui.panel"],
+  "platforms": ["web","windows","android"]
+}
+----
+
+This backward-compatible unclassified example is a valid *TaviX staging* manifest and follows the inspected Tavi 0.3.124 validator. `hostApi.min` is inclusive and `maxExclusive` is exclusive. An extension ID and version identify a versioned immutable release; release bytes cannot be replaced under the same ID/version.
+
+== Observed manifest rules
+
+[cols="2,3",options="header"]
+|===
+|Field |Current meaning and constraints
+|`schema` |Required `tavi.extension/v1`
+|`id` |Required dotted application identifier; validate against the target Tavi host for stricter naming rules
+|`version` |Required `major.minor.patch` semver without prerelease in the staging path
+|`name`, `summary`, `publisher` |Required metadata; publisher is not cryptographic proof of origin
+|`kind` |Legacy v1 envelope stays `app`; it is not the game/app classification
+|`classification` |Optional `{"type":"game","categories":["cards","solitaire"]}`; new TaviX packager/local installer validate it; Tavi 0.3.124 does not recognize this field yet (see `TAVIX_CLASSIFICATION.adoc`)
+|`hostApi` |`min` and `maxExclusive` semantic versions; compatibility bound
+|`entrypoints.panel` |Local panel HTML entrypoint inside package, usually `ui/index.html`
+|`contributions` |Launcher/store `openPanel` actions; available slots `app.launcher`, `app.store`
+|`permissions` |Staging allows `ui.panel`, `ui.toast`, `storage.private`; must include `ui.panel`; no implicit grants
+|`platforms` |Optional list drawn from `web`, `windows`, `android`
+|`icon` |Optional local icon asset, if present it must be included
+|===
+
+The inspected Tavi 0.3.124 `contract.js` checks additional field lengths, ID formatting and path patterns. Those runtime checks may be stricter than this Python packager. A passing `.tavix` validation therefore does **not** by itself prove compatibility with every Tavi host version.
+
+== Lockfile and archive integrity
+
+`tools/tavix_package.py pack` creates an archive with deterministic ZIP member timestamps and content order. Each entry in `tavix.lock.json` records `path`, byte `size` and hexadecimal SHA-256. Lock metadata includes `schema: tavix.package/v1`, `standard: tavix/1.0`, `applicationId`, and `version`.
+
+Archive validation rejects duplicate paths, traversal entries, missing lock members and file-size/digest mismatches. Packing forbids symlinks, private/runtime directories, and disallowed file types. Current packager's allowed file suffixes are `.html`, `.css`, `.js`, `.mjs`, `.png`, `.svg`, `.webp`, `.json`, with 1,000,000 bytes max per file. The local installer additionally limits uploaded ZIP bytes to 32 MiB and total extracted bytes to 64 MiB. Note: inspected Tavi 0.3.124's bundled catalog validator has a narrower asset-path suffix allowlist than the Python packager. Verify target-host compatibility explicitly for `.mjs` and `.json` assets in a bundled Tavi catalog.
+
+Package verification **does not** establish publisher authenticity, code safety or whether all HTML/CSS/JavaScript transitive references exist. A missing CSS file may still pass if the package manifest and listed lock entries are internally consistent; run a real browser/host render test before acceptance.
+
+== Publishing and catalog
+
+Versioned staged content is stored at `extensions/<application-id>/<version>/` including `manifest.json`, unpacked assets, generated `.tavix`, `tavix.lock.json`, and `release.metadata.json`. Repository root `tavi.repository.json` has `schema: tavi.repository/v1` and lists the latest release per application with its manifest, HTTPS entrypoint, source URL, license and `release.revision` (SHA-256 of the `.tavix` archive). It is serialized as canonical UTF-8 JSON with LF line endings. No staging command commits, pushes, or enables publication; ZipRunner and human review remain independent gates.
+
+[source,shell]
+----
+python tools/tavix_package.py validate examples/hello-tavix
+python tools/tavix_package.py pack examples/hello-tavix /tmp/hello-0.1.0.tavix
+python tools/tavix_package.py validate-archive /tmp/hello-0.1.0.tavix
+python tools/repository.py check --repository . --strict
+----
+
+When staging approved output from a sibling producer checkout, use `python ../tavix/tools/repository.py stage --repository ../tavix --input dist-tavi --source-url https://github.com/TheBigTreeInc/atrium --license NOASSERTION`, replacing the input/source with the producing project. Review the Git diff and rights/license metadata. Staged historical versions must not be edited.
+
+== Local preview versus Tavi deployment
+
+The loopback server `tools/local-client/server.py` previews repository packages and installs uploaded `.tavix` files under untracked `.tavix-local/<id>/<version>/`. It does not publish packages or provide a production Tavi SDK host. It rejects same-version installation until removed; rollback is not implemented. Production Tavi installation, security controls, sandboxing, approval and SDK calls are separately owned by Tavi.
+
+== Optional classification and host compatibility
+
+The TaviX 0.1.10 packager validates the optional `classification` manifest field, including recognized type/category combinations. Missing classification defaults to app/[] in new consumers; packaged legacy bytes are preserved. `contracts/tavix-classification-v1.schema.json` is a public JSON Schema fragment for the classification object. Tavi 0.3.124's strict validator rejects the added manifest key, so this is **not** forward-compatible with that older Tavi host until its validator and registry are updated. See `docs/TAVIX_CLASSIFICATION.adoc` and the new `examples/classified-game` source example. This does not change the `tavix/1.0` archive/wire identifiers.

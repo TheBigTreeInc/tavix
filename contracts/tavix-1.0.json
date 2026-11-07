@@ -1,0 +1,176 @@
+{
+  "documentationVersion": "0.1.10",
+  "hostWire": {
+    "channel": "tavi.extension/v1",
+    "eventDirection": "event",
+    "eventFields": [
+      "channel",
+      "direction",
+      "event",
+      "payload"
+    ],
+    "featureNegotiation": "Call host.info and host.capabilities; unsupported or privileged methods may reject",
+    "hostInfoFields": [
+      "standard",
+      "channel",
+      "api",
+      "extensionId",
+      "mode",
+      "navigation",
+      "features"
+    ],
+    "neverAssumeAvailable": [
+      "wallet.transfer",
+      "pets.list",
+      "pets.get",
+      "pets.command",
+      "contacts.list",
+      "messages.list",
+      "messages.send",
+      "events.list",
+      "services.list"
+    ],
+    "observedHostApi": "1.0.0",
+    "observedSdkMethods": [
+      "host.info",
+      "host.capabilities",
+      "navigation.back",
+      "navigation.close",
+      "storage.get",
+      "storage.set",
+      "ui.toast",
+      "ui.close",
+      "ui.requestGameLaunch",
+      "surface.requestOpen",
+      "wallet.balance",
+      "wallet.transactions",
+      "wallet.claim",
+      "wallet.convert",
+      "wallet.purchase",
+      "wallet.orderStatus",
+      "wallet.transfer",
+      "pets.list",
+      "pets.get",
+      "pets.command",
+      "contacts.list",
+      "messages.list",
+      "messages.send",
+      "events.list",
+      "services.list"
+    ],
+    "productionHostInLocalClient": false,
+    "proposedGameInventory": {
+      "caller": "trusted-authorized-atrium-only",
+      "contractFile": "contracts/tavix-installed-games-v1.json",
+      "hostFeature": "tavix.installed-games/v1",
+      "methods": [
+        "games.installed.list",
+        "games.installed.open"
+      ],
+      "status": "not_implemented_in_observed_Tavi_0_3_124_or_Atrium_1_0_5_or_TaviX_local_client"
+    },
+    "requestDirection": "request",
+    "requiredRequestFields": [
+      "channel",
+      "direction",
+      "id",
+      "method"
+    ],
+    "responseDirection": "response",
+    "responseFields": [
+      "channel",
+      "direction",
+      "id",
+      "ok",
+      "result",
+      "error"
+    ],
+    "taviEvidence": "Tavi 0.3.124 source: client/src/extensions/host.js; later host versions not validated here",
+    "verifiedInTavi_0_3_124": [
+      "host.info",
+      "host.capabilities",
+      "navigation.back",
+      "navigation.close",
+      "storage.get",
+      "storage.set",
+      "ui.toast",
+      "ui.close",
+      "ui.requestGameLaunch",
+      "surface.requestOpen",
+      "wallet.balance",
+      "wallet.transactions",
+      "wallet.claim",
+      "wallet.convert",
+      "wallet.purchase",
+      "wallet.orderStatus",
+      "companion.preview",
+      "ziprunner.importCredential",
+      "ziprunner.review",
+      "ziprunner.clear"
+    ],
+    "wireSdkSource": "extensions/inc.thebigtree.tavi.atrium/1.0.5/ui/tavix-sdk.mjs"
+  },
+  "package": {
+    "allowedArchiveFileExtensions": [
+      ".html",
+      ".css",
+      ".js",
+      ".mjs",
+      ".png",
+      ".svg",
+      ".webp",
+      ".json"
+    ],
+    "archiveExtension": ".tavix",
+    "archiveLockFile": "tavix.lock.json",
+    "classification": {
+      "classificationSchema": "contracts/tavix-classification-v1.schema.json",
+      "field": "classification",
+      "legacyDefault": {
+        "categories": [],
+        "type": "app"
+      },
+      "maxCategories": 8,
+      "optional": true,
+      "supportedTypes": [
+        "app",
+        "game"
+      ],
+      "tavi_0_3_124_accepts_classification": false,
+      "validatedBy": "tools/tavix_classification.py"
+    },
+    "entrypointField": "entrypoints.panel",
+    "hostApiRange": "[min,maxExclusive)",
+    "lockSchema": "tavix.package/v1",
+    "manifestSchema": "tavi.extension/v1",
+    "maxFileSizeBytes": 1000000,
+    "maxLocalExtractionBytes": 67108864,
+    "maxLocalUploadBytes": 33554432,
+    "publisherTrustEstablishedBySha256": false
+  },
+  "references": {
+    "architecture": "architecture/c4/workspace.dsl",
+    "classification": "docs/TAVIX_CLASSIFICATION.adoc",
+    "classificationSchema": "contracts/tavix-classification-v1.schema.json",
+    "developerEntry": "docs/INDEX.adoc",
+    "developerQuickstart": "docs/DEVELOPER_GUIDE.adoc",
+    "example": "examples/hello-tavix/",
+    "gameExample": "examples/CLASSIFIED_GAME.adoc",
+    "hostContract": "docs/TAVIX_CONTRACT.adoc",
+    "installedGamesContract": "contracts/tavix-installed-games-v1.json",
+    "overview": "README.md",
+    "packageFormat": "docs/TAVIX_PACKAGE_FORMAT.adoc"
+  },
+  "repository": {
+    "catalogFile": "tavi.repository.json",
+    "catalogSchema": "tavi.repository/v1",
+    "catalogUrl": "https://thebigtreeinc.github.io/tavix/tavi.repository.json",
+    "publishedAutomaticallyByLocalInstaller": false,
+    "publishedBaseUrl": "https://thebigtreeinc.github.io/tavix/",
+    "revisionDigest": "SHA-256 of immutable .tavix archive",
+    "versionedRoot": "extensions/<application-id>/<version>/"
+  },
+  "schema": "tavix.documentation-contract/v1",
+  "scope": "Observed TaviX 0.1.10 packager/local preview classification behavior, Tavi 0.3.124 host boundary, and proposed Tavi/Atrium game inventory integration; not a claim of deployment.",
+  "standard": "tavix/1.0"
+}

@@ -9,6 +9,7 @@ import tempfile
 import zipfile
 
 from tools.tavix_package import validate_archive, validate
+from tools.tavix_classification import resolve_classification
 
 ID = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$')
 MAX_ARCHIVE = 32 * 1024 * 1024
@@ -50,6 +51,7 @@ def install(data: bytes, storage: Path):
         if lock.get('applicationId') != app_id or lock.get('version') != version:
             raise ValueError('Manifest and lock identity mismatch')
         validate(extracted)
+        classification = resolve_classification(manifest)
         panel = manifest['entrypoints']['panel']
         target = storage / app_id / version
         if target.exists():
@@ -65,7 +67,7 @@ def install(data: bytes, storage: Path):
             os.replace(stage, target)
         finally:
             if stage.exists(): shutil.rmtree(stage)
-        return {'id': app_id, 'version': version, 'name': manifest.get('name', app_id), 'sha256': hashlib.sha256(data).hexdigest(), 'panel': '/__local_packages/' + app_id + '/' + version + '/' + panel, 'permissions': manifest.get('permissions', []), 'publisher_trust': 'unverified', 'scope': 'local-only'}
+        return {'id': app_id, 'version': version, 'name': manifest.get('name', app_id), 'classification': classification, 'sha256': hashlib.sha256(data).hexdigest(), 'panel': '/__local_packages/' + app_id + '/' + version + '/' + panel, 'permissions': manifest.get('permissions', []), 'publisher_trust': 'unverified', 'scope': 'local-only'}
 
 
 def installed(storage: Path):
@@ -75,10 +77,11 @@ def installed(storage: Path):
             manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
             app_id, version = manifest_path.parent.parent.name, manifest_path.parent.name
             if manifest['id'] != app_id or manifest['version'] != version: continue
+            classification = resolve_classification(manifest)
             panel = manifest['entrypoints']['panel']
             if not (manifest_path.parent / panel).resolve().is_relative_to(manifest_path.parent.resolve()): continue
             if not (manifest_path.parent / panel).is_file(): continue
-            result.append({'id': app_id, 'version': version, 'name': manifest.get('name', app_id), 'panel': '/__local_packages/' + app_id + '/' + version + '/' + panel, 'permissions': manifest.get('permissions', []), 'scope': 'local-only', 'publisher_trust': 'unverified'})
+            result.append({'id': app_id, 'version': version, 'name': manifest.get('name', app_id), 'classification': classification, 'panel': '/__local_packages/' + app_id + '/' + version + '/' + panel, 'permissions': manifest.get('permissions', []), 'scope': 'local-only', 'publisher_trust': 'unverified'})
         except (ValueError, KeyError, TypeError, OSError): pass
     return result
 

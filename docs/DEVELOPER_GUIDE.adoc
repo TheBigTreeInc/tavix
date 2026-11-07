@@ -1,0 +1,36 @@
+= Developing a TaviX application on a PC
+:toc:
+
+== Fast start
+
+This guide targets the **0.1.9 TaviX source/tooling release**, with protocol standard `tavix/1.0`. Start with `../examples/hello-tavix` rather than an Atrium/Companion release; it is deliberately self-contained and needs no Tavi account, backend or host SDK.
+
+From the repository root on a PC with Python 3.10+:
+
+[source,powershell]
+----
+python tools/tavix_package.py validate examples/hello-tavix
+python tools/tavix_package.py pack examples/hello-tavix hello-0.1.0.tavix
+python tools/tavix_package.py validate-archive hello-0.1.0.tavix
+python tools/local-client/server.py
+----
+
+Open `http://127.0.0.1:8765/tools/local-client/index.html`, choose `hello-0.1.0.tavix`, click *Install local .tavix*, select the installed entry and launch it. The local client is a browser-based loopback developer preview; it isn't Tavi for Windows. Don't upload unpublished secrets into it or assume its iframe is hardened against untrusted code. Delete the temporary output `.tavix` before creating a source ZIP for ZipRunner.
+
+== SDK-capable applications
+
+For embedded Tavi features, read `TAVIX_CONTRACT.adoc` and use a **locally bundled** SDK compatible with the selected Tavi host. Atrium 1.0.5 ships one example of such an SDK at `extensions/inc.thebigtree.tavi.atrium/1.0.5/ui/tavix-sdk.mjs`. The host's capabilities may change between Tavi versions; request `host.info`, inspect `features`/grants and handle errors. The preview client will not respond to host SDK calls; do not treat that as an app-package failure.
+
+Do not hardcode authenticated identities, wallet authority, messaging privileges or LoopRD server endpoints into a `.tavix`. Production game authority, server APIs and multiplayer testing are outside this toolchain.
+
+== Local validation and distribution
+
+Use `tools/local-client/qa.py` for exact staged package evidence. Use `tools/repository.py stage` only after reviewed producer output exists; its immutable staging operation updates the local catalog but does not push. Publishing the repository is an operator action and triggers the GitHub Pages workflow for reviewed main-branch changes. See `TAVIX_PACKAGE_FORMAT.adoc` for the immutable archive and catalog contract.
+
+== Integrating another component
+
+Other components should retrieve the source contract and machine-readable index via the exact Git commit (see `INDEX.adoc`). Record the target Tavi host version, package/manifest version, verified SDK entrypoint and expected capabilities in their own project. When one of these changes, request a corresponding TaviX contract update in the same reviewed development pass; don't silently reinterpret an old integration contract.
+
+== Classifying games (TaviX 0.1.10)
+
+For a new game set `"kind":"app"` and optionally `"classification":{"type":"game","categories":["cards","solitaire"]}`. See `../examples/classified-game/manifest.json` and `TAVIX_CLASSIFICATION.adoc`. The standalone TaviX preview validates/displays this metadata, but Tavi 0.3.124 rejects the new key and does not expose the proposed trusted game-inventory API. Do not depend on `games.installed.list` or `games.installed.open` until the target host reports feature `tavix.installed-games/v1` and Tavi/Atrium have independently implemented the integration.

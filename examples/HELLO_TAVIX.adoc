@@ -1,0 +1,14 @@
+= Hello TaviX example
+
+A small, self-contained `tavi.extension/v1` application with an HTML panel, a stylesheet and a JavaScript button. This example deliberately contains **no** Tavi host bridge or account-specific logic so it can be opened in the standalone TaviX preview. It should not be treated as evidence of permission, authentication or multiplayer compatibility inside Tavi.
+
+From the repository root:
+
+[source,powershell]
+----
+python tools/tavix_package.py pack examples/hello-tavix hello-0.1.0.tavix
+python tools/tavix_package.py validate-archive hello-0.1.0.tavix
+python tools/local-client/server.py
+----
+
+Choose the resulting `.tavix` file in the local client's file picker. Press *Test JavaScript* to confirm the panel's JS loads; the styles demonstrate relative CSS resolution. To build an SDK-capable application, read `../docs/TAVIX_CONTRACT.adoc` and verify capabilities against the target Tavi version. Do not stage this placeholder publisher in the public repository.

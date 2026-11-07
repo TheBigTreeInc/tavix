@@ -1,0 +1,14 @@
+{
+  "schema": "tavi.extension/v1",
+  "id": "example.org.hello",
+  "version": "0.1.0",
+  "name": "Hello TaviX",
+  "summary": "Self-contained browser panel for TaviX local developer preview.",
+  "publisher": "example-org",
+  "kind": "app",
+  "hostApi": {"min":"1.0.0","maxExclusive":"2.0.0"},
+  "entrypoints": {"panel":"ui/index.html"},
+  "contributions": [{"slot":"app.launcher","id":"hello","label":"Hello","action":"openPanel"}],
+  "permissions": ["ui.panel"],
+  "platforms": ["web","windows","android"]
+}

@@ -1,0 +1,70 @@
+= TaviX 1.0 extension host and wire contract
+:toc:
+:sectnums:
+
+== Contract status and evidence
+
+TaviX toolchain documentation version **0.1.10**. The deployed standard is `tavix/1.0`; wire channel and extension manifest schema remain `tavi.extension/v1` for compatibility. The latest TaviX source contains an SDK shipped *inside* Atrium 1.0.5 (`extensions/inc.thebigtree.tavi.atrium/1.0.5/ui/tavix-sdk.mjs`), not yet a dedicated standalone SDK distribution. The Tavi 0.3.124 source's `client/src/extensions/host.js` and `contract.js` were inspected for the listed host behaviors; later Tavi 0.3.129+ semantics are not verified in this document. Do not treat everything exposed by the Atrium SDK as implemented by a particular Tavi host.
+
+== Embed boundary and handshake
+
+Tavi hosts an extension panel in an iframe and handles privileged requests at the host boundary. The hosted SDK constructs a `postMessage` request to the parent. All messages use `channel: "tavi.extension/v1"`; `direction` is `request`, `response`, or `event`. Request IDs are positive integers unique among pending requests. The SDK uses a ten-second timeout and at most 20 pending requests; these are *SDK implementation limits*, not an internet protocol promise. The inspected Tavi 0.3.124 host additionally enforces an approximately 60-request-per-minute per-session limit.
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"request","id":1,"method":"host.info"}
+----
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"response","id":1,"ok":true,"result":{"standard":"tavix/1.0","channel":"tavi.extension/v1","api":"1.0.0","extensionId":"example.org.hello","mode":"embedded","navigation":"host","features":["tavix.navigation/v1"]}}
+----
+
+Error response:
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"response","id":1,"ok":false,"error":"Unsupported extension method"}
+----
+
+An event, when supplied by the host, uses `direction: "event"`, `event` and `payload`; the inspected implementation does not document a stable complete event catalog. Client receivers must verify the message source and channel. Tavi's inspected host checks the expected child frame and a sandboxed `null` origin; this does not authorize arbitrary cross-origin iframe messaging in other hosts. The bundled SDK currently sends with target origin `*`, so consumers must not assume message authentication or publisher trust from the channel string alone.
+
+== Negotiation, capabilities and permissions
+
+Call `host.info` before invoking privileged methods. It describes `standard`, `channel`, `api`, `extensionId`, `mode`, `navigation` and a `features` array. `host.capabilities` reports granted permission strings; features and permissions are distinct. The relevant observed Tavi 0.3.124 manifest permissions are `ui.panel`, `ui.toast`, `storage.private` and a special bundled-only `ziprunner.review`. The TaviX *publishing* validator currently accepts only `ui.panel`, `ui.toast` and `storage.private`; the bundled ZipRunner permission is not a general third-party publication grant. A manifest's requested permissions are not automatic authorization.
+
+[cols="2,3,3",options="header"]
+|===
+|Method or family |Request fields / response |Observed Tavi 0.3.124 behavior or limitation
+|`host.info` |none / host info object |Implemented; `mode: embedded`, `navigation: host`, supported feature IDs conditional on identity
+|`host.capabilities` |none / array of permitted capability strings |Implemented; grant is session-scoped
+|`navigation.back`, `navigation.close`, `ui.close` |none / close action |Implemented; Tavi owns navigation
+|`storage.get` |`key` / string or null |Requires `storage.private`; key matches `[A-Za-z0-9._-]` length 1-80
+|`storage.set` |`key`, `value` / acknowledgement |Requires `storage.private`; string value length <= 8192
+|`ui.toast` |`message` / acknowledgement |Requires `ui.toast`; message length <= 140
+|`surface.requestOpen` |`surface` / host-defined result |Restricted to reviewed official Atrium, requires validated nested surface
+|`ui.requestGameLaunch` |`handoff` / host-defined result |Compatibility method restricted to reviewed official Atrium / reviewed Life handoff
+|`wallet.balance`, `transactions`, `claim`, `convert`, `purchase`, `orderStatus` |`params` object / host-defined result |Restricted to bundled core Wallet
+|`companion.preview` |`preview` / host-defined result |Special reviewed Companion session, not an ordinary third-party method
+|`ziprunner.importCredential`, `ziprunner.review`, `ziprunner.clear` |method-specific / host-defined result |Bundled trusted ZipRunner only
+|===
+
+The Atrium 1.0.5 SDK additionally exposes wrappers for `wallet.transfer`, `pets.*`, `contacts.list`, `messages.*`, `events.list` and `services.list`, but these **are not handled by the inspected Tavi 0.3.124 host**. Calls to unsupported methods reject. Do not build against these solely because a wrapper exists. Feature availability can also vary with whether an extension is bundled, officially reviewed, authenticated and explicitly permitted.
+
+== SDK usage and lifecycle
+
+The Atrium artifact exports `createTaviXSDK`, `assertTaviXHostInfo` and the backward-compatible alias `createTaviExtensionSDK`. This is an *example implementation located inside one immutable release*, not a newly published globally stable SDK package. Applications must bundle their own compatible client code or consume an explicitly versioned SDK artifact under a separately agreed distribution contract.
+
+An embedded application can call `const sdk = createTaviXSDK(); const host = await sdk.info();` and, if supported, `await sdk.capabilities()`. Handle unsupported methods and timeouts, respect revoked permissions, and call `sdk.dispose()` when unloading. The standalone TaviX preview has **no production SDK host bridge**; UI-only examples should not require `host.info` to succeed there.
+
+== Out-of-scope and open contract decisions
+
+TaviX does not define game rules, persistence, account identity, social tokens, real multiplayer or game-server authority. Those interfaces belong to Atrium, Tavi and LoopRD/DAPI and require their own reviewed contracts. This documentation intentionally does not prescribe authentication endpoints, event names, privileged payload schemas, surface handoffs or future host capabilities absent verified source evidence. The C4 model documents only the TaviX-owned tooling and local developer preview.
+
+== Source of truth and compatibility
+
+`contracts/tavix-1.0.json` is a machine-readable *index/snapshot* of the observed contracts. It is not a schema validator or an independent authority for future host implementations. Host behavior remains owned by Tavi. For every SDK/permission/interface change, inspect target Tavi source or published host contract, amend this document and the JSON snapshot, and rerun the contract regression tests. Pin a verified commit for integration rather than treating `main` as immutable.
+
+== Proposed optional game inventory API (not yet implemented in Tavi/Atrium)
+
+The reviewed `contracts/tavix-installed-games-v1.json` and `docs/TAVIX_CLASSIFICATION.adoc` define a *target integration contract*: Tavi advertises `tavix.installed-games/v1` to its authorized Atrium session and supports `games.installed.list` (read-only verified installed game descriptors) and `games.installed.open` (host-mediated, user-approved launch by installed ID/version). Neither method is present in the immutable Atrium 1.0.5 SDK or verified Tavi 0.3.124 host. Do not add these to `observedSdkMethods` until source evidence exists. No extension may inspect another extension's private storage or supply an arbitrary launch URL. Legacy manifests are app/[]; no name-based classification guessing.

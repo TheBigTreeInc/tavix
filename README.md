@@ -1,93 +1,86 @@
-# TaviX application repository
+# TaviX — extension tooling, local preview and reviewed distribution
 
-This repository is the **static, reviewed distribution output** for TaviX 1.0 apps. It is not an alternative Tavi client, game server, or source-code repository.
+**Source/tooling version: 0.1.10 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
 
-All compiled versions are immutable:
+TaviX provides a reviewed, immutable distribution repository for compiled Tavi extensions, plus Python pack/validate/staging tools and a **standalone loopback development client** for opening `.tavix` panels on a PC without Tavi. It does **not** include the Tavi messenger, a game server, the production Tavi SDK host or trusted publisher signing. The `extensions/` tree contains distributed application builds, not their original authoring source.
 
+## Developer contracts — start here
+
+**Other projects (Atrium, Companion, Tavi integrations and future games) should read these before changing extension/package code:**
+
+| Source | Purpose |
+| --- | --- |
+| [`docs/INDEX.adoc`](docs/INDEX.adoc) | Canonical developer-doc directory and stable retrieval URLs |
+| [`docs/TAVIX_CLASSIFICATION.adoc`](docs/TAVIX_CLASSIFICATION.adoc) | Game/app categories, legacy fallback, proposed secure Tavi inventory and Atrium launch boundaries |
+| [`contracts/tavix-classification-v1.schema.json`](contracts/tavix-classification-v1.schema.json) | JSON Schema for optional `manifest.classification` |
+| [`contracts/tavix-installed-games-v1.json`](contracts/tavix-installed-games-v1.json) | Proposed, **not yet implemented** trusted host game inventory/open contract |
+| [`docs/TAVIX_CONTRACT.adoc`](docs/TAVIX_CONTRACT.adoc) | Observed TaviX wire protocol, SDK, host negotiation and permissions |
+| [`docs/TAVIX_PACKAGE_FORMAT.adoc`](docs/TAVIX_PACKAGE_FORMAT.adoc) | Manifest, lockfile, archive, integrity, catalog and staging rules |
+| [`contracts/tavix-1.0.json`](contracts/tavix-1.0.json) | Machine-readable protocol and documentation-discovery snapshot |
+| [`docs/DEVELOPER_GUIDE.adoc`](docs/DEVELOPER_GUIDE.adoc) | Build/test/install a small application on Windows or another PC |
+| [`examples/hello-tavix/`](examples/hello-tavix/) | Self-contained panel with CSS and JS for local smoke testing |
+| [`architecture/c4/README.adoc`](architecture/c4/README.adoc) / [`workspace.dsl`](architecture/c4/workspace.dsl) | TaviX-owned C4 boundaries (source-grounded) |
+
+To retrieve these files from another component **after an operator-approved push**, use GitHub source URLs, for example:
+
+`https://raw.githubusercontent.com/TheBigTreeInc/tavix/main/contracts/tavix-1.0.json`
+
+Replace `main` with a reviewed commit SHA when reproducibility matters. The GitHub Pages public store publishes compiled extension assets and `tavi.repository.json`, **not** this source documentation. No automatic sync between projects is implied. The agent maintenance rules in `AGENTS.md` and repository tests require the contract snapshot and docs to change when implemented SDK/package interfaces change.
+
+## Local PC development client (without Tavi)
+
+From the TaviX checkout:
+
+```powershell
+python tools/local-client/server.py
 ```
-extensions/
-  <application-id>/
-    <version>/
-      manifest.json
-      ui/
-      <application-id>-<version>.tavix
-      tavix.lock.json
-      release.metadata.json
 
-tavi.repository.json
+Open `http://127.0.0.1:8765/tools/local-client/index.html`. Browse installed repository versions, or choose a `.tavix` file and click **Install local .tavix**. The local client validates the archive and hashes, installs into ignored `.tavix-local/<id>/<version>/`, opens the panel and supports removal; same-version replacement requires explicit removal first. It listens only on `127.0.0.1`.
+
+**Important limitations:** this is an HTTP/browser *developer preview*, not a native WebView2 client or production Tavi runtime. It has no real authenticated Tavi identity, messaging, wallet, game host API, permissions enforcement, multiplayer or rollback. The iframe is not a trusted security sandbox; run reviewed packages only. Successful rendering does not prove a Tavi Windows/Android embedded view will work.
+
+## Build and validate a package
+
+From this checkout:
+
+```powershell
+python tools/tavix_package.py validate examples/hello-tavix
+python tools/tavix_package.py pack examples/hello-tavix hello-0.1.0.tavix
+python tools/tavix_package.py validate-archive hello-0.1.0.tavix
+python -m unittest discover -s tests -v
+python tools/repository.py check --repository . --strict
 ```
 
-The **root `extensions/` directory** contains packaged releases and the root `tavi.repository.json` is the Tavi App Store feed. GitHub Pages hosts the *same relative structure* at `https://thebigtreeinc.github.io/tavix/`. This is **not a signed package registry**; sha256 locks check content integrity but do not prove publisher identity. A Tavi user explicitly approves installs and updates.
+Remove the temporary output before a ZipRunner source update. A `.tavix` is a ZIP with validated `manifest.json`, versioned assets and a generated `tavix.lock.json` containing SHA-256 file hashes. These hashes do **not** establish publisher authenticity. The current validator does not fully check transitive HTML/CSS/JS references; browser/host verification is still necessary.
 
-## ZipRunner
+## Reviewed producer staging and published App Store
 
-Import the current versioned `tavix-*-ziprunner.zip` into the existing ZipRunner project with key `tavix` at `C:\Users\dorbi\source\tavix`, bound to `https://github.com/TheBigTreeInc/tavix.git` through the existing Git profile. Keep its normal Git review/push step; **no build script commits or pushes**.
+The repository uses `extensions/<application-id>/<version>/` for immutable, compiled artifacts, with a canonical root `tavi.repository.json` index. After a producer's reviewed build (example: Atrium):
 
-## Producer staging
-
-Once a producer build passes, run from that producer's checkout (or use its configured post-build script):
-
-```sh
+```shell
 python ../tavix/tools/repository.py stage --repository ../tavix --input dist-tavi --source-url https://github.com/TheBigTreeInc/atrium --license NOASSERTION
 ```
 
-Output is staged under `extensions/<id>/<version>/`. Repeating the same build is a no-op. Reusing a version with different bytes fails and preserves the last good release. The repository index is updated atomically **only after** assets are packaged and validated. The script never stages other applications, does not delete historical versions, and does not use `git` or GitHub credentials.
+This stages **one** release and updates the catalog only after verifying immutable assets. Repeating identical bytes is a no-op; changing bytes under an existing version is rejected. It never commits or pushes. The producer source and licensing provenance must be reviewed separately.
 
-```sh
-python tools/repository.py check --repository .
-python -m unittest discover -s tests -v
-```
-
-The ZipRunner Git view then shows changes to this repository. Review them and push the `tavix` project separately. GitHub Pages publishes the reviewed commit once Pages is enabled with **GitHub Actions** under Settings → Pages. Never treat local staging or a successful source build as operator approval.
-
-## Tavi configuration
-
-The repository URL after Pages is enabled:
+The published catalog URL is:
 
 `https://thebigtreeinc.github.io/tavix/tavi.repository.json`
 
-Until a Tavi client explicitly adds that URL to its default repositories, add it through **Apps → App Store → Extension repositories**. Existing installed publisher sources are not silently switched to this repository.
+Tavi may add this under **Apps → App Store → Extension repositories** where its UI supports it. Publisher identity, package install/update consent and UI embedding are Tavi's responsibility. Existing installed publisher sources are not silently switched. The root `tavi.repository.json` is a static App Store feed, not a live API or a signed package registry.
 
-## Responsibility
+## ZipRunner, GitHub and acceptance gates
 
-- Publisher: build and test, then stage *only* compiled TaviX assets.
-- TaviX checkout: verify packages and produce one consistent static index.
-- ZipRunner: review the checkout diff, commit and push on user approval.
-- GitHub Pages: serve public versioned content.
-- Tavi: discover apps and let users opt into install/update.
+Import a versioned `tavix-*-ziprunner.zip` into the existing ZipRunner project (`tavix`); preserve the operator-managed configuration, source overlay exclusions and Git profile. Run the unit tests and repository strict check. Review changes and exact-package test evidence before any operator-authorized push. The repository's external `.github/workflows/pages.yml` workflow publishes on relevant **main-branch pushes** and runs tests/catalog validation. A local build, a preview, a previous commit's CI result and source staging are **not** operator acceptance or publication authorization.
 
-## Initial Companion release provenance
+## Architecture and provenance
 
-The initial `org.tavi.community.companion` **0.6.30** payload is the supplied *compiled* Tavi extension bundle. Its catalog source points to this `tavix` distribution repository, where the exact distributed JavaScript/HTML assets are browsable. It is **not a claim** that the original uncompiled Companion engine source is hosted in this repository. The independent Companion source project's current build must adopt the post-build staging helper before future releases become fully automated. Do not publish a claimed open-source license until its publisher supplies one.
+The Structurizr DSL source of truth is `architecture/c4/workspace.dsl`; the AsciiDoc explanation is `architecture/c4/README.adoc`. Tavi, Atrium, Companion, LoopRD, GitHub Pages and ZipRunner are external to TaviX's implementation boundary. TaviX includes historical Atrium and Companion *compiled* releases; these are not a claim to own the upstream engines or their original source.
 
-## Windows build repair (0.1.1)
+For historical context, the Windows LF/catalog repairs are documented in `RECONCILIATION_0.1.2.md`, `REPAIR_0.1.6.md` and `REPAIR_0.1.7.md`. `tools/local-client/QA.md` explains the scope of exact-package QA; `docs/COMPANION_POSTBUILD.adoc` describes optional producer staging. Legacy Build and Workboard review states remain independent of this documentation-only update.
 
-The 0.1.0 test fixture created its empty catalog with `Path.write_text()`. On Windows, default newline translation introduced CRLF bytes; `check_index()` correctly rejected them because the generated catalog is canonical LF. The fixture now uses `build_index()` and `write_bytes()` on every OS. Strict verification, compiled release checksums, and the published catalog remain unchanged.
+## Game/app classification (0.1.10)
 
-## Local extension preview (0.1.3)
+New manifests may optionally include `"classification": {"type":"game","categories":["cards","solitaire"]}` while retaining `"kind":"app"` for the existing v1 envelope. The TaviX packager and loopback installer validate the classification, and the local preview shows Game/App labels. Unclassified packages resolve to app/[] in new consumers. Existing staged release bytes stay unchanged. See `docs/TAVIX_CLASSIFICATION.adoc` for complete taxonomy, examples and trust boundaries.
 
-Run `python tools/local-client/server.py`, then open `http://127.0.0.1:8765/tools/local-client/index.html`. See `tools/local-client/README.md` for scope and limitations. This preview does not alter publication approval gates.
-
-## 0.1.4 bounded package QA
-
-See `tools/local-client/QA.md` for exact-package integrity checks and explicit exclusions. This is not a multiplayer or real-Tavi acceptance test.
-
-## Local `.tavix` development installation (0.1.5)
-
-Run `python tools/local-client/server.py` and open `http://127.0.0.1:8765/tools/local-client/index.html`. Choose a `.tavix` file and select **Install local .tavix**. The development server validates the archive and file hashes, installs immutable versioned assets into `.tavix-local/` and exposes the panel in a sandboxed preview iframe. Local packages can be removed. Installing the same version again requires explicit removal; no automatic replacement or rollback is implied. The local storage is never published.
-
-**Security boundary:** This is a loopback-only development preview, not the production Tavi SDK or a trusted publisher verification. Do not install untrusted extensions in this preview: HTML/JS may still access its own origin, and the preview is not a hardened security sandbox. There is no production Tavi integration, native file picker, authenticated test identity or multiplayer proof. The source package contains no runtime `.tavix-local/` contents.
-
-## Windows ZipRunner catalog repair (0.1.6)
-
-For the 0.1.5 Windows overlay failure, the ZipRunner build runs a bounded catalog preflight before the normal unit tests and strict index check. See `REPAIR_0.1.6.md` for exact safety conditions and the differences it may reconcile. This preflight **does not approve or publish** catalog changes. Inspect the resulting Git diff and machine-readable preflight output before any authorized push.
-
-## Windows persisted build-command repair (0.1.7)
-
-Some existing ZipRunner projects keep their *operator-owned* build commands and do not replace them from `project.zr`. The 0.1.6 Windows log ran the older two-command sequence, so its separate preflight did not execute. The unchanged command `python tools/repository.py check --repository .` now detects only a stale catalog and calls the **same bounded preflight**, then performs the original strict check again. It prints machine-readable index evidence. Invalid releases, unexpected applications and publisher changes still fail without rewriting.
-
-For explicitly read-only validation, run `python tools/repository.py check --repository . --strict`. The new-project build ends with this strict-only command after the preflight. No active ZipRunner config or Git permissions are altered, and no publishing occurs. See `REPAIR_0.1.7.md`.
-
-## C4 architecture baseline (0.1.8)
-
-`architecture/c4/workspace.dsl` is the Structurizr DSL source of truth for TaviX containers/components and `architecture/c4/README.adoc` is the corresponding AsciiDoc evidence and boundary document. Maintain both when TaviX responsibilities, interfaces, storage or deployment change. This does not introduce new Tavi runtime capabilities; CLI validation is separately recorded when run.
+**Compatibility:** Tavi 0.3.124 explicitly rejects unknown manifest fields; it **cannot install newly classified manifests** until Tavi adds classification validation and registry persistence. The proposed `games.installed.list` / `games.installed.open` capabilities are a contract for Tavi and Atrium to implement, *not* something TaviX's local preview or current Tavi host already provides. Only a Tavi-authorized Atrium session may see installed game descriptors; it must never read a game's private storage or launch arbitrary URLs. No release is published automatically.

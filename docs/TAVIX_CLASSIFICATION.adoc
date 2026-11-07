@@ -1,0 +1,45 @@
+= TaviX 1.0 classification and installed-games contract
+:toc:
+:sectnums:
+
+== Status and compatibility
+
+*Implemented in TaviX 0.1.10:* validation of optional `manifest.classification`, lock-backed packaging, local development installation/discovery and classification labels. Existing published extension releases are immutable and unchanged. Missing classification is interpreted as `type: app`, `categories: []` by new consumers.
+
+*Required in Tavi, not implemented by this TaviX ZIP:* native `client/src/extensions/contract.js` must allow and validate the optional classification field; its installed-package registry must persist normalized trusted classification; its authorized host must expose a restricted installed-game inventory and launch method. *Required in Atrium:* consume the negotiated API without implementing its own cross-extension loader. No Tavi or Atrium changes have been performed here.
+
+The inspected Tavi 0.3.124 host explicitly rejects unknown manifest keys and requires `kind: app`. Therefore *new classified manifests will not install on Tavi 0.3.124*, until Tavi updates its manifest validator. Older packages still work and are not rewritten. Keep `kind: app` as the v1 package-envelope field; do **not** replace it with `kind: game` on old hosts. Classification is separate from `kind`.
+
+== Manifest metadata
+
+[source,json]
+----
+{
+  "schema": "tavi.extension/v1",
+  "id": "example.org.solitaire",
+  "kind": "app",
+  "classification": {"type": "game", "categories": ["cards", "solitaire"]}
+}
+----
+
+The excerpt intentionally omits other required manifest fields. `classification` is optional, with exactly `type` and optional `categories` (defaults to `[]`), no unknown keys. `type` is `app` or `game`. `categories` is an array of at most eight unique, case-sensitive, lowercase controlled-vocabulary terms. Unknown tags are rejected rather than silently published. The current game taxonomy is `action`, `adventure`, `arcade`, `board`, `cards`, `casual`, `educational`, `multiplayer`, `puzzle`, `racing`, `role-playing`, `simulation`, `solitaire`, `sports`, `strategy`, `word`; app taxonomy is `communication`, `creative`, `education`, `entertainment`, `finance`, `productivity`, `social`, `tools`, `utility`, `wellness`. The allowlists can expand under a reviewed versioned contract; arbitrary unrecognized tags are not automatically approved.
+
+The machine-readable classification fragment is `contracts/tavix-classification-v1.schema.json`. The Python policy is in `tools/tavix_classification.py`. Classification is descriptive, **not** a permission, authority, publisher trust attestation, routing URL or proof that a package actually implements a game. The host must not decide whether to allow privileged operations solely from this metadata.
+
+== Installation and registry requirement (Tavi-owned)
+
+On every install or update, Tavi must verify the package/manifest using its host policy, normalize the classification, and persist that value together with the immutable installed package ID, version, revision/source, enabled flag and permission decisions. Older installs normalize to app/[] on migration. Revalidation on activation and version updates must reject changed identity, unsupported categories and unapproved permission changes. If classified bytes and stored metadata differ, fail closed rather than use unverified entries. This TaviX local client only stores the verified manifest in `.tavix-local`; **it is not a trusted Tavi registry**.
+
+== Installed-game discovery and launch (Tavi-owned, proposed)
+
+The proposed optional `host.info.features` identifier is `tavix.installed-games/v1`. Only a specifically trusted/authorized Atrium host session may invoke `games.installed.list` and `games.installed.open`; the host derives caller identity from its real extension session, *not* from user-supplied `id`, `publisher` or `postMessage` contents. Availability MUST be negotiated, and absence MUST fail closed. The feature and its method names are **not implemented** in inspected Tavi 0.3.124, Atrium 1.0.5 or the TaviX local preview.
+
+`games.installed.list` takes no parameters and returns a host-provided read-only snapshot of installed, enabled, validated game descriptors only, with schema `tavix.installed-games.inventory/v1`. Each descriptor has `id`, `version`, `name`, and validated `classification` (`type: game`). The host must not include another extension's private files, storage, tokens, contacts, session data, executable source or arbitrary URLs. The registry query itself is restricted to authorized Atrium (not any ordinary app that knows the message name).
+
+`games.installed.open` accepts `{id, expectedVersion}` selected from that snapshot. Tavi checks authorization again, resolves the installed package ID/version itself, requires a user-initiated selection or explicit host confirmation, and opens the target through its normal isolated extension loader. No caller-provided URL, path, executable bytes or cross-extension data are allowed. Reject disabled/uninstalled/non-game/stale targets without leaking private content. A response `{accepted:true,id,version}` only means the host accepted the launch, **not** that gameplay or multiplayer succeeded.
+
+See the machine-readable message examples and security conditions in `contracts/tavix-installed-games-v1.json`. Host-side authorization, registry persistence, Tavi UI changes and Atrium invocation are pending separate implementations and tests. Do not present the method names as already supported SDK methods; the existing Atrium 1.0.5 package is immutable.
+
+== Verification and release gates
+
+TaviX tests exercise legacy fallback, valid and invalid classifications, archive validation, local development inventory metadata and contract/document consistency. They do not verify the production Tavi registry, trusted host API authorization or Atrium launch. Those require Tavi integration tests, negative authorization tests, source hashes, real client acceptance, and separate ZipRunner/operator approval. No package is automatically published or reclassified retroactively.

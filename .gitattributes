@@ -8,3 +8,8 @@ extensions/** -text
 tavi.repository.json text eol=lf
 architecture/c4/*.dsl text eol=lf
 architecture/c4/*.adoc text eol=lf
+
+# Developer contract documentation and machine-readable integration snapshot.
+docs/*.adoc text eol=lf
+contracts/*.json text eol=lf
+examples/hello-tavix/** text eol=lf

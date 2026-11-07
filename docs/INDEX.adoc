@@ -1,0 +1,45 @@
+= TaviX integration documentation index
+:toc:
+
+== Read this before implementing an extension
+
+TaviX version 0.1.9 documentation; protocol standard `tavix/1.0`, wire channel `tavi.extension/v1`, manifest `tavi.extension/v1`. The *toolchain version* (0.1.9) is not a new protocol version.
+
+[cols="2,4",options="header"]
+|===
+|Resource |When to use it
+|link:TAVIX_CONTRACT.adoc[Host/wire contract] |Implementing extension-to-Tavi requests, permissions, feature negotiation, lifecycle or embedded UI
+|link:TAVIX_PACKAGE_FORMAT.adoc[Package and catalog format] |Building, validating, staging or distributing `.tavix` files
+|link:DEVELOPER_GUIDE.adoc[Developer guide] |Starting from a minimal local application or testing a package on a PC
+|link:../contracts/tavix-1.0.json[Machine-readable contract index] |Programmatic discovery of exact schema names, implemented method inventories and canonical documentation paths
+|link:../examples/HELLO_TAVIX.adoc[Minimal example] |Small self-contained extension that does not require a production host
+|link:../architecture/c4/README.adoc[C4 boundaries] |Distinguishing TaviX source components from Tavi, Atrium, Companion and GitHub
+|===
+
+== Game/app classification (0.1.10)
+
+* link:TAVIX_CLASSIFICATION.adoc[Classification and trusted game-inventory boundary]: validated optional manifest fields, category taxonomy, legacy fallback and Tavi/Atrium responsibilities.
+* link:../contracts/tavix-classification-v1.schema.json[JSON Schema for classification object]: machine-readable, type-specific category lists.
+* link:../contracts/tavix-installed-games-v1.json[Proposed installed-game host API]: read-only inventory and host-mediated opening, **not yet supported** by observed Tavi 0.3.124 or Atrium 1.0.5.
+* link:../examples/CLASSIFIED_GAME.adoc[Classified game example]: packable new game metadata. New classified manifests need upgraded Tavi manifest validation.
+
+== Stable retrieval URLs, after operator-approved push
+
+The GitHub *source* repository, not the GitHub Pages extension catalog, hosts these developer references:
+
+* `https://raw.githubusercontent.com/TheBigTreeInc/tavix/main/contracts/tavix-1.0.json`
+* `https://raw.githubusercontent.com/TheBigTreeInc/tavix/main/contracts/tavix-classification-v1.schema.json`
+* `https://raw.githubusercontent.com/TheBigTreeInc/tavix/main/contracts/tavix-installed-games-v1.json`
+* `https://raw.githubusercontent.com/TheBigTreeInc/tavix/main/docs/TAVIX_CLASSIFICATION.adoc`
+* `https://raw.githubusercontent.com/TheBigTreeInc/tavix/main/docs/TAVIX_CONTRACT.adoc`
+* `https://raw.githubusercontent.com/TheBigTreeInc/tavix/main/docs/TAVIX_PACKAGE_FORMAT.adoc`
+* `https://raw.githubusercontent.com/TheBigTreeInc/tavix/main/docs/DEVELOPER_GUIDE.adoc`
+* `https://raw.githubusercontent.com/TheBigTreeInc/tavix/main/architecture/c4/workspace.dsl`
+
+For reproducible implementations, **pin a Git commit SHA** in the URL rather than `main`. These paths are source locations and do not promise a public JSON API, auto-update, or publication before Git review. GitHub Pages currently publishes `index.html`, `tavi.repository.json` and `extensions/`, *not* these docs.
+
+== Evidence and change process
+
+A producer consuming this contract should first compare the target Tavi host version, the package manifest's `hostApi` range, and `host.info` feature negotiation. A method implemented by one bundle SDK is not proof the target Tavi host supports it. The standalone TaviX local client is a static developer preview, **not** a host SDK emulator. Never include credentials or trusted host tokens in examples or packages.
+
+Maintain the index, machine-readable contract and two source-backed descriptions in the same development pass as changes to packaging, SDK message shape, available permissions or local-client behavior. Automated regression tests enforce source/documentation alignment for observed names and schema strings; human review still decides whether narrative semantics are accurate. C4 maintenance follows `AGENTS.md`.

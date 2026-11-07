@@ -1,108 +1,46 @@
 {
   "schema": "ziprunner.workboard-update.v1",
   "project": "tavix",
-  "version": "0.1.8",
-  "summary": "Document implemented TaviX C4 Level 3 component boundaries in Structurizr DSL with minimal Level 1/2 context, dynamic and local deployment views; preserve existing workboard/approval states.",
+  "version": "0.1.10",
+  "summary": "Validate optional classified game/app manifests and local dev inventory metadata; publish versioned schema and a prospective restricted Tavi/Atrium game inventory/launch contract. Tavi/Atrium runtime remains unimplemented.",
   "implemented": [
     {
-      "id": "TAVIX-001",
-      "title": "Central versioned TaviX distribution and ZipRunner project",
-      "summary": "Includes two staged compiled extension candidates, GitHub Pages publication workflow, deterministic packaging and no-Git producer staging.",
+      "id": "TAVIX-CLASSIFICATION-001",
+      "title": "Implement source-validated game/app classification and document integration boundaries",
+      "summary": "Optional classification validated by TaviX packager and local developer installer/discovery; app/[] legacy fallback, schema, example, source-backed tests and cross-project proposed host contract. Pending operator review.",
       "operator_checks": [
-        "Install on Windows ZipRunner without overwriting other projects.",
-        "Run local test suite and inspect immutable compiled files under extensions/.",
-        "Review Git diff and push through tavix Git integration only after operator approval."
-      ]
-    },
-    {
-      "id": "TAVIX-REPAIR-011",
-      "title": "Windows LF fixture repair for TaviX repository verification",
-      "summary": "The 0.1.0 test fixture used Path.write_text(), which translates LF to CRLF on Windows. Seed from canonical build_index() bytes, add negative CRLF regression and retain strict bytewise catalog verification. No published extension files or hashes changed.",
-      "operator_checks": [
-        "Import 0.1.1 into existing tavix ZipRunner project after the failed 0.1.0 attempt.",
-        "Confirm 10 repository unit tests and repository check pass on Windows.",
-        "Review both compiled releases and Git diff; do not push before operator approval."
-      ]
-    },
-    {
-      "id": "DGN-M1-TAVIX-AUTOMATED-QA-001",
-      "title": "Exact-package TaviX QA boundary adapter",
-      "summary": "Manifest identity, panel containment, package ZIP integrity, SHA256 evidence, negative fixtures, CLI execution. Does not implement Tavi SDK, authenticated sessions, or multiplayer.",
-      "operator_checks": [
-        "Run exact-package QA on Windows against Atrium 1.0.5",
-        "Review bounded evidence and verify it does not claim real client or multiplayer acceptance"
-      ]
-    },
-    {
-      "id": "TAVIX-LOCAL-INSTALL-001",
-      "title": "Local .tavix developer package installation",
-      "summary": "Validate and install versioned .tavix archives in TaviX loopback local client; preview/remove with no Git publication or Tavi runtime integration.",
-      "operator_checks": [
-        "Launch local client on Windows; import an actual .tavix package",
-        "Confirm package preview and remove work; confirm duplicate version rejected",
-        "Confirm package does not appear in public repository or production Tavi Apps"
-      ]
-    },
-    {
-      "id": "TAVIX-REPAIR-016",
-      "title": "Repair 0.1.5 Windows overlay repository-index drift",
-      "priority": "high",
-      "status": "review",
-      "summary": "Unchanged 0.1.5 source passed 18 Python tests but check_index failed on Windows after source overlay. Added bounded catalog preflight accepting only canonical formatting differences or independently validated newer versions already present in the protected working tree; strict check still required. Fixed stale version declarations. No extension payloads or archive hashes altered.",
-      "reproduction": "ZipRunner 1.2.304.255, Windows 11: apply tavix-0.1.5-local-package-installer-ziprunner.zip to existing tavix tree; python -m unittest discover -s tests -v passes (18), python tools/repository.py check --repository . fails: Stale or modified repository index.",
-      "operator_checks": [
-        "Confirm preflight reason printed in Windows build log.",
-        "Confirm strict repository check passes after preflight.",
-        "Inspect index changes and Git diff before any operator-authorized publication.",
-        "Confirm local package install and remove workflow works on Windows."
-      ]
-    },
-    {
-      "id": "TAVIX-REPAIR-017",
-      "title": "Legacy ZipRunner catalog check compatibility",
-      "priority": "high",
-      "status": "review",
-      "summary": "The Windows ZipRunner 0.1.6 log ran only existing unit-test and `repository.py check` commands, skipping added preflight. `repository.py check` now invokes bounded preflight only on index-stale error, then reruns strict bytewise integrity. `--strict` remains read-only; tampered catalogs and new extensions fail closed. Six CLI regressions added. No active ZipRunner configuration or extension archives changed.",
-      "reproduction": "Windows ZipRunner 1.2.304.255: 0.1.6 was overlaid; 24 Python tests passed, then `python tools/repository.py check --repository .` returned stale/modified repository index. New preflight command was not executed.",
-      "operator_checks": [
-        "Observe Windows build `index_preflight` outcome (reason and hashes where reconciled).",
-        "Confirm existing two-command build completes and strict check passes.",
-        "Review any catalog Git diff; no unapproved staging/publishing.",
-        "Confirm `.tavix` local install/remove and operator acceptance independently."
-      ]
-    },
-    {
-      "id": "TAVIX-C4-001",
-      "title": "Establish source-based C4 component architecture model",
-      "priority": "high",
-      "status": "review",
-      "summary": "Added root-relative architecture/c4/workspace.dsl and README.adoc reflecting actual TaviX publishing and local preview architecture. Includes L1/L2/L3, source-backed local deployment and dynamic workflows; no new runtime or external claims.",
-      "operator_checks": [
-        "Review mapped component responsibilities and known limitations against 0.1.7 source",
-        "Run Python source contract tests and existing repository integrity checks on Windows",
-        "Validate Structurizr DSL with an independently installed Structurizr CLI where available; record the actual CLI outcome",
-        "Confirm existing Workboard tickets, Git/publication and operator acceptance gates remain unchanged"
+        "Run full Python and strict repository checks on Windows against exact candidate.",
+        "Install examples/classified-game via local client and confirm Game metadata; legacy apps remain App.",
+        "Confirm invalid, duplicate or cross-type classification categories are rejected.",
+        "Review Tavi 0.3.124 incompatibility and proposed host API boundaries; do not claim host support.",
+        "Approve Workboard, Git publication and releases separately."
       ]
     }
   ],
   "remaining": [
     {
+      "id": "TAVI-GAME-REGISTRY-001",
+      "title": "Tavi trusted classification registry integration",
+      "summary": "Tavi must accept and normalize classification, persist with installed revision and enforce install/update compatibility; Tavi 0.3.124 rejects the new key.",
+      "next_action": "Implement and test in Tavi, including legacy migration and negative manifest cases."
+    },
+    {
+      "id": "TAVI-ATRIUM-GAME-LAUNCH-001",
+      "title": "Tavi authorized inventory/open and Atrium consumer",
+      "summary": "The inventory/launch API is a proposed contract, not implemented in Tavi 0.3.124, Atrium 1.0.5 or TaviX preview.",
+      "next_action": "Implement trusted host-only games.installed.list/open with user confirmation, authorization tests and Atrium caller."
+    },
+    {
       "id": "TAVIX-002",
-      "title": "Approve static publication and Tavi App Store installation",
-      "summary": "Verify exact Git push, Pages HTTPS asset/CORS hosting, Tavi client opt-in source transition and native Windows/Android acceptance.",
-      "next_action": "Configure ZipRunner Git remote and approve push, enable GitHub Pages GitHub Actions, then subscribe URL in Tavi and test."
+      "title": "Public source documentation/publisher approval and Tavi App Store verification",
+      "summary": "Git publication and native Tavi acceptance are independent operator gates.",
+      "next_action": "Review exact source diff, Windows QA and approve Git push separately, then verify public URLs."
     },
     {
       "id": "DGN-CHECKERS-M1-AUTOMATED-QA-001",
-      "title": "Cross-project automated Checkers multiplayer QA",
-      "summary": "Owned by DGN/Atrium/LoopRD; await exact module and real server contract; no TaviX claim of completion.",
-      "next_action": "Consume TaviX package evidence when Atrium module is ready."
-    },
-    {
-      "id": "TAVI-LOCAL-INSTALL-INTEGRATION-001",
-      "title": "Integrate local package installer in production Tavi Apps",
-      "summary": "Native file picker, verified asset storage/URL loading, permissions, lifecycle, trust and sandbox isolation. Not implemented by TaviX local preview.",
-      "next_action": "Review Tavi runtime loader and native Windows/Android storage contracts; implement separately after approval."
+      "title": "Atrium/DGN exact-package multiplayer acceptance",
+      "summary": "No Checkers game rules, identity, authority or multiplayer engine is added by classification.",
+      "next_action": "Wait for Atrium/DGN exact-package and real-client evidence."
     }
   ]
 }

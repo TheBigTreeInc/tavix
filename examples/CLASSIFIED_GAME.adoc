@@ -1,0 +1,12 @@
+= Classified game example
+
+`classified-game/` is a minimal *metadata* example for `classification.type: game` with categories `cards` and `solitaire`. It is intentionally **not** a playable solitaire implementation and does not request any cross-extension access.
+
+[source,powershell]
+----
+python tools/tavix_package.py validate examples/classified-game
+python tools/tavix_package.py pack examples/classified-game game-example.tavix
+python tools/tavix_package.py validate-archive game-example.tavix
+----
+
+Run the TaviX local client and install the resulting `.tavix` to inspect its game classification. Tavi 0.3.124 rejects the new `classification` manifest field: native Tavi installation/inventory/launch requires a corresponding Tavi update. See `docs/TAVIX_CLASSIFICATION.adoc`.

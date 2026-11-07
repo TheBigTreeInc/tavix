@@ -5,6 +5,10 @@ This tool deliberately validates package structure/integrity, not publisher trus
 Manifest semantics are also checked by the JS TaviX validator in the source gate.
 """
 from __future__ import annotations
+if __package__:
+    from .tavix_classification import resolve_classification
+else:
+    from tavix_classification import resolve_classification
 import argparse, hashlib, json, os, pathlib, re, stat, sys, zipfile
 
 STANDARD='tavix/1.0'
@@ -45,6 +49,8 @@ def validate(root:pathlib.Path):
     if not manifest_path.is_file(): raise ValueError('manifest.json is required at package root')
     manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
     if manifest.get('schema')!='tavi.extension/v1': raise ValueError('TaviX 1.0 requires tavi.extension/v1 manifest')
+    if 'kind' in manifest and manifest['kind'] != 'app': raise ValueError('TaviX v1 kind must remain app; use classification.type for games')
+    resolve_classification(manifest)
     entry=manifest.get('entrypoints',{}).get('panel')
     if not isinstance(entry,str) or not (root/entry).is_file(): raise ValueError('manifest panel entrypoint is missing')
     icon=manifest.get('icon')
@@ -77,6 +83,10 @@ def validate_archive(path:pathlib.Path):
         if 'manifest.json' not in names or 'tavix.lock.json' not in names: raise ValueError('TaviX archive metadata missing')
         lock=json.loads(z.read('tavix.lock.json'))
         if lock.get('schema')!=LOCK_SCHEMA or lock.get('standard')!=STANDARD: raise ValueError('unsupported TaviX lock')
+        manifest=json.loads(z.read('manifest.json'))
+        if 'kind' in manifest and manifest['kind'] != 'app': raise ValueError('TaviX v1 kind must remain app; use classification.type for games')
+        resolve_classification(manifest)
+        if lock.get('applicationId')!=manifest.get('id') or lock.get('version')!=manifest.get('version'): raise ValueError('TaviX manifest/lock identity mismatch')
         expected={x['path']:x for x in lock.get('files',[])}
         if set(names)!=(set(expected)|{'tavix.lock.json'}): raise ValueError('TaviX lock/archive file mismatch')
         for name,item in expected.items():

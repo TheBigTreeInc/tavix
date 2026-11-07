@@ -3,14 +3,14 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.8",
-    "base_version": "0.1.7"
+    "version": "0.1.10",
+    "base_version": "0.1.9"
   },
   "update": {
-    "id": "TAVIX-20261106-018",
+    "id": "TAVIX-20261107-0110",
     "kind": "source_update",
-    "created_at": "2026-11-06T13:28:43+01:00",
-    "summary": "Add source-grounded Structurizr DSL C4 components and AsciiDoc at architecture/c4/, with stable views and documentation regression tests. No extension or runtime changes."
+    "created_at": "2026-11-07T18:00:00+01:00",
+    "summary": "Add v1 game/app classification metadata validation, local dev inventory labels, schema and proposed trusted Tavi/Atrium game inventory + launch contract. No shipped extension assets, host methods or publication changed."
   },
   "planned_work": [
     {
@@ -48,6 +48,18 @@
       "title": "Establish and maintain source-based C4 model",
       "priority": "high",
       "acceptance_criteria": "Provide architecture/c4/workspace.dsl and README.adoc at source ZIP root with verified TaviX components, L1/L2 context, relevant dynamic/deployment diagrams, source evidence, explicit limitations, reusable stable identifiers; validate using Structurizr CLI if available; maintain in future component changes."
+    },
+    {
+      "id": "TAVIX-CONTRACT-001",
+      "title": "TaviX source-grounded developer contract and maintenance",
+      "priority": "high",
+      "acceptance_criteria": "Document actual manifest, archive and SDK wire boundaries and known host limitations; publish machine-readable index and code-backed tests; provide standalone hello example; preserve approval gates."
+    },
+    {
+      "id": "TAVIX-CLASSIFICATION-001",
+      "title": "Add backward-compatible TaviX game/app classification and cross-project contract",
+      "priority": "high",
+      "acceptance_criteria": "Validate optional type/categories in archive and local install; legacy app default, schema/documentation/examples, proposal for Tavi trusted registry/Atrium inventory and launch, exact-package regression tests and review gates."
     }
   ],
   "done_work": [],
@@ -86,70 +98,60 @@
       "id": "TAVIX-C4-001",
       "status": "review",
       "next_action": "Operator reviews component ownership and source evidence; validates Structurizr DSL in installed CLI if available; records acceptance separately. No automatic publication."
+    },
+    {
+      "id": "TAVIX-CONTRACT-001",
+      "status": "review",
+      "next_action": "Run Windows build, verify contract docs/hello example in local client, review source boundaries and explicitly approve Git publication if desired. Do not infer Done."
+    },
+    {
+      "id": "TAVIX-CLASSIFICATION-001",
+      "status": "review",
+      "next_action": "Verify Windows local installer categorization, source contract and docs, approve Workboard independently. No Tavi host acceptance inferred."
+    },
+    {
+      "id": "TAVI-GAME-REGISTRY-001",
+      "status": "suggested",
+      "next_action": "Implement Tavi manifest validator acceptance, trusted installed classification persistence and migration; review separately in Tavi project."
+    },
+    {
+      "id": "TAVI-ATRIUM-GAME-LAUNCH-001",
+      "status": "suggested",
+      "next_action": "Implement restricted installed-game inventory and host-mediated open requests in Tavi, then Atrium consumption. Verify negative authorization and isolation."
     }
   ],
   "validation": {
     "model_reported": "partial",
     "checks": [
       {
-        "id": "TAVIX-017-PYTHON",
+        "id": "TAVIX-0110-FULL-UNIT",
         "status": "passed",
-        "description": "Historical 0.1.7 evidence only: All 30 Python unit/integration tests including six CLI legacy-command regression cases",
+        "description": "57 tests executed in Linux container source checkout; exact ZIP extraction rerun is separately reported",
         "command": "python -m unittest discover -s tests -v",
-        "environment": "Linux Python 3.13; local source checkout (earlier version)"
+        "environment": "Linux container, not Windows ZipRunner"
       },
       {
-        "id": "TAVIX-017-STRICT",
+        "id": "TAVIX-0110-CATALOG",
         "status": "passed",
-        "description": "Historical 0.1.7 evidence only: Strict repository index check and immutable release integrity",
+        "description": "Strict repository catalog check, no staged asset mutations",
         "command": "python tools/repository.py check --repository . --strict",
-        "environment": "Linux Python 3.13; local source checkout (earlier version)"
-      },
-      {
-        "id": "TAVIX-017-WINDOWS",
-        "status": "not_run",
-        "description": "Real ZipRunner persisted-command build and post-update verification",
-        "reason": "Windows host not available here"
-      },
-      {
-        "id": "TAVIX-017-OPERATOR",
-        "status": "not_run",
-        "description": "Operator acceptance and any authorized publication",
-        "reason": "Requires operator review, no Git operation was performed"
-      },
-      {
-        "id": "TAVIX-018-C4-CLI",
-        "status": "not_run",
-        "description": "Validate Structurizr DSL using Structurizr CLI",
-        "reason": "Structurizr CLI not available in authoring environment; Java alone is not a DSL validator"
-      },
-      {
-        "id": "TAVIX-018-SOURCE-TESTS",
-        "status": "passed",
-        "description": "35 tests including five C4 source-documentation contract tests, executed against pre-package source tree. This is not DSL parser validation.",
-        "command": "python -m unittest discover -s tests -v",
-        "environment": "Linux; Python runtime in authoring environment"
-      },
-      {
-        "id": "TAVIX-018-INDEX-STRICT",
-        "status": "passed",
-        "description": "Repository package/hash and canonical catalog checks against pre-package source tree",
-        "command": "python tools/repository.py check --repository . --strict",
-        "environment": "Linux; authoring environment"
+        "environment": "Linux container, not public GitHub Actions"
       }
     ]
   },
   "handover": {
-    "next_pass": "Verify 0.1.8 on Windows ZipRunner, review architecture/c4 model and source evidence, validate with locally installed Structurizr CLI if available, then explicitly accept or reject. No automatic release.",
+    "next_pass": "Verify exact 0.1.10 ZIP on Windows and accept TaviX classification independently; Tavi and Atrium own registry/API runtime implementation.",
     "risks": [
       "0.1.6 failed because persistent Windows ZipRunner build commands did not execute its new preflight command; actual catalog drift cause still unknown.",
       "For a mismatched catalog, legacy check performs only the bounded validated reconciliation; unexpected releases/publisher changes fail closed.",
       "A local catalog adjustment requires an operator diff review before any Git action.",
-      "Production Tavi Apps installation remains separate and not implemented."
+      "Production Tavi Apps installation remains separate and not implemented.",
+      "Tavi 0.3.124 rejects any manifest.classification key until the Tavi validator is updated; do not claim backwards host compatibility for new classified packages."
     ],
     "blockers": [
-      "Windows 0.1.8 candidate checks and operator acceptance not yet executed",
-      "Structurizr CLI validation requires available CLI installation"
+      "Native Tavi manifest/registry host support is not implemented by this package",
+      "Tavi/Atrium read-only inventory and host-mediated open require separate implementation",
+      "Windows ZipRunner candidate checks and operator acceptance not yet executed"
     ],
     "notes": [
       "The TaviX ZipRunner checkout is intended to be adjacent to Atrium and Companion; scripts do not invoke Git."
@@ -157,21 +159,21 @@
   },
   "operator_actions": [
     {
-      "id": "TAVIX-OP-018-1",
-      "description": "Import exact 0.1.8 source ZIP into existing tavix ZipRunner project; preserve existing protected config and current Workboard state."
+      "id": "TAVIX-OP-0110-1",
+      "description": "Import the exact 0.1.10 candidate into existing TaviX ZipRunner project while preserving active config and private data."
     },
     {
-      "id": "TAVIX-OP-018-2",
-      "description": "Run fresh Windows post-update verification and inspect architecture/c4/workspace.dsl against source. When Structurizr CLI is installed, run validate and record result."
+      "id": "TAVIX-OP-0110-2",
+      "description": "Run fresh Windows build, unit suite, strict catalog check and local game/app classification install/remove tests."
     },
     {
-      "id": "TAVIX-OP-018-3",
-      "description": "Review diffs and manually accept or reject TAVIX-C4-001. Do not interpret build/CI as approval or automatically push/tag/release."
+      "id": "TAVIX-OP-0110-3",
+      "description": "Review manifest taxonomy and proposed Tavi/Atrium boundaries; operator approves or rejects separately. Do not auto push or publish."
     }
   ],
   "release": {
     "requested": false,
     "requires_operator_approval": true,
-    "notes": "Source-only ZipRunner repair; no push/tag/release automatically authorized."
+    "notes": "Source-only classification and developer contract; no push/tag/publish/release automatically authorized."
   }
 }

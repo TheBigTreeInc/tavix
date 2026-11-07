@@ -24,3 +24,10 @@ Exercise invalid input, interrupted writes, restart recovery, duplicate delivery
 
 ## Packaging gate
 A handoff package must compile, pass focused and full tests, exclude secrets and active local configuration, open as a readable archive, and pass validation from a fresh extraction.
+
+## Developer contract regression (0.1.9+)
+Run `python -m unittest discover -s tests -p test_contract_docs.py -v` whenever package rules, SDK message names/fields, preview API or docs change. This verifies JSON and AsciiDoc presence, known schema/version strings, SDK method inventory, sample package, source limit constants and stable documentation paths. It does not certify the current external Tavi host or full security compatibility. A documentation change must not alter compiled extension bytes or public catalog without separate review.
+
+== Game/app classification acceptance (0.1.10)
+
+Run `python -m unittest discover -s tests -p test_classification.py -v` and the full suite. Verify the classified example packs and installs locally; unclassified packages stay app/[], malformed category tags fail. These tests do *not* claim trusted Tavi host inventory, Atrium invocation or native Tavi 0.3.124 compatibility.

@@ -1,6 +1,6 @@
 {
   "schema": "ziprunner.post-update-tests.v1",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "tests": [
     {
       "kind": "command",
@@ -71,6 +71,24 @@
       "definition_revision": "1",
       "rerun_policy": "every_update",
       "command": "python -m unittest discover -s tests -p test_c4_architecture.py -v",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-developer-contract-docs",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_contract_docs.py -v",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-classification-contract-tests",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_classification.py -v",
       "attention_on_failure": true,
       "gating": false
     }

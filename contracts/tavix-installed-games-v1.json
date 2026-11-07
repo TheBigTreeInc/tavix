@@ -1,0 +1,59 @@
+{
+  "schema": "tavix.host-integration-contract/v1",
+  "contractId": "tavix.installed-games/v1",
+  "status": "proposed-requires-tavi-and-atrium-implementation",
+  "wireChannel": "tavi.extension/v1",
+  "hostFeature": "tavix.installed-games/v1",
+  "exposedTo": "host-authorized-official-atrium-only",
+  "methods": {
+    "games.installed.list": {
+      "request": {},
+      "response": {
+        "schema": "tavix.installed-games.inventory/v1",
+        "games": [
+          {
+            "id": "example.org.solitaire",
+            "version": "1.0.0",
+            "name": "Solitaire",
+            "classification": {
+              "type": "game",
+              "categories": [
+                "cards",
+                "solitaire"
+              ]
+            }
+          }
+        ]
+      },
+      "requirements": [
+        "Host supplies immutable read-only DTOs from its verified installed/enabled registry",
+        "No private data, credentials, arbitrary file paths or opaque capability tokens",
+        "Denied caller receives a generic authorization error before any registry lookup"
+      ]
+    },
+    "games.installed.open": {
+      "request": {
+        "id": "example.org.solitaire",
+        "expectedVersion": "1.0.0"
+      },
+      "response": {
+        "accepted": true,
+        "id": "example.org.solitaire",
+        "version": "1.0.0"
+      },
+      "requirements": [
+        "Host rechecks installed/enabled state, manifest digest and caller authorization",
+        "Host controls navigation and user confirmation; untrusted iframe user-gesture claims are not proof",
+        "Reject stale expectedVersion, unknown/disabled/non-game targets without leaking private metadata",
+        "Never accept caller-supplied URL, code, source path, tokens or another extension data"
+      ]
+    }
+  },
+  "availability": {
+    "tavixLocalClient": false,
+    "tavi_0_3_124": false,
+    "atrium_1_0_5": false
+  },
+  "publisherTrust": "Manifest publisher string and file hashes are not proof of publisher identity; host must use reviewed install/trust records",
+  "backwardCompatibility": "Older manifests without classification remain app/[] and do not enter games inventory. Older hosts reject newly added classification fields until upgraded."
+}

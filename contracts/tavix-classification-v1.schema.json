@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/TheBigTreeInc/tavix/main/contracts/tavix-classification-v1.schema.json",
+  "title": "TaviX 1.0 optional manifest classification object",
+  "description": "Schema for manifest.classification only, not a complete Tavi extension manifest. Legacy manifests without this property default to type app with no categories.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "app",
+        "game"
+      ]
+    },
+    "categories": {
+      "type": "array",
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "game"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "categories": {
+            "items": {
+              "enum": [
+                "action",
+                "adventure",
+                "arcade",
+                "board",
+                "cards",
+                "casual",
+                "educational",
+                "multiplayer",
+                "puzzle",
+                "racing",
+                "role-playing",
+                "simulation",
+                "solitaire",
+                "sports",
+                "strategy",
+                "word"
+              ]
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "categories": {
+            "items": {
+              "enum": [
+                "communication",
+                "creative",
+                "education",
+                "entertainment",
+                "finance",
+                "productivity",
+                "social",
+                "tools",
+                "utility",
+                "wellness"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}
