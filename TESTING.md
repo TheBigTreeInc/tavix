@@ -31,3 +31,7 @@ Run `python -m unittest discover -s tests -p test_contract_docs.py -v` whenever 
 == Game/app classification acceptance (0.1.10)
 
 Run `python -m unittest discover -s tests -p test_classification.py -v` and the full suite. Verify the classified example packs and installs locally; unclassified packages stay app/[], malformed category tags fail. These tests do *not* claim trusted Tavi host inventory, Atrium invocation or native Tavi 0.3.124 compatibility.
+
+== Asset dependency contract regression (0.1.11)
+
+Run `python -m unittest discover -s tests -p test_asset_dependencies.py -v`. This covers legacy package acceptance, strict dependency and permission requests, lock-consistent forged archives, host-only grant subset checking, JSON schemas and local repository staging. It is **not** proof that Tavi 0.3.141 accepts these manifests or that real Tavi Assets engine/LoopRD entitlements are integrated.

@@ -1,5 +1,5 @@
 {
-  "documentationVersion": "0.1.10",
+  "documentationVersion": "0.1.11",
   "hostWire": {
     "channel": "tavi.extension/v1",
     "eventDirection": "event",
@@ -67,7 +67,8 @@
         "games.installed.list",
         "games.installed.open"
       ],
-      "status": "not_implemented_in_observed_Tavi_0_3_124_or_Atrium_1_0_5_or_TaviX_local_client"
+      "status": "not_implemented_in_observed_Tavi_0_3_124_or_Atrium_1_0_5_or_TaviX_local_client",
+      "observedTavi_0_3_141": "Source host dispatch for authorized Atrium is present; native/operator acceptance not established."
     },
     "requestDirection": "request",
     "requiredRequestFields": [
@@ -85,7 +86,7 @@
       "result",
       "error"
     ],
-    "taviEvidence": "Tavi 0.3.124 source: client/src/extensions/host.js; later host versions not validated here",
+    "taviEvidence": "Tavi 0.3.141 source: client/src/extensions/host.js, client/src/assets/host-bridge.js, client/src/extensions/contract.js, client/src/main.js; prior 0.3.124 evidence retained historically",
     "verifiedInTavi_0_3_124": [
       "host.info",
       "host.capabilities",
@@ -108,7 +109,32 @@
       "ziprunner.review",
       "ziprunner.clear"
     ],
-    "wireSdkSource": "extensions/inc.thebigtree.tavi.atrium/1.0.5/ui/tavix-sdk.mjs"
+    "wireSdkSource": "extensions/inc.thebigtree.tavi.atrium/1.0.5/ui/tavix-sdk.mjs",
+    "assetAccess": {
+      "feature": "tavi.assets/v1",
+      "sourceTaviVersion": "0.3.141",
+      "sourceTaviAssetsVersion": "0.1.7",
+      "hostMethods": [
+        "assets.describe",
+        "assets.objects.list",
+        "assets.objects.get",
+        "assets.collections.list",
+        "assets.collections.get",
+        "assets.preferences.get",
+        "assets.preferences.set",
+        "assets.resolve",
+        "assets.packs.list",
+        "assets.objects.discover",
+        "assets.composition.resolve"
+      ],
+      "sourceDispatcherPresent": true,
+      "productionAvailableInTavi_0_3_141": false,
+      "whyUnavailable": "main.js attaches no Tavi Assets engine; assetGrants returns null; customization approval false",
+      "currentTaviAcceptsAssetDependencyManifest": false,
+      "currentTaviPerPackCustomizationGrant": false,
+      "consumerContract": "Tavi Assets 0.1.7 contracts/tavi-assets-consumer-v1.json",
+      "grantAuthority": "Tavi host only; extension declaration cannot issue grants"
+    }
   },
   "package": {
     "allowedArchiveFileExtensions": [
@@ -137,7 +163,8 @@
         "game"
       ],
       "tavi_0_3_124_accepts_classification": false,
-      "validatedBy": "tools/tavix_classification.py"
+      "validatedBy": "tools/tavix_classification.py",
+      "tavi_0_3_141_accepts_classification": true
     },
     "entrypointField": "entrypoints.panel",
     "hostApiRange": "[min,maxExclusive)",
@@ -146,7 +173,25 @@
     "maxFileSizeBytes": 1000000,
     "maxLocalExtractionBytes": 67108864,
     "maxLocalUploadBytes": 33554432,
-    "publisherTrustEstablishedBySha256": false
+    "publisherTrustEstablishedBySha256": false,
+    "assetDependencies": {
+      "field": "assetDependencies",
+      "optional": true,
+      "legacyDefault": [],
+      "schema": "contracts/tavix-asset-dependencies-v1.schema.json",
+      "hostGrantSchema": "contracts/tavix-asset-grants-v1.schema.json",
+      "validator": "tools/tavix_asset_dependencies.py",
+      "permissions": [
+        "assets.read",
+        "assets.preferences.write"
+      ],
+      "requestOnly": true,
+      "maxPacks": 16,
+      "maxCapabilitiesPerPack": 32,
+      "maxDistinctCapabilities": 256,
+      "hostMustApprovePackCapabilityPairs": true,
+      "ownershipOrInstallationImplied": false
+    }
   },
   "references": {
     "architecture": "architecture/c4/workspace.dsl",
@@ -159,7 +204,11 @@
     "hostContract": "docs/TAVIX_CONTRACT.adoc",
     "installedGamesContract": "contracts/tavix-installed-games-v1.json",
     "overview": "README.md",
-    "packageFormat": "docs/TAVIX_PACKAGE_FORMAT.adoc"
+    "packageFormat": "docs/TAVIX_PACKAGE_FORMAT.adoc",
+    "assetDependencies": "docs/TAVIX_ASSET_DEPENDENCIES.adoc",
+    "assetDependenciesSchema": "contracts/tavix-asset-dependencies-v1.schema.json",
+    "assetGrantsSchema": "contracts/tavix-asset-grants-v1.schema.json",
+    "assetConsumerExample": "examples/asset-consumer/manifest.json"
   },
   "repository": {
     "catalogFile": "tavi.repository.json",
@@ -171,6 +220,6 @@
     "versionedRoot": "extensions/<application-id>/<version>/"
   },
   "schema": "tavix.documentation-contract/v1",
-  "scope": "Observed TaviX 0.1.10 packager/local preview classification behavior, Tavi 0.3.124 host boundary, and proposed Tavi/Atrium game inventory integration; not a claim of deployment.",
+  "scope": "TaviX 0.1.11 packager and repository validate optional asset dependency requests, based on Tavi 0.3.141 and Tavi Assets 0.1.7 source; Tavi production asset grants/runtime remain unavailable; no publication.",
   "standard": "tavix/1.0"
 }

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/TheBigTreeInc/tavix/contracts/tavix-asset-grants-v1.schema.json",
+  "title": "Host-only approved TaviX asset grant projection (NOT an extension manifest field)",
+  "description": "A trusted Tavi host derives this ephemeral projection from the verified installed manifest, authenticated session, user approvals, installed packs and entitlements. Never accept it from an extension, asset pack or package metadata.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "extensionId", "extensionVersion", "manifestSha256", "scope", "grants"],
+  "properties": {
+    "schema": {"const": "tavix.asset-grants/v1"},
+    "extensionId": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+){2,}$", "maxLength": 120},
+    "extensionVersion": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"},
+    "manifestSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "scope": {"const": "host-session"},
+    "grants": {
+      "type": "array", "maxItems": 16,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["packId", "capabilities", "canCustomize"],
+        "properties": {
+          "packId": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,126}$"},
+          "capabilities": {"type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true,
+            "items": {"type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"}},
+          "canCustomize": {"type": "boolean"}
+        }
+      }
+    }
+  },
+  "$comment": "Runtime invariants: unique packId; approved packs/capabilities must be a subset of manifest requests; canCustomize requires requestCustomization and separately approved assets.preferences.write, host-owned user consent, and pack-scoped enforcement. Never store as a user-editable file or expose this projection to extension code."
+}

@@ -34,3 +34,7 @@ Other components should retrieve the source contract and machine-readable index 
 == Classifying games (TaviX 0.1.10)
 
 For a new game set `"kind":"app"` and optionally `"classification":{"type":"game","categories":["cards","solitaire"]}`. See `../examples/classified-game/manifest.json` and `TAVIX_CLASSIFICATION.adoc`. The standalone TaviX preview validates/displays this metadata, but Tavi 0.3.124 rejects the new key and does not expose the proposed trusted game-inventory API. Do not depend on `games.installed.list` or `games.installed.open` until the target host reports feature `tavix.installed-games/v1` and Tavi/Atrium have independently implemented the integration.
+
+== Declaring shared assets (TaviX 0.1.11)
+
+Read `TAVIX_ASSET_DEPENDENCIES.adoc` and `../examples/asset-consumer/manifest.json` for a complete game-classified extension that requests a specific Tavi Assets card pack and customization. Validate with `python tools/tavix_package.py validate examples/asset-consumer` and package normally. This fixture does not install packs or authorize purchases. Tavi 0.3.141 still rejects these new manifest fields and permissions; only a future reviewed host may approve and advertise `tavi.assets/v1`. The local TaviX preview cannot exercise the production asset SDK.

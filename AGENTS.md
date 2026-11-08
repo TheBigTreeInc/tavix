@@ -39,3 +39,7 @@ In every pass that changes any of the above interfaces, update the machine-reada
 ## Classification and game-inventory contract (0.1.10+)
 
 For any manifest, installer, local inventory, SDK, Atrium launch or Tavi host change, read `docs/TAVIX_CLASSIFICATION.adoc`, `contracts/tavix-classification-v1.schema.json` and `contracts/tavix-installed-games-v1.json` in addition to the existing contracts. Preserve the `kind: app` v1 envelope and the default classification app/[] for existing manifests. Do not claim Tavi/Atrium support until implemented and verified in those projects. Classification never grants permission or supplies a launch URL. Update both C4 source files and source-binding regression tests when actual TaviX responsibilities change.
+
+## Shared asset dependency contract (0.1.11+)
+
+Read `docs/TAVIX_ASSET_DEPENDENCIES.adoc`, `contracts/tavix-asset-dependencies-v1.schema.json` and `contracts/tavix-asset-grants-v1.schema.json` before changing manifests, permission allowlists, package validation, repository staging or Tavi/Tavi Assets integration. The manifest is a request, not a grant. Tavi owns authenticated host-only grants and must enforce pack/capability *pairs* and per-pack customization; LoopRD/Wallet owns purchases and entitlements; Tavi Assets owns packs and the engine. Do not infer live support from Tavi 0.3.141's dormant bridge. Keep the index, schemas, C4 and source-backed tests synchronized; never publish or modify other repos without approval.

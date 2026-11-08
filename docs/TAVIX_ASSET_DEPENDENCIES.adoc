@@ -1,0 +1,86 @@
+= TaviX 0.1.11 — asset dependencies and permission requests
+:toc:
+
+== Ownership and source evidence
+
+TaviX owns *extension declaration and validation*, not asset packs, a storefront, entitlement records, a wallet, host authorization or a local asset engine. This proposal is based on the supplied Tavi 0.3.141, Tavi Assets 0.1.7 and Atrium 0.5.77 source archives. The source evidence is:
+
+* Tavi Assets: `contracts/tavix-asset-dependencies-proposal-v1.json`, `contracts/tavi-assets-consumer-v1.json`, `contracts/tavi-assets-pack-v1.schema.json` and `portable_service/`.
+* Tavi: `client/src/extensions/contract.js`, `client/src/extensions/host.js`, `client/src/assets/host-bridge.js` and `client/src/main.js`.
+* Atrium: the current 0.5.77 Tavi extension and developer preview do not provide production asset integration.
+
+The *TaviX 0.1.11 source candidate* validates the optional `manifest.assetDependencies` request and two new requested permission names. It does not make them usable in the current Tavi 0.3.141 host. Existing unclassified and classified manifests without asset dependencies remain valid; `kind` stays `app` and the wire standard stays `tavix/1.0`.
+
+== Manifest declaration (request, never grant)
+
+[source,json]
+----
+{
+  "schema": "tavi.extension/v1",
+  "kind": "app",
+  "permissions": ["ui.panel", "assets.read", "assets.preferences.write"],
+  "assetDependencies": [
+    {
+      "packId": "org.tavi.cards.standard",
+      "compatibility": {"min": "0.1.0", "maxExclusive": "1.0.0"},
+      "capabilities": ["card.back", "card.front.ace-spades"],
+      "optional": false,
+      "requestCustomization": true
+    }
+  ]
+}
+----
+
+This is a fragment; see `examples/asset-consumer/manifest.json` for a complete manifest. `packId` identifies a Tavi Assets *data-only pack*, not another `.tavix` extension. `capabilities` are semantic resource identifiers defined by the asset pack. `compatibility` bounds the pack version, not the Tavi extension host API. `optional: true` means the extension must tolerate absence; it does not authorize an automatic download or purchase. `requestCustomization` requests permission to modify preferences for *that pack*, not arbitrary packs.
+
+=== Strict validation
+
+* `assetDependencies` is optional; absence requires no new permissions and preserves existing packages.
+* If present, it must contain 1–16 unique pack IDs, each with a strict `[min,maxExclusive)` version range, 1–32 unique capabilities, an explicit `optional` boolean, and optional `requestCustomization` boolean (default false).
+* `assets.read` is mandatory when `assetDependencies` is present; it requests metadata/discovery/resolve for *only* approved packs/capabilities.
+* `assets.preferences.write` is mandatory if and only if at least one dependency requests customization. The host must still require explicit user approval for each preference change.
+* Unknown fields, invalid IDs, duplicate pack IDs, duplicate capabilities, unsupported permissions, non-boolean flags and invalid version ranges fail closed.
+* At most 256 distinct capabilities across all dependencies. The TaviX package validator, local preview installer/inventory and repository staging enforce these checks. The local preview displays declared pack IDs as *requests only*, not grants. The JSON Schema is a field fragment; Python enforces cross-field invariants.
+
+Machine-readable sources: `contracts/tavix-asset-dependencies-v1.schema.json` and `tools/tavix_asset_dependencies.py`.
+
+== Host-issued grants and runtime rules
+
+A declaration is a request only. It is *not* an entitlement, proof of installation, permission approval or right to charge Gold. Tavi must derive an ephemeral grant from all of the following:
+
+. Verified and enabled installed extension manifest, immutable revision, authenticated account and current host session.
+. User/operator-approved extension permissions and a reviewed, trusted asset-pack/capability request.
+. Installed, integrity-verified and compatible asset pack in Tavi Assets; independent LoopRD entitlement for paid content.
+. Revocation and session freshness, checked again on each privileged request.
+
+`contracts/tavix-asset-grants-v1.schema.json` describes the **host-only** per-pack projection: extension identity/version/hash and a subset of requested pack IDs, capabilities and `canCustomize` per pack. It must never be accepted from an extension iframe, `.tavix` package, catalog offer or asset pack. A host should derive it anew when an extension is enabled, updated, disabled, uninstalled, account-switched or revoked. Do not persist it as user-editable authority.
+
+Tavi 0.3.141's source host currently accepts `assetGrants` with flat `packs`, flat `capabilities`, and a single `canCustomize` boolean. That is not sufficiently pack-scoped for mixed read-only/customizable dependencies: its `assets.preferences.set` check can use a capability present in one pack with another approved pack. **Tavi must enforce the pack/capability *pair* and pack-specific customization approval**, or deny customization until that implementation exists. Tavi's current `client/src/main.js` supplies `assetGrants:()=>null` and `approveAssetCustomization:()=>false`, so the `tavi.assets/v1` feature is not live.
+
+The host must advertise `tavi.assets/v1` through `host.info` only when its engine is ready and this session has verified grants. The extension uses the Tavi Assets consumer SDK methods (`assets.describe`, `assets.resolve`, `assets.packs.list`, `assets.objects.discover`, `assets.composition.resolve`, etc.) only after negotiation. `host.capabilities` is not a substitute for pack-specific grants. Discovery must not expose ungranted packs. Resource resolution must not expose filesystem paths, unrestricted URLs, code, wallet APIs or private data.
+
+=== Non-authorities
+
+* TaviX dependency declarations do not install or purchase packs.
+* Asset pack manifests and storefront offers do not grant ownership or set prices authoritatively.
+* Tavi Assets owns data-only installation, updates, local persistence and resource resolution.
+* LoopRD/Wallet owns server-side entitlements, gold purchase authorization and the protected free-Gold floor.
+* Atrium, Klondike and Companion only consume host-granted resources; no application can self-issue a grant.
+
+== Compatibility and rollout
+
+[cols="2,3",options="header"]
+|===
+|Component |Status from supplied source
+|TaviX 0.1.10 |No assetDependencies; legacy/classified apps supported
+|TaviX 0.1.11 candidate |Manifest request validation, JSON schemas, example, documentation and source tests; no host implementation
+|Tavi 0.3.141 |Has source `tavi.assets/v1` request dispatcher and 11 methods; `contract.js` rejects new asset manifest fields and permissions; asset engine not attached and grants are null
+|Tavi Assets 0.1.7 |Data-only pack spec, Python engine, portable JavaScript reference service, consumer SDK and developer fixtures; not a production-integrated Tavi runtime
+|Atrium 0.5.77 |No proven production consumption of these new asset grants
+|===
+
+No new dependency-bearing extension should be published as compatible with Tavi 0.3.141. Host implementations must update strict manifest validation, store approved requests alongside the verified installed revision, derive pair-scoped grants, enforce consent/revocation and connect the real Tavi Assets engine. Do not add a fallback that silently grants every extension access to the asset library.
+
+== Tests and operator gate
+
+Run `python -m unittest discover -s tests -p test_asset_dependencies.py -v`, then the full test suite and strict repository check. Verify that old packages still pack and stage, invalid dependency manifests fail, and the example packages with correct locks. Windows/Android native integration, real grants, ownership, asset updates, storefront and operator acceptance remain pending. No Git push, tag, release or public publication without approval.

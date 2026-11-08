@@ -1,19 +1,18 @@
 {
   "schema": "ziprunner.workboard-update.v1",
   "project": "tavix",
-  "version": "0.1.10",
-  "summary": "Validate optional classified game/app manifests and local dev inventory metadata; publish versioned schema and a prospective restricted Tavi/Atrium game inventory/launch contract. Tavi/Atrium runtime remains unimplemented.",
+  "version": "0.1.11",
+  "summary": "TaviX asset dependency and requested-permission contract with host-only scoped grant projection; no runtime authorization, install, wallet or publication.",
   "implemented": [
     {
-      "id": "TAVIX-CLASSIFICATION-001",
-      "title": "Implement source-validated game/app classification and document integration boundaries",
-      "summary": "Optional classification validated by TaviX packager and local developer installer/discovery; app/[] legacy fallback, schema, example, source-backed tests and cross-project proposed host contract. Pending operator review.",
+      "id": "TAVIX-ASSET-CONTRACT-001",
+      "title": "Versioned asset dependencies and requested permissions",
+      "summary": "Optional strict assetDependencies and assets.read/assets.preferences.write request validation in package/archive/repository; host-only grant subset reference, schemas, example, docs, C4 and regression tests. Operator review pending.",
       "operator_checks": [
-        "Run full Python and strict repository checks on Windows against exact candidate.",
-        "Install examples/classified-game via local client and confirm Game metadata; legacy apps remain App.",
-        "Confirm invalid, duplicate or cross-type classification categories are rejected.",
-        "Review Tavi 0.3.124 incompatibility and proposed host API boundaries; do not claim host support.",
-        "Approve Workboard, Git publication and releases separately."
+        "Run exact candidate Python and strict repository checks in Windows ZipRunner.",
+        "Confirm legacy app/game packages still install; new dependency-bearing example is rejected by Tavi 0.3.141 until host updated.",
+        "Review Tavi Assets 0.1.7 compatibility and no cross-pack grant or entitlement bypass.",
+        "Approve Git publication separately; no automatic push or release."
       ]
     }
   ],
@@ -21,26 +20,44 @@
     {
       "id": "TAVI-GAME-REGISTRY-001",
       "title": "Tavi trusted classification registry integration",
-      "summary": "Tavi must accept and normalize classification, persist with installed revision and enforce install/update compatibility; Tavi 0.3.124 rejects the new key.",
-      "next_action": "Implement and test in Tavi, including legacy migration and negative manifest cases."
+      "summary": "Tavi 0.3.141 source now accepts classification and persists installed metadata; native/operator acceptance is still pending.",
+      "next_action": "Verify Tavi 0.3.141 native Windows/Android acceptance, disabled/uninstall/account switch and stale metadata checks."
     },
     {
       "id": "TAVI-ATRIUM-GAME-LAUNCH-001",
       "title": "Tavi authorized inventory/open and Atrium consumer",
-      "summary": "The inventory/launch API is a proposed contract, not implemented in Tavi 0.3.124, Atrium 1.0.5 or TaviX preview.",
-      "next_action": "Implement trusted host-only games.installed.list/open with user confirmation, authorization tests and Atrium caller."
+      "summary": "Tavi 0.3.141 source now contains trusted Atrium games.installed.list/open host dispatch; native/operator and Atrium consumer acceptance remain unverified.",
+      "next_action": "Verify Atrium consumption and real Tavi two-client authorization, then operator acceptance."
     },
     {
       "id": "TAVIX-002",
-      "title": "Public source documentation/publisher approval and Tavi App Store verification",
-      "summary": "Git publication and native Tavi acceptance are independent operator gates.",
-      "next_action": "Review exact source diff, Windows QA and approve Git push separately, then verify public URLs."
+      "title": "Operator-approved source publication and native acceptance",
+      "summary": "Windows ZipRunner, native Tavi/Atrium acceptance and Git publication remain independent approval gates.",
+      "next_action": "Review exact ZIP, Windows tests and Git diff before separate approval."
     },
     {
       "id": "DGN-CHECKERS-M1-AUTOMATED-QA-001",
       "title": "Atrium/DGN exact-package multiplayer acceptance",
       "summary": "No Checkers game rules, identity, authority or multiplayer engine is added by classification.",
       "next_action": "Wait for Atrium/DGN exact-package and real-client evidence."
+    },
+    {
+      "id": "TAVI-ASSET-HOST-001",
+      "title": "Tavi host asset manifest and pair-scoped grant implementation",
+      "summary": "Tavi 0.3.141 source has dormant assets dispatcher but rejects assetDependencies and requested permissions; flat grants lack pack-specific customization enforcement.",
+      "next_action": "Tavi implement strict request validation, host-derived pack/capability pair grants, consent and revocation, then connect the reviewed Assets engine."
+    },
+    {
+      "id": "TAVI-ASSETS-RUNTIME-001",
+      "title": "Production portable Assets engine and storefront",
+      "summary": "Tavi Assets 0.1.7 reference engine/SDK not yet production-integrated with Windows/Android storage, authenticated entitlements and storefront.",
+      "next_action": "Assets and Tavi teams deliver verified first-party engine, storage, pack lifecycle and UI."
+    },
+    {
+      "id": "TAVIX-PACKAGE-ASSET-REFERENCES-001",
+      "title": "Transitive HTML/CSS/JS package reference validation",
+      "summary": "Archive codec validates lock and manifest references but not all transitive UI asset references.",
+      "next_action": "Add fail-closed referenced asset validation in a separate pass."
     }
   ]
 }

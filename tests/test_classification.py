@@ -206,10 +206,11 @@ class ClassificationTests(unittest.TestCase):
         done={x['id'] for x in update['implemented']}
         pending={x['id'] for x in update['remaining']}
         self.assertFalse(done & pending)
-        self.assertIn('TAVIX-CLASSIFICATION-001',done)
+        self.assertIn('TAVIX-ASSET-CONTRACT-001',done)
+        self.assertIn('TAVIX-CLASSIFICATION-001', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text())['planned_work']})
         for fname in ('project.zr','tavix.zr','.ziprunner-post-update-tests.json'):
-            self.assertEqual(json.loads((ROOT/fname).read_text())['version'],'0.1.10')
-        self.assertEqual(json.loads((ROOT/'ziprunner-manifest.json').read_text())['project']['version'],'0.1.10')
+            self.assertEqual(json.loads((ROOT/fname).read_text())['version'],'0.1.11')
+        self.assertEqual(json.loads((ROOT/'ziprunner-manifest.json').read_text())['project']['version'],'0.1.11')
 
 
 if __name__=='__main__':unittest.main()

@@ -20,7 +20,7 @@ class DocumentationContractTests(unittest.TestCase):
     def test_contract_index_schema_and_versions(self):
         j = self.index
         self.assertEqual(j['schema'], 'tavix.documentation-contract/v1')
-        self.assertEqual(j['documentationVersion'], '0.1.10')
+        self.assertEqual(j['documentationVersion'], '0.1.11')
         self.assertEqual(j['standard'], 'tavix/1.0')
         self.assertEqual(j['package']['manifestSchema'], 'tavi.extension/v1')
         self.assertEqual(j['package']['lockSchema'], 'tavix.package/v1')
@@ -93,7 +93,7 @@ class DocumentationContractTests(unittest.TestCase):
     def test_version_metadata_and_approval_gates(self):
         for f in ('project.zr','tavix.zr','.ziprunner-post-update-tests.json',
                   '.ziprunner-workboard-update.json'):
-            self.assertEqual(json.loads((ROOT / f).read_text())['version'], '0.1.10', f)
+            self.assertEqual(json.loads((ROOT / f).read_text())['version'], '0.1.11', f)
         z=json.loads((ROOT / 'project.zr').read_text())
         self.assertIn('ziprunner.config.json', z['protected_paths'])
         self.assertEqual(z['post_build_mechanisms'], [])

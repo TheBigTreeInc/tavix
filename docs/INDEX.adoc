@@ -20,7 +20,7 @@ TaviX version 0.1.9 documentation; protocol standard `tavix/1.0`, wire channel `
 
 * link:TAVIX_CLASSIFICATION.adoc[Classification and trusted game-inventory boundary]: validated optional manifest fields, category taxonomy, legacy fallback and Tavi/Atrium responsibilities.
 * link:../contracts/tavix-classification-v1.schema.json[JSON Schema for classification object]: machine-readable, type-specific category lists.
-* link:../contracts/tavix-installed-games-v1.json[Proposed installed-game host API]: read-only inventory and host-mediated opening, **not yet supported** by observed Tavi 0.3.124 or Atrium 1.0.5.
+* link:../contracts/tavix-installed-games-v1.json[Proposed installed-game host API]: read-only inventory and host-mediated opening, **not supported** by the historical Tavi 0.3.124 or Atrium 1.0.5 sources; guarded Tavi 0.3.141 host dispatch now exists but native acceptance remains pending.
 * link:../examples/CLASSIFIED_GAME.adoc[Classified game example]: packable new game metadata. New classified manifests need upgraded Tavi manifest validation.
 
 == Stable retrieval URLs, after operator-approved push
@@ -43,3 +43,12 @@ For reproducible implementations, **pin a Git commit SHA** in the URL rather tha
 A producer consuming this contract should first compare the target Tavi host version, the package manifest's `hostApi` range, and `host.info` feature negotiation. A method implemented by one bundle SDK is not proof the target Tavi host supports it. The standalone TaviX local client is a static developer preview, **not** a host SDK emulator. Never include credentials or trusted host tokens in examples or packages.
 
 Maintain the index, machine-readable contract and two source-backed descriptions in the same development pass as changes to packaging, SDK message shape, available permissions or local-client behavior. Automated regression tests enforce source/documentation alignment for observed names and schema strings; human review still decides whether narrative semantics are accurate. C4 maintenance follows `AGENTS.md`.
+
+== Shared asset contract (0.1.11)
+
+* link:TAVIX_ASSET_DEPENDENCIES.adoc[Asset dependencies, permission requests and host authorization]: canonical request/grant boundary for Tavi, Tavi Assets, Companion, Atrium and games.
+* link:../contracts/tavix-asset-dependencies-v1.schema.json[Asset dependency field schema]: validated optional `manifest.assetDependencies`.
+* link:../contracts/tavix-asset-grants-v1.schema.json[Host-only grant projection schema]: trusted runtime projection, never an extension-supplied permission.
+* link:../examples/asset-consumer/manifest.json[Card asset consumer example]: complete, packable developer fixture; not compatible with the current Tavi 0.3.141 strict manifest validator.
+
+After operator-approved Git publication, pinned-commit source URLs under `https://raw.githubusercontent.com/TheBigTreeInc/tavix/<reviewed-commit>/` are the retrieval mechanism. The current source ZIP does not itself publish these files.

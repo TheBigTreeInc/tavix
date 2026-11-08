@@ -88,3 +88,9 @@ The loopback server `tools/local-client/server.py` previews repository packages 
 == Optional classification and host compatibility
 
 The TaviX 0.1.10 packager validates the optional `classification` manifest field, including recognized type/category combinations. Missing classification defaults to app/[] in new consumers; packaged legacy bytes are preserved. `contracts/tavix-classification-v1.schema.json` is a public JSON Schema fragment for the classification object. Tavi 0.3.124's strict validator rejects the added manifest key, so this is **not** forward-compatible with that older Tavi host until its validator and registry are updated. See `docs/TAVIX_CLASSIFICATION.adoc` and the new `examples/classified-game` source example. This does not change the `tavix/1.0` archive/wire identifiers.
+
+== Asset dependencies and permission requests (0.1.11)
+
+Optional `assetDependencies` describes Tavi Assets data-only pack requirements. When present, request `assets.read` in `permissions`; add `assets.preferences.write` exactly when a dependency requests customization. Version range, pack ID, capability names, optionality and strict schema are in `TAVIX_ASSET_DEPENDENCIES.adoc`. The package validator and staging reject inconsistent or forged declarations, including inside lock-consistent archives. A dependency or requested permission is never a host-issued grant, entitlement, purchase, or local install.
+
+Tavi 0.3.141 accepts `classification` but rejects `assetDependencies` and the two new requested permission names. Existing manifests without asset dependencies remain compatible. A new dependency-bearing package requires a future Tavi host validator, reviewed grants and real Assets engine before installation; `hostApi` range alone cannot establish support.

@@ -1,6 +1,6 @@
 # TaviX — extension tooling, local preview and reviewed distribution
 
-**Source/tooling version: 0.1.10 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
+**Source/tooling version: 0.1.11 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
 
 TaviX provides a reviewed, immutable distribution repository for compiled Tavi extensions, plus Python pack/validate/staging tools and a **standalone loopback development client** for opening `.tavix` panels on a PC without Tavi. It does **not** include the Tavi messenger, a game server, the production Tavi SDK host or trusted publisher signing. The `extensions/` tree contains distributed application builds, not their original authoring source.
 
@@ -11,9 +11,12 @@ TaviX provides a reviewed, immutable distribution repository for compiled Tavi e
 | Source | Purpose |
 | --- | --- |
 | [`docs/INDEX.adoc`](docs/INDEX.adoc) | Canonical developer-doc directory and stable retrieval URLs |
+| [`docs/TAVIX_ASSET_DEPENDENCIES.adoc`](docs/TAVIX_ASSET_DEPENDENCIES.adoc) | Requested asset packs/capabilities, permission grants and host-only authorization boundary |
+| [`contracts/tavix-asset-dependencies-v1.schema.json`](contracts/tavix-asset-dependencies-v1.schema.json) | Optional asset dependency manifest field schema |
+| [`contracts/tavix-asset-grants-v1.schema.json`](contracts/tavix-asset-grants-v1.schema.json) | Host-only approved grant projection schema; not an extension field |
 | [`docs/TAVIX_CLASSIFICATION.adoc`](docs/TAVIX_CLASSIFICATION.adoc) | Game/app categories, legacy fallback, proposed secure Tavi inventory and Atrium launch boundaries |
 | [`contracts/tavix-classification-v1.schema.json`](contracts/tavix-classification-v1.schema.json) | JSON Schema for optional `manifest.classification` |
-| [`contracts/tavix-installed-games-v1.json`](contracts/tavix-installed-games-v1.json) | Proposed, **not yet implemented** trusted host game inventory/open contract |
+| [`contracts/tavix-installed-games-v1.json`](contracts/tavix-installed-games-v1.json) | Host inventory/open contract: Tavi 0.3.141 has guarded source dispatch; native/operator acceptance remains pending |
 | [`docs/TAVIX_CONTRACT.adoc`](docs/TAVIX_CONTRACT.adoc) | Observed TaviX wire protocol, SDK, host negotiation and permissions |
 | [`docs/TAVIX_PACKAGE_FORMAT.adoc`](docs/TAVIX_PACKAGE_FORMAT.adoc) | Manifest, lockfile, archive, integrity, catalog and staging rules |
 | [`contracts/tavix-1.0.json`](contracts/tavix-1.0.json) | Machine-readable protocol and documentation-discovery snapshot |
@@ -83,4 +86,12 @@ For historical context, the Windows LF/catalog repairs are documented in `RECONC
 
 New manifests may optionally include `"classification": {"type":"game","categories":["cards","solitaire"]}` while retaining `"kind":"app"` for the existing v1 envelope. The TaviX packager and loopback installer validate the classification, and the local preview shows Game/App labels. Unclassified packages resolve to app/[] in new consumers. Existing staged release bytes stay unchanged. See `docs/TAVIX_CLASSIFICATION.adoc` for complete taxonomy, examples and trust boundaries.
 
-**Compatibility:** Tavi 0.3.124 explicitly rejects unknown manifest fields; it **cannot install newly classified manifests** until Tavi adds classification validation and registry persistence. The proposed `games.installed.list` / `games.installed.open` capabilities are a contract for Tavi and Atrium to implement, *not* something TaviX's local preview or current Tavi host already provides. Only a Tavi-authorized Atrium session may see installed game descriptors; it must never read a game's private storage or launch arbitrary URLs. No release is published automatically.
+**Compatibility:** Tavi 0.3.124 explicitly rejects unknown manifest fields; it **cannot install newly classified manifests** until Tavi adds classification validation and registry persistence. The `games.installed.list` / `games.installed.open` capabilities are now present in Tavi 0.3.141 source for authorized Atrium sessions, but native/operator acceptance and Atrium consumption remain separate; the TaviX local preview does not implement them. Only a Tavi-authorized Atrium session may see installed game descriptors; it must never read a game's private storage or launch arbitrary URLs. No release is published automatically.
+
+## Asset dependency requests (0.1.11)
+
+An extension may declare optional `assetDependencies` and request `assets.read` and, when applicable, `assets.preferences.write`. The TaviX package validator and repository staging check exact pack IDs, compatibility ranges, capability names and requested permission consistency. This **does not** grant access, install content, purchase assets, or change any existing release. The host alone must approve pack/capability pairs, check verified installed content and LoopRD entitlements, and obtain user consent for customization.
+
+The supplied **Tavi 0.3.141** source has a guarded `tavi.assets/v1` dispatcher, but its strict manifest validator rejects these new fields/permissions, and the runtime has **no connected Assets engine or approved grants**. Tavi Assets 0.1.7 provides reference services/SDK but is not yet production-integrated. Do not publish the new example as host-compatible until Tavi implements and verifies the contract. See `docs/TAVIX_ASSET_DEPENDENCIES.adoc` and `examples/asset-consumer/manifest.json`.
+
+The older 0.3.124 classification incompatibility noted above is historical: Tavi 0.3.141 source accepts game classification, while native/operator acceptance is separate.

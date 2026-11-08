@@ -3,14 +3,14 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.10",
-    "base_version": "0.1.9"
+    "version": "0.1.11",
+    "base_version": "0.1.10"
   },
   "update": {
-    "id": "TAVIX-20261107-0110",
+    "id": "TAVIX-20261108-0111",
     "kind": "source_update",
-    "created_at": "2026-11-07T18:00:00+01:00",
-    "summary": "Add v1 game/app classification metadata validation, local dev inventory labels, schema and proposed trusted Tavi/Atrium game inventory + launch contract. No shipped extension assets, host methods or publication changed."
+    "created_at": "2026-11-08T10:25:00+01:00",
+    "summary": "Add validated optional Tavi Assets pack dependencies, requested permission tokens and a host-only scoped grant contract; preserve existing packages and release assets; no runtime grants or publication."
   },
   "planned_work": [
     {
@@ -60,6 +60,12 @@
       "title": "Add backward-compatible TaviX game/app classification and cross-project contract",
       "priority": "high",
       "acceptance_criteria": "Validate optional type/categories in archive and local install; legacy app default, schema/documentation/examples, proposal for Tavi trusted registry/Atrium inventory and launch, exact-package regression tests and review gates."
+    },
+    {
+      "id": "TAVIX-ASSET-CONTRACT-001",
+      "title": "TaviX asset dependency and permission request contract",
+      "priority": "high",
+      "acceptance_criteria": "Validate optional assetDependencies and requested permissions in package, archive and staging; provide host-only per-pack grant subset spec, cross-project evidence, schemas, docs, C4, example and tests; no production host authority claimed."
     }
   ],
   "done_work": [],
@@ -112,46 +118,64 @@
     {
       "id": "TAVI-GAME-REGISTRY-001",
       "status": "suggested",
-      "next_action": "Implement Tavi manifest validator acceptance, trusted installed classification persistence and migration; review separately in Tavi project."
+      "next_action": "Tavi 0.3.141 source now validates classification and persists installed game metadata; verify Windows/Android operator acceptance separately."
     },
     {
       "id": "TAVI-ATRIUM-GAME-LAUNCH-001",
       "status": "suggested",
-      "next_action": "Implement restricted installed-game inventory and host-mediated open requests in Tavi, then Atrium consumption. Verify negative authorization and isolation."
+      "next_action": "Tavi 0.3.141 source now contains guarded games.installed.list/open; verify Atrium consumer, native operator acceptance and negative authorization separately."
+    },
+    {
+      "id": "TAVIX-ASSET-CONTRACT-001",
+      "status": "review",
+      "next_action": "Verify source-only asset request/grant schema, exact ZIP Windows QA, Tavi/Assets contract compatibility and explicit operator approval."
     }
   ],
   "validation": {
     "model_reported": "partial",
     "checks": [
       {
-        "id": "TAVIX-0110-FULL-UNIT",
+        "id": "TAVIX-0111-FULL-UNIT",
         "status": "passed",
-        "description": "57 tests executed in Linux container source checkout; exact ZIP extraction rerun is separately reported",
+        "description": "70 Python tests executed in Linux source checkout; exact ZIP extraction rerun pending",
         "command": "python -m unittest discover -s tests -v",
         "environment": "Linux container, not Windows ZipRunner"
       },
       {
-        "id": "TAVIX-0110-CATALOG",
+        "id": "TAVIX-0111-STRICT-CATALOG",
         "status": "passed",
-        "description": "Strict repository catalog check, no staged asset mutations",
+        "description": "Strict repository index check passed; 105 historical staged release/catalog files byte-identical",
         "command": "python tools/repository.py check --repository . --strict",
-        "environment": "Linux container, not public GitHub Actions"
+        "environment": "Linux container"
+      },
+      {
+        "id": "TAVIX-0111-EXAMPLE-PACK",
+        "status": "passed",
+        "description": "Asset consumer fixture packed and archive-validated with correct lock",
+        "command": "python tools/tavix_package.py pack examples/asset-consumer <temporary-path> && python tools/tavix_package.py validate-archive <temporary-path>",
+        "environment": "Linux container"
+      },
+      {
+        "id": "TAVIX-0111-PREFLIGHT",
+        "status": "passed",
+        "description": "Canonical index unchanged; preflight returned unchanged",
+        "command": "python tools/ziprunner_catalog_preflight.py --repository .",
+        "environment": "Linux container"
       }
     ]
   },
   "handover": {
-    "next_pass": "Verify exact 0.1.10 ZIP on Windows and accept TaviX classification independently; Tavi and Atrium own registry/API runtime implementation.",
+    "next_pass": "Verify exact 0.1.11 ZIP on Windows; Tavi 0.3.141 must accept asset request metadata and enforce pack-scoped grants before integration.",
     "risks": [
-      "0.1.6 failed because persistent Windows ZipRunner build commands did not execute its new preflight command; actual catalog drift cause still unknown.",
-      "For a mismatched catalog, legacy check performs only the bounded validated reconciliation; unexpected releases/publisher changes fail closed.",
-      "A local catalog adjustment requires an operator diff review before any Git action.",
-      "Production Tavi Apps installation remains separate and not implemented.",
-      "Tavi 0.3.124 rejects any manifest.classification key until the Tavi validator is updated; do not claim backwards host compatibility for new classified packages."
+      "Tavi 0.3.141 rejects new assetDependencies and assets.* permission tokens; no live asset feature or attached engine.",
+      "Tavi 0.3.141 flat pack/capability grants cannot enforce pack-specific customization without host changes.",
+      "Tavi Assets 0.1.7 provides a reference portable engine but not accepted native/entitlement/storefront integration.",
+      "TaviX package validation is not proof of publisher trust, installation, entitlement, authorization or operator acceptance.",
+      "Windows ZipRunner and separate Git publication approval remain pending."
     ],
     "blockers": [
-      "Native Tavi manifest/registry host support is not implemented by this package",
-      "Tavi/Atrium read-only inventory and host-mediated open require separate implementation",
-      "Windows ZipRunner candidate checks and operator acceptance not yet executed"
+      "Native Tavi/Assets engine and grant integration is external and not completed by this TaviX ZIP.",
+      "Operator Windows/native acceptance and release approval not provided."
     ],
     "notes": [
       "The TaviX ZipRunner checkout is intended to be adjacent to Atrium and Companion; scripts do not invoke Git."
@@ -159,21 +183,21 @@
   },
   "operator_actions": [
     {
-      "id": "TAVIX-OP-0110-1",
-      "description": "Import the exact 0.1.10 candidate into existing TaviX ZipRunner project while preserving active config and private data."
+      "id": "TAVIX-OP-0111-1",
+      "description": "Import exact 0.1.11 source ZIP over 0.1.10 in existing TaviX ZipRunner project without overwriting protected operator state."
     },
     {
-      "id": "TAVIX-OP-0110-2",
-      "description": "Run fresh Windows build, unit suite, strict catalog check and local game/app classification install/remove tests."
+      "id": "TAVIX-OP-0111-2",
+      "description": "Run Windows build, full unit suite, strict catalog and example .tavix pack/validate; confirm historical immutable releases unchanged."
     },
     {
-      "id": "TAVIX-OP-0110-3",
-      "description": "Review manifest taxonomy and proposed Tavi/Atrium boundaries; operator approves or rejects separately. Do not auto push or publish."
+      "id": "TAVIX-OP-0111-3",
+      "description": "Review asset request vs grant semantics with Tavi 0.3.141 and Tavi Assets 0.1.7 teams; separately approve any Git publication. Do not enable new host permissions before implementation."
     }
   ],
   "release": {
     "requested": false,
     "requires_operator_approval": true,
-    "notes": "Source-only classification and developer contract; no push/tag/publish/release automatically authorized."
+    "notes": "Source-only asset dependency requests and host grant schema; no Tavi engine, entitlement, wallet or Git publication authorized."
   }
 }

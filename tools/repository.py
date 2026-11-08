@@ -17,6 +17,7 @@ from urllib.parse import urlparse
 
 from tavix_package import validate, pack, validate_archive
 from tavix_classification import resolve_classification
+from tavix_asset_dependencies import validate_asset_dependencies, PUBLISHABLE_PERMISSIONS
 
 APP_ID = re.compile(r'^[a-z][a-z0-9.-]{2,118}$')
 VERSION = re.compile(r'^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$')
@@ -47,7 +48,7 @@ def metadata(manifest, source, license_id):
     return {'source':source.rstrip('/'), 'license':license_id}
 
 def validate_manifest(m):
-    if not isinstance(m,dict) or set(m)-{'schema','id','version','name','summary','publisher','kind','hostApi','entrypoints','contributions','permissions','platforms','icon','classification'}:
+    if not isinstance(m,dict) or set(m)-{'schema','id','version','name','summary','publisher','kind','hostApi','entrypoints','contributions','permissions','platforms','icon','classification','assetDependencies'}:
         raise ValueError('Unexpected extension manifest fields')
     if m.get('schema')!='tavi.extension/v1' or m.get('kind')!='app':raise ValueError('Invalid extension identity')
     if not isinstance(m.get('name'),str) or not 1<=len(m['name'].strip())<=60:raise ValueError('Invalid name')
@@ -55,12 +56,13 @@ def validate_manifest(m):
     if not re.fullmatch(r'[a-z0-9-]{2,64}',m.get('publisher','')):raise ValueError('Invalid publisher')
     h=m.get('hostApi')
     if not isinstance(h,dict) or set(h)!={'min','maxExclusive'} or not all(VERSION.fullmatch(h.get(x,'')) for x in h):raise ValueError('Invalid host API range')
-    if not isinstance(m.get('permissions'),list) or 'ui.panel' not in m['permissions'] or len(set(m['permissions']))!=len(m['permissions']) or set(m['permissions'])-{'ui.panel','ui.toast','storage.private'}:raise ValueError('Unsupported permissions')
+    if not isinstance(m.get('permissions'),list) or 'ui.panel' not in m['permissions'] or len(set(m['permissions']))!=len(m['permissions']) or set(m['permissions'])-PUBLISHABLE_PERMISSIONS:raise ValueError('Unsupported permissions')
     if not isinstance(m.get('contributions'),list) or len(m['contributions'])>12:raise ValueError('Invalid contributions')
     for c in m['contributions']:
         if not isinstance(c,dict) or c.get('slot') not in ('app.launcher','app.store') or c.get('action')!='openPanel':raise ValueError('Unsupported contribution')
     if 'platforms' in m and (not isinstance(m['platforms'],list) or not m['platforms'] or set(m['platforms'])-{'web','windows','android'}):raise ValueError('Unsupported platform')
     resolve_classification(m)
+    validate_asset_dependencies(m)
     return True
 
 def release_path(root, app_id, version):

@@ -1,4 +1,4 @@
-workspace "TaviX" "TaviX reviewed extension distribution and local development preview, based on source 0.1.7." {
+workspace "TaviX" "TaviX reviewed extension distribution and local development preview, based on source 0.1.11." {
 
     model {
         operator = person "Extension maintainer" "Reviews, stages and locally tests TaviX extension packages before choosing whether to publish."
@@ -16,7 +16,8 @@ workspace "TaviX" "TaviX reviewed extension distribution and local development p
 
             cli = container "Repository and validation toolchain" "CLI commands and reusable Python modules for immutable package staging, index verification and exact-package QA." "Python 3 CLI/library" {
                 stage = component "Release staging" "Validates the incoming release; refuses changed same-version bytes; copies staged assets into a versioned directory." "Python; tools/repository.py"
-                package = component "TaviX archive codec" "Builds deterministic .tavix archives and verifies package lock paths, sizes, SHA-256 and optional manifest classification; not publisher trust." "Python; tools/tavix_package.py"
+                package = component "TaviX archive codec" "Builds deterministic .tavix archives and verifies package lock paths, sizes, SHA-256 and optional manifest classification and asset dependency requests; not publisher trust." "Python; tools/tavix_package.py"
+                assetContract = component "Asset dependency request and grant shape validation" "Validates optional per-pack asset requests and permissions and checks host-issued grant subsets as pure data; never authorizes access or installs content." "Python; tools/tavix_asset_dependencies.py, tools/tavix_asset_grants.py"
                 catalog = component "Catalog builder and integrity checker" "Validates all on-disk releases, selects the highest version per application and compares/writes canonical tavi.repository.json bytes." "Python; tools/repository.py"
                 preflight = component "Windows catalog preflight" "Reconciles only verified safe catalog drift and leaves unexpected releases/tampering blocked." "Python; tools/ziprunner_catalog_preflight.py"
                 packageQa = component "Exact-package QA CLI" "Emits bounded manifest, entrypoint, ZIP integrity and hash evidence without claiming real SDK or multiplayer acceptance." "Python; tools/local-client/qa.py"
@@ -29,12 +30,12 @@ workspace "TaviX" "TaviX reviewed extension distribution and local development p
             previewServer = container "Local preview HTTP server" "Loopback-only developer server providing extension discovery, archive installation/removal and panel asset delivery." "Python 3; http.server" {
                 api = component "Local HTTP API" "Handles GET /__local_client/apps, GET /__local_client/installed, POST /__local_client/install and DELETE /__local_client/install/{id}/{version}." "Python; SimpleHTTPRequestHandler"
                 discovery = component "Staged release discovery" "Enumerates valid panel entrypoints and normalized game/app metadata in versioned repository manifests; for development preview only." "Python; tools/local-client/server.py"
-                installer = component "Local package installation" "Validates uploaded archives and optional classification, limits extraction size, installs versioned local assets and removes packages on request." "Python; tools/local_client/local_packages.py"
+                installer = component "Local package installation" "Validates uploaded archives and optional classification and asset requests, limits extraction size, installs versioned local assets and removes packages on request." "Python; tools/local_client/local_packages.py"
                 assets = component "Preview asset serving" "Serves staged files from the checkout and locally installed files under /__local_packages/ via local HTTP." "Python; SimpleHTTPRequestHandler"
             }
 
             previewUi = container "Local preview browser UI" "Development-only panel browser with local archive upload, install/remove controls, iframe preview and basic diagnostics." "HTML and JavaScript in a web browser" {
-                libraryUi = component "Extension library controls" "Lists discovered releases and installed versions with game/app labels; selects a preview panel, without trusted Tavi inventory." "JavaScript; tools/local-client/index.html"
+                libraryUi = component "Extension library controls" "Lists discovered releases and installed versions with game/app labels and asset requests; selects a preview panel, without trusted Tavi inventory." "JavaScript; tools/local-client/index.html"
                 installUi = component "Archive installation controls" "Uploads .tavix bytes and requests local package removal; displays status/errors." "JavaScript; tools/local-client/index.html"
                 panelUi = component "Sandboxed preview panel" "Loads the selected panel URL in a sandboxed iframe and exposes limited host-side diagnostics; no production Tavi SDK." "HTML iframe; JavaScript"
             }
@@ -56,6 +57,8 @@ workspace "TaviX" "TaviX reviewed extension distribution and local development p
 
         stageInvocation -> stage "Starts stage command with the compiled bundle" "Process invocation"
         stage -> package "Validates and packs the extension archive" "Python call"
+        package -> assetContract "Validates asset request/permission metadata" "Python call"
+        stage -> assetContract "Validates reviewed source manifest requests" "Python call"
         stage -> catalog "Checks existing index and regenerates after safe staging" "Python call"
         stage -> releases "Copies an immutable release directory" "Filesystem"
         package -> releases "Reads .tavix archives during release validation" "Filesystem"
