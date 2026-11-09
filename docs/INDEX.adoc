@@ -3,7 +3,7 @@
 
 == Read this before implementing an extension
 
-TaviX version 0.1.12 documentation; protocol standard `tavix/1.0`, wire channel `tavi.extension/v1`, manifest `tavi.extension/v1`. The *toolchain version* (0.1.9) is not a new protocol version.
+TaviX version 0.1.13 documentation; protocol standard `tavix/1.0`, wire channel `tavi.extension/v1`, manifest `tavi.extension/v1`. The *toolchain version* (0.1.9) is not a new protocol version.
 
 [cols="2,4",options="header"]
 |===
@@ -62,3 +62,16 @@ After operator-approved Git publication, pinned-commit source URLs under `https:
 * link:../examples/REGISTRY_ADMIN_REQUEST.adoc[Request-only example]: no host privileges or publishing implementation.
 
 After *separate* operator-approved Git publication, pin a reviewed commit for these files; no source ZIP implies a published contract. Tavi 0.3.141, Tavi Assets 0.1.7 and LoopRD do not yet implement or approve the proposed admin transport.
+
+
+== Host-mediated local file import (0.1.13 candidate)
+
+* link:TAVIX_LOCAL_FILE_IMPORT.adoc[Local-file import and Windows/Android host contract]: request-only `files.local.import`, `tavix.local-file-import/v1` negotiation, native picker and bounded reads. **Not implemented in Tavi 0.3.141.**
+* link:../contracts/tavix-local-file-import-v1.json[Machine-readable feature contract].
+* link:../contracts/tavix-local-file-import-v1.schema.json[Strict `manifest.fileImports` JSON Schema].
+* link:../contracts/tavix-local-file-request-v1.schema.json[Picker/read/close/cancel request JSON Schema].
+* link:../contracts/tavix-local-file-response-v1.schema.json[Response and error JSON Schema].
+* link:../sdk/tavix-sdk.mjs[Reference TaviX SDK with `sdk.localFiles`].
+* link:../examples/LOCAL_FILE_IMPORT.adoc[Packable reference application and tests].
+
+Publication requires a separate operator-approved Git push. Source paths above are not a live feature endpoint.

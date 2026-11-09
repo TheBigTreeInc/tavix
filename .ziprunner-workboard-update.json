@@ -1,8 +1,8 @@
 {
   "schema": "ziprunner.workboard-update.v1",
   "project": "tavix",
-  "version": "0.1.12",
-  "summary": "Proposed request-only host-mediated registry admin contract, versioned wire schemas and source validators; no LoopRD transport or admin grant enabled.",
+  "version": "0.1.13",
+  "summary": "Request-only native local file import contract, SDK and self-contained reference application; Windows/Android host implementation and operator approval pending.",
   "implemented": [
     {
       "id": "TAVIX-ASSET-CONTRACT-001",
@@ -24,6 +24,17 @@
         "Social/LoopRD approve proposed method names, upload transport, audit and confirmation semantics",
         "Verify copied app ID, unapproved digest, revoked role, denied operation and missing transport all fail closed",
         "No Git publication or production host feature without explicit approval"
+      ]
+    },
+    {
+      "id": "TAVIX-LOCAL-FILE-IMPORT-001",
+      "title": "Host-mediated local .tavia picker request, SDK and reference application",
+      "summary": "Optional strict manifest fileImports and files.local.import permission request; versioned feature/method JSON schemas, SDK negotiation, bounded read/cancel, embedded/detached transport reference, packable test app, docs/C4 and regression tests. No native host or automatic upload.",
+      "operator_checks": [
+        "Import exact ZIP and run full tests, strict catalog and local-file reference pack/archive on Windows ZipRunner.",
+        "Have Social/Tavi approve the feature and implement Windows embedded/detached native dialog and Android document picker with session-bound handles.",
+        "Verify actual user gesture, cancellation, file size, filter narrowing, revoked grants, app unmount and account switch fail closed.",
+        "Do not advertise feature in Tavi, stage registry content or publish Git without separate approval."
       ]
     }
   ],
@@ -81,6 +92,18 @@
       "title": "LoopRD authoritative asset registry operations and audit",
       "summary": "LoopRD must implement ecosystemAdmin and per-operation registry permissions, immutable record revisions, idempotent stage/price/publish/revoke, audit and revocation.",
       "next_action": "Agree backend transport, authenticated assertions, confirmation evidence and price/publish/revoke transaction semantics."
+    },
+    {
+      "id": "TAVI-NATIVE-FILE-IMPORT-001",
+      "title": "Native Windows/Android file picker and secure host bridge",
+      "summary": "Tavi 0.3.141 has no native file picker or permission/manifest support; Tavi must implement user-initiated native dialogs, detached window bridge, session-bound handles and revocation.",
+      "next_action": "Social/Tavi review docs/TAVIX_LOCAL_FILE_IMPORT.adoc and implement host manifest/permission validation, feature negotiation and native picker/read/close/cancel; run real Windows and Android tests."
+    },
+    {
+      "id": "TAVI-ASSET-STUDIO-FILE-IMPORT-001",
+      "title": "Asset Studio consume local-file import capability",
+      "summary": "Asset Studio should use sdk.localFiles to read .tavia into the canonical Tavi Assets validator without installing or uploading.",
+      "next_action": "After Tavi native feature is accepted, update Studio to use sdk.localFiles.negotiate/pick/read/close and retain disabled state on unsupported hosts."
     }
   ]
 }

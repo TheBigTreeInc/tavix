@@ -209,8 +209,8 @@ class ClassificationTests(unittest.TestCase):
         self.assertIn('TAVIX-ASSET-CONTRACT-001',done)
         self.assertIn('TAVIX-CLASSIFICATION-001', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text())['planned_work']})
         for fname in ('project.zr','tavix.zr','.ziprunner-post-update-tests.json'):
-            self.assertEqual(json.loads((ROOT/fname).read_text())['version'],'0.1.12')
-        self.assertEqual(json.loads((ROOT/'ziprunner-manifest.json').read_text())['project']['version'],'0.1.12')
+            self.assertEqual(json.loads((ROOT/fname).read_text())['version'],'0.1.13')
+        self.assertEqual(json.loads((ROOT/'ziprunner-manifest.json').read_text())['project']['version'],'0.1.13')
 
 
 if __name__=='__main__':unittest.main()

@@ -1,23 +1,22 @@
-# TaviX 0.1.12 — host-mediated asset registry administration contract
+# TaviX 0.1.13 — host-mediated local file import contract and reference SDK
 
-**Base:** TaviX 0.1.11. **Status:** TaviX-only source/specification candidate; Windows/operator acceptance and Git publication not approved.
+**Base:** TaviX 0.1.12. **Status:** TaviX source candidate; Windows ZipRunner, native Windows/Android operator acceptance and Git publication pending.
 
 ## Implemented
 
-- Optional `assets.registry.admin/v1` manifest permission **request**, independent of `assetDependencies` and the existing `tavi.assets/v1` consumer API.
-- TaviX package/archive/repository validators recognize the request and reject unsupported permissions. Local developer installer/inventory marks it as `registryAdminRequested`, with `publisher_trust: unverified` and **no grant**.
-- `contracts/tavix-registry-admin-v1.json` method index and strict request/response JSON Schema 2020-12 for `status`, staged upload begin/chunk/commit/abort, records list/get, price proposal, publication and revocation.
-- Explicit host-native confirmation requirement for price proposals, publishing and revocation; exact-revision trust, authenticated user, LoopRD `ecosystemAdmin` and per-operation permission checks, idempotency, revocation and audit documented.
-- No-op packable request example, developer contract and C4 architecture updates, 11 new source tests and ZipRunner Workboard update.
-- Historical staged releases and canonical catalog unchanged. No Tavi, LoopRD, Tavi Assets or Tavi Asset Studio source modified.
+- Optional manifest permission `files.local.import` with paired `fileImports` filters for explicit file extensions, MIME types and a 128 MiB maximum. Legacy manifests remain unchanged.
+- `tavix.local-file-import/v1` feature negotiation requires both `host.info.features` and `host.capabilities`; a manifest request never grants access.
+- Strict request/response JSON Schemas for `files.local.pick`, `files.local.read`, `files.local.close` and `files.local.cancel`, with 64 KiB base64 chunk maximum and explicit cancellation/error codes.
+- `sdk/tavix-sdk.mjs` reference client with user-click dispatch, bounded read, cancellation and injectable host-authenticated detached transport adapter; historical Atrium SDK bytes are unchanged.
+- Packable `examples/local-file-import` `.tavix` test app, no HTML file input, no network upload, no registry administration or publication.
+- Python source/archive/repository/local-install validation, local preview request metadata, documentation, C4, tests and Workboard update.
 
-## Security and integration blockers
+## External host integration required
 
-- **No real admin capability is implemented.** Tavi 0.3.141 rejects the permission; Social/Tavi must implement verified host grants, trusted user authentication and forwarding, native confirmation and exact-digest developer-preview approval. LoopRD must implement authoritative `ecosystemAdmin`, per-operation authorization, immutable registry transitions and audit.
-- The proposed request/response schema and upload transport need **explicit Social/LoopRD agreement** before a production implementation. Do not enable Tavi Asset Studio's admin UI based on the manifest, local preview, app ID, SHA alone or mock permissions.
-- The current `tavi.assets/v1` pack-scoped read/customization grants remain separate; no wallet operations or pack ownership are granted.
-- Native Windows/Android, real host/LoopRD integration, operator approval and Git publication remain pending.
+- Tavi 0.3.141 does not support `fileImports`, `files.local.import` or the four native picker methods. Social/Tavi must implement native Windows embedded/detached dialog ownership and Android `ACTION_OPEN_DOCUMENT`, scoped file handles, grants, revocation and session routing.
+- The TaviX local browser preview does not emulate the native picker. Reference SDK/mock tests are not Windows/Android acceptance.
+- No `.tavia` content is uploaded, installed or published. Registry administration remains a separately approved `assets.registry.admin/v1` capability.
 
-## Acceptance
+## Operator checks
 
-Run the full Python unit suite, strict repository index check, exact-package QA and pack/validate-archive on `examples/registry-admin-request/` on Windows ZipRunner. Review negative security cases (copied app ID, unapproved digest, revoked admin role, stale revision, unsupported method, missing host confirmation, missing LoopRD transport) with Social/LoopRD. Obtain separate operator approval before Git push/tag/release. No post-build publication mechanism has been added.
+Run Windows ZipRunner full Python tests, strict catalog check, exact-package QA, local-file import reference `.tavix` pack/validate-archive and Node SDK mock tests if Node is available. Inspect denied grants, filter broadening, cancel, file size, session revocation, account switch and detached window behavior in the native host after Social/Tavi implementation. Obtain explicit approval before Git publication.

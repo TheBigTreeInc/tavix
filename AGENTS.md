@@ -47,3 +47,8 @@ Read `docs/TAVIX_ASSET_DEPENDENCIES.adoc`, `contracts/tavix-asset-dependencies-v
 ## Privileged registry administration contract (0.1.12+)
 
 Before modifying any privileged extension permission, host feature negotiation, `.tavia` staging, Gold price proposal, publication or revocation wire, read `docs/TAVIX_REGISTRY_ADMIN.adoc` and all three `contracts/tavix-registry-admin-*v1*.json` files. `assets.registry.admin/v1` is a manifest request only; it is not an authorization grant, ownership, wallet permission or substitute for `tavi.assets/v1`. Tavi/Social owns exact-revision host trust, native confirmation and authenticated forwarding; LoopRD alone authorizes `ecosystemAdmin` and registry operations. Do not enable admin controls, invent service credentials, stage/publish assets or auto-push contracts. Keep C4, index, schemas, tests and approval gates synchronized.
+
+
+## Local-file import capability (0.1.13+)
+
+Before changing file-import permissions, picker methods, SDK wrappers or native host assumptions, read `docs/TAVIX_LOCAL_FILE_IMPORT.adoc`, `contracts/tavix-local-file-import-v1.json` and the three `contracts/tavix-local-file-*v1.schema.json` files. `files.local.import` is a manifest request only; the `tavix.local-file-import/v1` host feature must be negotiated independently of permission approval. No unrestricted filesystem paths, file URLs, broad storage permissions, uploads or automatic registry publication. Tavi owns Windows/Android native pickers and embedded/detached session routing; TaviX only defines/validates requests and provides a reference SDK. Run `tests/test_local_file_import.py`, `tests/test_local_file_sdk.mjs`, contract docs and the full suite. Keep C4, Workboard and release gates synchronized.

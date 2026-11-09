@@ -1,0 +1,141 @@
+{
+  "schema": "tavix.local-file-import/v1",
+  "status": "proposed_Tavi_host_integration_not_implemented_in_supplied_Tavi_0_3_141",
+  "feature": "tavix.local-file-import/v1",
+  "permission": "files.local.import",
+  "manifestField": "fileImports",
+  "manifestSchema": "contracts/tavix-local-file-import-v1.schema.json",
+  "requestSchema": "contracts/tavix-local-file-request-v1.schema.json",
+  "responseSchema": "contracts/tavix-local-file-response-v1.schema.json",
+  "standard": "tavix/1.0",
+  "channel": "tavi.extension/v1",
+  "hostApi": "1.0.0",
+  "featureVersion": "1.0.0",
+  "modes": [
+    "embedded",
+    "detached"
+  ],
+  "platforms": [
+    "windows",
+    "android"
+  ],
+  "web": "optional_if_host_supplies_trusted_picker; do_not_fallback_to_untrusted_html_input",
+  "maxFileBytes": 134217728,
+  "maxChunkBytes": 65536,
+  "maxConcurrentPickersPerSession": 1,
+  "negotiation": [
+    "host.info returns feature only when picker transport is operational for this exact session and window",
+    "host.capabilities includes files.local.import only after host approval of the installed manifest and current session",
+    "SDK checks both before enabling pick; host rechecks on every operation",
+    "host.info.mode is embedded or detached; detached uses host-supplied authenticated message transport, never assumed window.parent",
+    "absence, unsupported feature version or revoked permission fails closed"
+  ],
+  "methods": {
+    "files.local.pick": {
+      "params": {
+        "accept": {
+          "extensions": [
+            ".tavia"
+          ],
+          "mimeTypes": [
+            "application/zip",
+            "application/octet-stream"
+          ]
+        },
+        "maxBytes": 134217728
+      },
+      "resultSelected": {
+        "status": "selected",
+        "file": {
+          "handle": "opaqueRandomHandleAtLeast16Chars",
+          "name": "example.tavia",
+          "size": 1024,
+          "mimeType": "application/zip"
+        },
+        "limits": {
+          "maxChunkBytes": 65536
+        }
+      },
+      "resultCancelled": {
+        "status": "cancelled"
+      },
+      "requirements": [
+        "User click or host-owned native confirmation before opening picker",
+        "requested filters and maxBytes must be subsets of manifest.fileImports",
+        "single file only",
+        "host enforces file size, extension and MIME policy with platform-specific MIME fallback",
+        "return basename only, never absolute paths or content URIs"
+      ]
+    },
+    "files.local.read": {
+      "params": {
+        "handle": "opaqueRandomHandleAtLeast16Chars",
+        "offset": 0,
+        "length": 65536
+      },
+      "result": {
+        "handle": "opaqueRandomHandleAtLeast16Chars",
+        "offset": 0,
+        "bytesRead": 3,
+        "encoding": "base64",
+        "data": "YWJj",
+        "eof": true
+      },
+      "requirements": [
+        "Read only previously selected handle in current app session",
+        "host bounds length to <=65536 and validates offset/bytesRead",
+        "no directory or arbitrary path reads",
+        "no upload"
+      ]
+    },
+    "files.local.close": {
+      "params": {
+        "handle": "opaqueRandomHandleAtLeast16Chars"
+      },
+      "result": {
+        "closed": true
+      },
+      "requirements": [
+        "Invalidate handle, clear host buffers, idempotent within session"
+      ]
+    },
+    "files.local.cancel": {
+      "params": {
+        "targetRequestId": 42
+      },
+      "result": {
+        "cancelled": true
+      },
+      "requirements": [
+        "Only cancel own pending picker request",
+        "If native UI cannot be closed, mark pending operation cancelled and discard any eventual selected result",
+        "Picker request resolves {status:cancelled} after cancellation"
+      ]
+    }
+  },
+  "errors": [
+    "NOT_SUPPORTED",
+    "PERMISSION_DENIED",
+    "USER_GESTURE_REQUIRED",
+    "INVALID_FILTER",
+    "FILE_TOO_LARGE",
+    "FILE_TYPE_NOT_ALLOWED",
+    "HANDLE_EXPIRED",
+    "INVALID_RANGE",
+    "READ_FAILED",
+    "PICKER_FAILED",
+    "RATE_LIMITED",
+    "SESSION_ENDED"
+  ],
+  "security": [
+    "No manifest grant based on app ID, extension cannot enumerate files",
+    "Tavi host owns native chooser on the correct embedded/detached window; Android ACTION_OPEN_DOCUMENT CATEGORY_OPENABLE with scoped temporary URI access, Windows native dialog",
+    "Do not persist selected handles, filesystem paths, content URIs or unrestricted grants",
+    "Close handles on app unmount, account change, permission revoke, timeout or window close",
+    "Host enforces 128MiB ceiling and 64KiB read ceiling and may advertise stricter runtime limits",
+    "No registry upload or publication; separate assets.registry.admin/v1 authorization required",
+    "Treat selected file as untrusted data; Tavi Assets validates .tavia content",
+    "Picker filters are UI hints, not proof of safe content; verify type, size and package contents",
+    "Host response origin/session binding must be authenticated; detached transport must not trust arbitrary opener windows"
+  ]
+}

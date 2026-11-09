@@ -42,3 +42,8 @@ Read `TAVIX_ASSET_DEPENDENCIES.adoc` and `../examples/asset-consumer/manifest.js
 == Privileged asset registry administration requests (0.1.12)
 
 The packable `examples/registry-admin-request/` fixture demonstrates requesting `assets.registry.admin/v1`. The local TaviX client can preview the panel but never provides registry admin authority. Before enabling Tavi Asset Studio staging, pricing, publishing or revocation, require explicit reviewed-package host approval, authenticated user and LoopRD `ecosystemAdmin` plus per-operation permissions. Inspect link:TAVIX_REGISTRY_ADMIN.adoc[the proposed host contract]; the transport is not implemented by TaviX.
+
+
+== Native file picker reference (0.1.13)
+
+To build the self-contained `.tavia` import test application, run `python tools/tavix_package.py pack examples/local-file-import /tmp/example.org.local-file-import-0.1.0.tavix` and `python tools/tavix_package.py validate-archive /tmp/example.org.local-file-import-0.1.0.tavix`. Run `node --test tests/test_local_file_sdk.mjs` for mock host tests. The app's `ui/tavix-sdk.mjs` is a copy of the new reference `sdk/tavix-sdk.mjs`; historical staged extension SDK files are not modified. The test app cannot open the native picker in Tavi 0.3.141 or the loopback preview: the host must first implement and advertise `tavix.local-file-import/v1` and grant `files.local.import`. Read link:TAVIX_LOCAL_FILE_IMPORT.adoc[the contract] before building Asset Studio.

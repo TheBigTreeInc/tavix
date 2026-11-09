@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thebigtreeinc.github.io/tavix/contracts/tavix-local-file-response-v1.schema.json",
+  "title": "TaviX local-file host responses",
+  "description": "Success variants are method-specific; cancellation from the native picker is a successful {status:cancelled}. Errors include stable machine-readable errorCode while retaining the existing error string.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "ok",
+        "result"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "response"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ok": {
+          "const": true
+        },
+        "result": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "file",
+                "limits"
+              ],
+              "properties": {
+                "status": {
+                  "const": "selected"
+                },
+                "file": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "handle",
+                    "name",
+                    "size",
+                    "mimeType"
+                  ],
+                  "properties": {
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_-]{16,128}$"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 255,
+                      "description": "Display basename only, never a path or URI"
+                    },
+                    "size": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 134217728
+                    },
+                    "mimeType": {
+                      "type": "string",
+                      "maxLength": 128
+                    }
+                  }
+                },
+                "limits": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "maxChunkBytes"
+                  ],
+                  "properties": {
+                    "maxChunkBytes": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65536
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "status": {
+                  "const": "cancelled"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "handle",
+                "offset",
+                "bytesRead",
+                "encoding",
+                "data",
+                "eof"
+              ],
+              "properties": {
+                "handle": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{16,128}$"
+                },
+                "offset": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "bytesRead": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 65536
+                },
+                "encoding": {
+                  "const": "base64"
+                },
+                "data": {
+                  "type": "string",
+                  "maxLength": 87384,
+                  "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+                },
+                "eof": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "closed"
+              ],
+              "properties": {
+                "closed": {
+                  "const": true
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "cancelled"
+              ],
+              "properties": {
+                "cancelled": {
+                  "type": "boolean"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "ok",
+        "error",
+        "errorCode"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "response"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ok": {
+          "const": false
+        },
+        "error": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "errorCode": {
+          "enum": [
+            "NOT_SUPPORTED",
+            "PERMISSION_DENIED",
+            "USER_GESTURE_REQUIRED",
+            "INVALID_FILTER",
+            "FILE_TOO_LARGE",
+            "FILE_TYPE_NOT_ALLOWED",
+            "HANDLE_EXPIRED",
+            "INVALID_RANGE",
+            "READ_FAILED",
+            "PICKER_FAILED",
+            "RATE_LIMITED",
+            "SESSION_ENDED"
+          ]
+        }
+      }
+    }
+  ]
+}

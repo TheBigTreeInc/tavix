@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Local File Import Test</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<main>
+  <h1>Local file import</h1>
+  <p>Pick a <code>.tavia</code> asset pack using Tavi's native file picker. This test never installs, uploads or publishes anything.</p>
+  <p id="availability" role="status">Checking native file access…</p>
+  <div class="actions"><button id="pick" disabled>Choose .tavia file</button><button id="cancel" disabled>Cancel selection</button></div>
+  <section aria-labelledby="details-title"><h2 id="details-title">Selected file</h2><pre id="details">No file selected.</pre></section>
+  <p class="note">The file handle is temporary and belongs only to this application session. Only the first 64 KiB is read for this demonstration.</p>
+</main>
+<script type="module" src="main.js"></script>
+</body>
+</html>

@@ -14,7 +14,8 @@ MAX_CAPABILITIES_PER_PACK = 32
 MAX_TOTAL_CAPABILITIES = 256
 ASSET_PERMISSIONS = frozenset({'assets.read', 'assets.preferences.write'})
 REGISTRY_ADMIN_PERMISSION = 'assets.registry.admin/v1'
-PUBLISHABLE_PERMISSIONS = frozenset({'ui.panel', 'ui.toast', 'storage.private', REGISTRY_ADMIN_PERMISSION}) | ASSET_PERMISSIONS
+LOCAL_FILE_PERMISSION = 'files.local.import'
+PUBLISHABLE_PERMISSIONS = frozenset({'ui.panel', 'ui.toast', 'storage.private', REGISTRY_ADMIN_PERMISSION, LOCAL_FILE_PERMISSION}) | ASSET_PERMISSIONS
 
 
 def _semver(value: str):

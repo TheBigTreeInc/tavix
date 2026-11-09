@@ -1,6 +1,6 @@
 # TaviX — extension tooling, local preview and reviewed distribution
 
-**Source/tooling version: 0.1.11 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
+**Source/tooling version: 0.1.13 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
 
 TaviX provides a reviewed, immutable distribution repository for compiled Tavi extensions, plus Python pack/validate/staging tools and a **standalone loopback development client** for opening `.tavix` panels on a PC without Tavi. It does **not** include the Tavi messenger, a game server, the production Tavi SDK host or trusted publisher signing. The `extensions/` tree contains distributed application builds, not their original authoring source.
 
@@ -11,6 +11,9 @@ TaviX provides a reviewed, immutable distribution repository for compiled Tavi e
 | Source | Purpose |
 | --- | --- |
 | [`docs/INDEX.adoc`](docs/INDEX.adoc) | Canonical developer-doc directory and stable retrieval URLs |
+| [`docs/TAVIX_LOCAL_FILE_IMPORT.adoc`](docs/TAVIX_LOCAL_FILE_IMPORT.adoc) | Native file picker proposal, bounded binary read, cancellation, Windows/Android and detached host boundaries |
+| [`contracts/tavix-local-file-import-v1.json`](contracts/tavix-local-file-import-v1.json) | Machine-readable negotiated feature and four methods |
+| [`sdk/tavix-sdk.mjs`](sdk/tavix-sdk.mjs) | Reference SDK with `sdk.localFiles` (not native Tavi implementation) |
 | [`docs/TAVIX_ASSET_DEPENDENCIES.adoc`](docs/TAVIX_ASSET_DEPENDENCIES.adoc) | Requested asset packs/capabilities, permission grants and host-only authorization boundary |
 | [`contracts/tavix-asset-dependencies-v1.schema.json`](contracts/tavix-asset-dependencies-v1.schema.json) | Optional asset dependency manifest field schema |
 | [`contracts/tavix-asset-grants-v1.schema.json`](contracts/tavix-asset-grants-v1.schema.json) | Host-only approved grant projection schema; not an extension field |
@@ -100,3 +103,8 @@ The older 0.3.124 classification incompatibility noted above is historical: Tavi
 ## Trusted registry administration contract candidate (0.1.12)
 
 `docs/TAVIX_REGISTRY_ADMIN.adoc`, `contracts/tavix-registry-admin-v1.json`, `contracts/tavix-registry-admin-request-v1.schema.json` and `contracts/tavix-registry-admin-response-v1.schema.json` specify the optional **request-only** `assets.registry.admin/v1` capability for Tavi Asset Studio and future approved applications. `examples/registry-admin-request/manifest.json` is a packable no-op fixture. TaviX does **not** provide host admin grants, LoopRD registry transport, native confirmations or publication; Tavi 0.3.141 does not support this permission. No change to `tavi.assets/v1`, existing pack-scoped asset grants, staged releases, operator approval gates or wallet authority.
+
+
+## Native local-file import proposal (0.1.13)
+
+`manifest.fileImports` plus `permissions: ["ui.panel", "files.local.import"]` requests a host-mediated native picker with declared `.tavia`/MIME filters and a bounded maximum file size. `tavix.local-file-import/v1` is advertised only by an operational, approved Tavi host. `sdk.localFiles.negotiate()` checks both the feature and the granted permission. `files.local.pick/read/close/cancel` use the existing `tavi.extension/v1` message channel, 128 MiB max file size and 64 KiB max base64 read chunks. A complete reference app is in `examples/local-file-import/`. Tavi 0.3.141 and the TaviX browser preview do not provide the native picker; Windows/Android implementation belongs to Social/Tavi. This request cannot upload or publish `.tavia` packs and does not grant `assets.registry.admin/v1`.

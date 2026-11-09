@@ -39,3 +39,8 @@ Run `python -m unittest discover -s tests -p test_asset_dependencies.py -v`. Thi
 ## Registry administration contract (0.1.12)
 
 Run `python -m unittest discover -s tests -p test_registry_admin.py -v`, full unit suite, strict repository check, and package/archive validation of `examples/registry-admin-request`. These are source/specification checks only. Tavi host authorization, LoopRD `ecosystemAdmin`, native confirmations, upload streaming, revocation and end-to-end Windows/Android acceptance require separately reviewed integrations and operator evidence. Do not mark production authorization passed based on these tests.
+
+
+== Local-file import source acceptance (0.1.13)
+
+Run `python -m unittest discover -s tests -p test_local_file_import.py -v`, `node --test tests/test_local_file_sdk.mjs` where Node is available, `python -m unittest discover -s tests -p test_contract_docs.py -v` and the full suite. Pack and validate `examples/local-file-import` as `.tavix`. Test invalid filters, missing permission, legacy packages, cancellation, bounded reads, detached transport shape and denial on revoked grants. Source tests do not certify Windows WebView2, Android `ACTION_OPEN_DOCUMENT`, native user activation or actual host grants; those require separate Tavi operator acceptance.

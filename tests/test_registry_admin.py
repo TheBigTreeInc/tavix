@@ -142,7 +142,7 @@ class RegistryAdminTests(unittest.TestCase):
 
     def test_machine_index_and_docs(self):
         idx=load('contracts/tavix-1.0.json')
-        self.assertEqual(idx['documentationVersion'],'0.1.12')
+        self.assertEqual(idx['documentationVersion'],'0.1.13')
         self.assertEqual(idx['package']['registryAdmin']['permission'],REGISTRY_ADMIN_FEATURE)
         self.assertFalse(idx['hostWire']['proposedRegistryAdmin']['currentTavi_0_3_141_support'])
         for path in ['docs/TAVIX_REGISTRY_ADMIN.adoc','contracts/tavix-registry-admin-v1.json','contracts/tavix-registry-admin-request-v1.schema.json','contracts/tavix-registry-admin-response-v1.schema.json','examples/registry-admin-request/manifest.json']:

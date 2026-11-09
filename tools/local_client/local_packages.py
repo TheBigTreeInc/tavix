@@ -12,6 +12,7 @@ from tools.tavix_package import validate_archive, validate
 from tools.tavix_classification import resolve_classification
 from tools.tavix_asset_dependencies import validate_asset_dependencies
 from tools.tavix_registry_admin import validate_registry_admin_request
+from tools.tavix_local_file_import import validate_local_file_import
 
 ID = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$')
 MAX_ARCHIVE = 32 * 1024 * 1024
@@ -56,6 +57,7 @@ def install(data: bytes, storage: Path):
         classification = resolve_classification(manifest)
         dependencies = validate_asset_dependencies(manifest)
         admin_requested = validate_registry_admin_request(manifest)
+        file_imports = validate_local_file_import(manifest)
         panel = manifest['entrypoints']['panel']
         target = storage / app_id / version
         if target.exists():
@@ -71,7 +73,7 @@ def install(data: bytes, storage: Path):
             os.replace(stage, target)
         finally:
             if stage.exists(): shutil.rmtree(stage)
-        return {'id': app_id, 'version': version, 'name': manifest.get('name', app_id), 'classification': classification, 'assetDependencies': dependencies, 'registryAdminRequested': admin_requested, 'sha256': hashlib.sha256(data).hexdigest(), 'panel': '/__local_packages/' + app_id + '/' + version + '/' + panel, 'permissions': manifest.get('permissions', []), 'publisher_trust': 'unverified', 'scope': 'local-only'}
+        return {'id': app_id, 'version': version, 'name': manifest.get('name', app_id), 'classification': classification, 'assetDependencies': dependencies, 'registryAdminRequested': admin_requested, 'fileImports': file_imports, 'sha256': hashlib.sha256(data).hexdigest(), 'panel': '/__local_packages/' + app_id + '/' + version + '/' + panel, 'permissions': manifest.get('permissions', []), 'publisher_trust': 'unverified', 'scope': 'local-only'}
 
 
 def installed(storage: Path):
@@ -84,10 +86,11 @@ def installed(storage: Path):
             classification = resolve_classification(manifest)
             dependencies = validate_asset_dependencies(manifest)
             admin_requested = validate_registry_admin_request(manifest)
+            file_imports = validate_local_file_import(manifest)
             panel = manifest['entrypoints']['panel']
             if not (manifest_path.parent / panel).resolve().is_relative_to(manifest_path.parent.resolve()): continue
             if not (manifest_path.parent / panel).is_file(): continue
-            result.append({'id': app_id, 'version': version, 'name': manifest.get('name', app_id), 'classification': classification, 'assetDependencies': dependencies, 'registryAdminRequested': admin_requested, 'panel': '/__local_packages/' + app_id + '/' + version + '/' + panel, 'permissions': manifest.get('permissions', []), 'scope': 'local-only', 'publisher_trust': 'unverified'})
+            result.append({'id': app_id, 'version': version, 'name': manifest.get('name', app_id), 'classification': classification, 'assetDependencies': dependencies, 'registryAdminRequested': admin_requested, 'fileImports': file_imports, 'panel': '/__local_packages/' + app_id + '/' + version + '/' + panel, 'permissions': manifest.get('permissions', []), 'scope': 'local-only', 'publisher_trust': 'unverified'})
         except (ValueError, KeyError, TypeError, OSError): pass
     return result
 

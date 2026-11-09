@@ -1,0 +1,19 @@
+{
+  "schema": "tavi.extension/v1",
+  "id": "example.org.local-file-import",
+  "version": "0.1.0",
+  "name": "Local File Import Test",
+  "summary": "Native .tavia picker reference app. Reads selected bytes only; never installs, uploads or publishes.",
+  "publisher": "example-org",
+  "kind": "app",
+  "hostApi": {"min": "1.0.0", "maxExclusive": "2.0.0"},
+  "entrypoints": {"panel": "ui/index.html"},
+  "contributions": [{"slot": "app.launcher", "id": "local-file-test", "label": "File Import", "action": "openPanel"}],
+  "permissions": ["ui.panel", "files.local.import"],
+  "fileImports": {
+    "extensions": [".tavia"],
+    "mimeTypes": ["application/zip", "application/octet-stream"],
+    "maxBytes": 134217728
+  },
+  "platforms": ["windows", "android"]
+}

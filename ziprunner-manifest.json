@@ -3,14 +3,14 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.12",
-    "base_version": "0.1.11"
+    "version": "0.1.13",
+    "base_version": "0.1.12"
   },
   "update": {
-    "id": "TAVIX-20261109-0112",
+    "id": "TAVIX-20261109-0113",
     "kind": "source_update",
-    "created_at": "2026-11-09T02:55:00+01:00",
-    "summary": "Specify request-only host-mediated assets.registry.admin/v1 capability with strict request/response schemas, manifest validation, and explicit confirmation/LoopRD authority; no admin runtime, publication or wallet implementation."
+    "created_at": "2026-11-09T20:26:00+01:00",
+    "summary": "Define optional files.local.import manifest request and tavix.local-file-import/v1 native host feature with strict schemas, bounded binary SDK, cancellation, detached transport adapter, and packable reference app; no native Tavi host implementation or publication."
   },
   "planned_work": [
     {
@@ -72,6 +72,12 @@
       "title": "Privileged host-mediated asset registry administration contract",
       "priority": "high",
       "acceptance_criteria": "TaviX request-only manifest permission, strict host-wire request/response schemas and docs, native confirmation, LoopRD authority, revocation, no implicit grant, source tests; no backend or automatic publication."
+    },
+    {
+      "id": "TAVIX-LOCAL-FILE-IMPORT-001",
+      "title": "Host-mediated local file import contract and SDK",
+      "priority": "high",
+      "acceptance_criteria": "Validate optional fileImports manifest and permission, specify strict picker/read/close/cancel wire, provide negotiated SDK and packable reference app, test fail-closed host and detached transport, preserve existing packages and approval gates; native host belongs to Tavi."
     }
   ],
   "done_work": [],
@@ -140,61 +146,82 @@
       "id": "TAVIX-REGISTRY-ADMIN-001",
       "status": "review",
       "next_action": "Run exact ZIP tests in Windows ZipRunner, coordinate and approve transport with Social/LoopRD, verify host grant and native confirmation negative cases, then explicitly approve any Git publication."
+    },
+    {
+      "id": "TAVIX-LOCAL-FILE-IMPORT-001",
+      "status": "review",
+      "next_action": "Run exact ZIP Windows source tests and native Tavi integration separately; review contracts and approve Git publication only after operator acceptance."
     }
   ],
   "validation": {
     "model_reported": "source_passed_native_pending",
     "checks": [
       {
-        "id": "TAVIX-0112-FULL-UNIT",
+        "id": "TAVIX-0113-FULL-UNIT",
         "status": "passed",
-        "description": "81 Python unit tests passed in Linux source checkout; exact extracted ZIP verification to follow separately",
+        "description": "91 Python tests passed in Linux source checkout; rerun from extracted ZIP before delivery",
         "command": "python -m unittest discover -s tests -v",
-        "environment": "Linux container, not Windows ZipRunner"
+        "environment": "Linux container; not Windows ZipRunner"
       },
       {
-        "id": "TAVIX-0112-STRICT-CATALOG",
+        "id": "TAVIX-0113-NODE-SDK",
         "status": "passed",
-        "description": "Strict repository index check passed; no staged release or catalog mutation",
+        "description": "6 Node.js mock host tests passed (embedded/detached transport, grants, cancellation, bounded read, error codes)",
+        "command": "node --test tests/test_local_file_sdk.mjs",
+        "environment": "Linux Node.js; not native host"
+      },
+      {
+        "id": "TAVIX-0113-STRICT-CATALOG",
+        "status": "passed",
+        "description": "Strict repository check passed; 105 historical staged release/catalog files unchanged",
         "command": "python tools/repository.py check --repository . --strict",
         "environment": "Linux container"
       },
       {
-        "id": "TAVIX-0112-REGISTRY-FIXTURE",
+        "id": "TAVIX-0113-LOCAL-FILE-FIXTURE",
         "status": "passed",
-        "description": "Admin request-only example validates, packs and validates as .tavix; no host authorization tested",
-        "command": "python tools/tavix_package.py pack examples/registry-admin-request <temporary-path> && python tools/tavix_package.py validate-archive <temporary-path>",
+        "description": "Reference .tavix packed and validated; no native picker tested",
+        "command": "python tools/tavix_package.py pack examples/local-file-import <temporary-output> && python tools/tavix_package.py validate-archive <temporary-output>",
         "environment": "Linux container"
       },
       {
-        "id": "TAVIX-0112-EXACT-PACKAGE",
+        "id": "TAVIX-0113-EXACT-PACKAGE",
         "status": "passed",
         "description": "Existing Atrium 1.0.5 exact-package QA 7/7 checks passed",
         "command": "python tools/local-client/qa.py --repository . --extension inc.thebigtree.tavi.atrium --version 1.0.5",
         "environment": "Linux container"
       },
       {
-        "id": "TAVIX-0112-STRUCTURIZR",
+        "id": "TAVIX-0113-WINDOWS-ANDROID",
         "status": "not_run",
-        "description": "Structurizr CLI unavailable; C4 source-contract tests passed but no DSL parser validation",
+        "description": "Native Tavi picker and detached window tests blocked on Social/Tavi host implementation",
+        "environment": "External Tavi project"
+      },
+      {
+        "id": "TAVIX-0113-STRUCTURIZR",
+        "status": "not_run",
+        "description": "Structurizr CLI not installed; source-contract tests pass but parser not run",
         "environment": "Linux container"
       }
     ]
   },
   "handover": {
-    "next_pass": "Social/LoopRD review proposed registry admin wire and transport; Tavi implements exact-revision host authorization, native confirmations and LoopRD forwarding before any production capability exposure.",
+    "next_pass": "Social/Tavi implement and approve Windows/Android native picker and detached host transport; Asset Studio integrate sdk.localFiles after host feature acceptance; retain registry admin and Git gates.",
     "risks": [
       "Tavi 0.3.141 rejects new assetDependencies and assets.* permission tokens; no live asset feature or attached engine.",
       "Tavi 0.3.141 flat pack/capability grants cannot enforce pack-specific customization without host changes.",
       "Tavi Assets 0.1.7 provides a reference portable engine but not accepted native/entitlement/storefront integration.",
       "TaviX package validation is not proof of publisher trust, installation, entitlement, authorization or operator acceptance.",
       "Windows ZipRunner and separate Git publication approval remain pending.",
-      "assets.registry.admin/v1 is specification-only; Tavi 0.3.141 rejects permission and has no trusted admin transport; LoopRD ecosystemAdmin checks and confirmation evidence unverified."
+      "assets.registry.admin/v1 is specification-only; Tavi 0.3.141 rejects permission and has no trusted admin transport; LoopRD ecosystemAdmin checks and confirmation evidence unverified.",
+      "Tavi 0.3.141 rejects fileImports/files.local.import and does not implement native picker; source SDK and mocks are not host acceptance.",
+      "Detached window transport requires authenticated host binding; no window.opener fallback."
     ],
     "blockers": [
       "Native Tavi/Assets engine and grant integration is external and not completed by this TaviX ZIP.",
       "Operator Windows/native acceptance and release approval not provided.",
-      "Trusted host-mediated LoopRD admin transport, verified ecosystemAdmin authorization and native confirmation flow are not implemented; application admin controls must stay disabled."
+      "Trusted host-mediated LoopRD admin transport, verified ecosystemAdmin authorization and native confirmation flow are not implemented; application admin controls must stay disabled.",
+      "Windows/Android native picker, permission grant and detached transport are external Tavi implementation tasks; no production file import is enabled by this TaviX source ZIP."
     ],
     "notes": [
       "The TaviX ZipRunner checkout is intended to be adjacent to Atrium and Companion; scripts do not invoke Git."
@@ -202,21 +229,21 @@
   },
   "operator_actions": [
     {
-      "id": "TAVIX-OP-0112-1",
-      "description": "Import exact TaviX 0.1.12 ZIP over reviewed 0.1.11, preserving protected operator paths and existing immutable staged releases."
+      "id": "TAVIX-OP-0113-1",
+      "description": "Import exact TaviX 0.1.13 source ZIP over reviewed 0.1.12 while preserving protected paths and immutable staged releases."
     },
     {
-      "id": "TAVIX-OP-0112-2",
-      "description": "Run Windows full tests, strict catalog integrity, and registry admin example package/archive checks."
+      "id": "TAVIX-OP-0113-2",
+      "description": "Run Windows full tests, strict repository integrity and local-file import example pack/archive checks; inspect reference SDK and negative cases."
     },
     {
-      "id": "TAVIX-OP-0112-3",
-      "description": "Have Social/LoopRD approve/adjust proposed host-wire schemas and security model before implementing or enabling the feature; publication requires separate operator approval."
+      "id": "TAVIX-OP-0113-3",
+      "description": "Coordinate native Windows/Android implementation and trust model with Social/Tavi; approve Git publication separately. No auto-publish."
     }
   ],
   "release": {
     "requested": false,
     "requires_operator_approval": true,
-    "notes": "Specification-only privileged capability request; no live grants, credentials, registry mutation, host dispatch or publication."
+    "notes": "TaviX source/SDK specification only; no native picker, host permission grant, registry upload or publication."
   }
 }

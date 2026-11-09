@@ -98,3 +98,8 @@ Tavi 0.3.141 accepts `classification` but rejects `assetDependencies` and the tw
 == Optional privileged registry administration request (0.1.12)
 
 An extension may request `"assets.registry.admin/v1"` in `manifest.permissions` alongside `"ui.panel"`. The TaviX validator recognizes the *request* only; it never grants rights, proves publisher trust or authorizes LoopRD. Existing manifests without it remain unchanged. The permission is independent of `assetDependencies`, `assets.read`, `assets.preferences.write` and `tavi.assets/v1`. See link:TAVIX_REGISTRY_ADMIN.adoc[full contract and wire schemas]. A Tavi 0.3.141 host rejects the new permission until updated; local preview does not grant it.
+
+
+== Optional local-file import request (0.1.13)
+
+`manifest.permissions` may include `files.local.import` only together with `manifest.fileImports` containing explicit lowercase `extensions`, `mimeTypes` and bounded `maxBytes`. `tools/tavix_local_file_import.py` validates both package source and lock-consistent archives, and `tools/repository.py` validates staged releases. Absence of both is the backward-compatible default. The local developer preview reports requested filters but does not grant file access. See link:TAVIX_LOCAL_FILE_IMPORT.adoc[local-file import contract]. Tavi 0.3.141's strict manifest validator rejects this new field and permission; native host work is mandatory.

@@ -1,0 +1,150 @@
+= TaviX local-file import v1 — host-mediated native picker
+:toc:
+:sectnums:
+
+== Status and scope
+
+This is a *proposed Tavi host capability*, specified and source-validated in TaviX tooling 0.1.13. The supplied Tavi 0.3.141 source does not implement the permission, picker methods or native detached-window bridge. TaviX cannot make Windows WebView2 or Android's document picker work by adding an iframe SDK alone. Host integration and native/operator acceptance are separate deliverables.
+
+The feature allows a user to select *one* local file, then lets the requesting application read bounded binary chunks using a session-bound opaque handle. It is suitable for Tavi Asset Studio's `.tavia` *local preview*, not installation, asset-store ownership, registry upload or publication. The latter requires the separate `assets.registry.admin/v1` contract and LoopRD authorization. This feature does not alter `tavi.assets/v1`, `assetDependencies` or pack-scoped grants.
+
+== Manifest request (not a grant)
+
+[source,json]
+----
+{
+  "schema": "tavi.extension/v1",
+  "id": "example.org.local-file-import",
+  "kind": "app",
+  "permissions": ["ui.panel", "files.local.import"],
+  "fileImports": {
+    "extensions": [".tavia"],
+    "mimeTypes": ["application/zip", "application/octet-stream"],
+    "maxBytes": 134217728
+  }
+}
+----
+
+The snippet shows relevant fields only; a complete packable manifest is in `../examples/local-file-import/manifest.json`. `fileImports` and `files.local.import` MUST appear together. Absence of both is the unchanged legacy case. Extensions are lowercase dot-prefixed strings, MIME values are explicit lower-case `type/subtype` without wildcards, each list has 1–16 unique entries, and `maxBytes` is 1–134217728. No paths, glob patterns, directory access, wildcard MIME or auto-grants. Validation is in `tools/tavix_local_file_import.py` and `contracts/tavix-local-file-import-v1.schema.json`.
+
+The host must validate the installed reviewed manifest and approved permissions. A request may *narrow* filters or byte limit, never broaden them. File type and content remain untrusted; `.tavia` parsing and content integrity belong to the canonical Tavi Assets validator.
+
+== Version and feature negotiation
+
+* Protocol standard: `tavix/1.0` (unchanged).
+* Wire channel: `tavi.extension/v1` (unchanged).
+* Host API: existing `1.0.0`; do not infer file import support from the host API version alone.
+* Feature identifier: `tavix.local-file-import/v1`, feature version `1.0.0`.
+* Permission identifier: `files.local.import`.
+* `host.info.features` contains `tavix.local-file-import/v1` **only** when a native picker and bounded read transport are available to the exact active extension session/window.
+* `host.capabilities` contains `files.local.import` **only** when the host has approved that request for the exact installed application revision and session.
+* Require *both* values before enabling the Import button; the host rechecks on every request. On absent feature, missing permission, session expiry or revocation, fail closed. No silent HTML `<input type=file>` fallback is part of this contract.
+* `host.info.mode` is `embedded` or `detached`. Existing Tavi 0.3.141 only reports `embedded`; `detached` is a future host mode and must use a host-provided authenticated message transport, not an untrusted `window.opener` or a guessed parent frame.
+
+SDK reference: `sdk/tavix-sdk.mjs` exports `createTaviXSDK`; `sdk.localFiles.negotiate()` checks both sources. Embedded mode uses the established parent `postMessage` bridge; detached mode can inject a host-authenticated `{send(message),subscribe(handler)->unsubscribe}` transport via the SDK's third argument. The transport adapter is a *contract*, not a currently deployed native implementation.
+
+== Request and response envelope
+
+All methods use `channel: "tavi.extension/v1"`, `direction: "request"`, positive integer `id`, and method-specific arguments under `params`. Responses reuse `direction: "response"`, matching `id`, and either `ok: true, result` or `ok: false, error, errorCode`. This adds an optional machine-readable `errorCode` to the existing host error envelope for this feature. No credentials or file paths cross the boundary.
+
+=== Open native picker
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"request","id":10,"method":"files.local.pick","params":{"accept":{"extensions":[".tavia"],"mimeTypes":["application/zip","application/octet-stream"]},"maxBytes":134217728}}
+----
+
+Successful selection:
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"response","id":10,"ok":true,"result":{"status":"selected","file":{"handle":"opaqueRandomHandleAtLeast16Chars","name":"cards.tavia","size":1024,"mimeType":"application/zip"},"limits":{"maxChunkBytes":65536}}}
+----
+
+User cancels native picker:
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"response","id":10,"ok":true,"result":{"status":"cancelled"}}
+----
+
+The host returns a sanitized display *basename* only. No absolute path, Android `content://` URI, `file://` URL or unrestricted handle. Only one picker may be pending per session. `files.local.pick` MUST originate from a user action; the host must verify a fresh trusted activation or require its own native confirmation. The SDK example negotiates on startup and dispatches the picker *synchronously from the button click*, without an intervening await.
+
+=== Read a chunk
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"request","id":11,"method":"files.local.read","params":{"handle":"opaqueRandomHandleAtLeast16Chars","offset":0,"length":65536}}
+----
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"response","id":11,"ok":true,"result":{"handle":"opaqueRandomHandleAtLeast16Chars","offset":0,"bytesRead":3,"encoding":"base64","data":"YWJj","eof":true}}
+----
+
+Read only the selected handle within the active application session. Offsets must be nonnegative and within the selected file; requested `length` is 1–65536 bytes, and actual returned data must match `bytesRead` exactly. `eof` indicates the end of the file. The host may return smaller chunks if it advertises a stricter `limits.maxChunkBytes`. The extension may loop through chunks; there is no direct filesystem path or unrestricted stream. Maximum selected file size is 128 MiB.
+
+=== Close a handle
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"request","id":12,"method":"files.local.close","params":{"handle":"opaqueRandomHandleAtLeast16Chars"}}
+----
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"response","id":12,"ok":true,"result":{"closed":true}}
+----
+
+=== Cancel a pending picker
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"request","id":13,"method":"files.local.cancel","params":{"targetRequestId":10}}
+----
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"response","id":13,"ok":true,"result":{"cancelled":true}}
+----
+
+Only the caller's *own pending picker* can be cancelled. If native OS UI cannot be dismissed, the host must mark the request cancelled and discard any eventual selection. The original `files.local.pick` resolves with `{status:"cancelled"}`. `cancelled:false` means no pending matching request. Closing a selected handle uses `files.local.close`, not `cancel`.
+
+=== Errors
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"response","id":11,"ok":false,"error":"Permission revoked","errorCode":"PERMISSION_DENIED"}
+----
+
+Defined error codes: `NOT_SUPPORTED`, `PERMISSION_DENIED`, `USER_GESTURE_REQUIRED`, `INVALID_FILTER`, `FILE_TOO_LARGE`, `FILE_TYPE_NOT_ALLOWED`, `HANDLE_EXPIRED`, `INVALID_RANGE`, `READ_FAILED`, `PICKER_FAILED`, `RATE_LIMITED`, `SESSION_ENDED`. The human-readable `error` is bounded to 160 characters and must not disclose a filesystem path or account secret. Unsupported methods and revoked permissions deny by default.
+
+== Host implementation responsibilities
+
+=== Windows
+
+Tavi's native shell owns the Windows file-open dialog (for example, the native WebView2 host integration). Use the correct owning window for *embedded and detached* app surfaces; no HTML file input or renderer-provided path is required. Bind every picker and handle to the exact installed extension revision, session, account and window. The host reads the file and exposes only bounded chunks through the existing authenticated TaviX message dispatcher.
+
+=== Android
+
+Use Android `ACTION_OPEN_DOCUMENT` with `CATEGORY_OPENABLE`, scoped temporary URI access and declared MIME filters. The host must enforce the `.tavia` extension and content-size policy after the user selects the document; providers may report `application/octet-stream`. Never return the content URI to the extension. Do not request broad storage permissions.
+
+=== Both platforms
+
+* Explicit user action is mandatory; host owns the OS picker and confirmation fallback.
+* Verify installed manifest, publisher/revision approval, current grant, requested filter subset, file size and handle scope at every operation.
+* Reject path parameters, directory selection, wildcard MIME, cross-app handles and stale or forged request IDs.
+* Invalidate handles and discard buffered data on close, unmount, account change, permission revocation, window close or timeout.
+* Avoid loading a 128 MiB file into the JS message bridge in one operation; chunk and bound memory.
+* Do not silently upload, install, publish or stage the selected file.
+* The standalone TaviX loopback preview has no native host; it can show the unsupported state but cannot prove a native picker works.
+
+== Conformance and acceptance
+
+* Machine-readable contract: `../contracts/tavix-local-file-import-v1.json`.
+* Strict manifest/request/response JSON Schemas: `../contracts/tavix-local-file-import-v1.schema.json`, `../contracts/tavix-local-file-request-v1.schema.json`, `../contracts/tavix-local-file-response-v1.schema.json`.
+* Reference `.tavix` app: `../examples/local-file-import/`, packaged with `python tools/tavix_package.py pack examples/local-file-import <output.tavix>`.
+* SDK mock-host tests: `node --test tests/test_local_file_sdk.mjs` (embedded and detached transport shapes, permissions, cancellation, read/error behavior). These do **not** substitute for native Windows/Android operator tests.
+* Native acceptance must cover Windows embedded and detached windows, Android document picker, cancellation, unsupported hosts, 128 MiB boundary, malicious filter broadening, revocation during read, account switch and app unmount.
+
+No Git publication, runtime permission activation or operator acceptance is implied by passing the source tests.

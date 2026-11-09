@@ -1,5 +1,5 @@
 {
-  "documentationVersion": "0.1.12",
+  "documentationVersion": "0.1.13",
   "hostWire": {
     "channel": "tavi.extension/v1",
     "eventDirection": "event",
@@ -156,6 +156,28 @@
         "assets.registry.admin.publish",
         "assets.registry.admin.revoke"
       ]
+    },
+    "proposedLocalFileImport": {
+      "feature": "tavix.local-file-import/v1",
+      "status": "proposed_Tavi_host_implementation_pending",
+      "contractFile": "contracts/tavix-local-file-import-v1.json",
+      "requestSchema": "contracts/tavix-local-file-request-v1.schema.json",
+      "responseSchema": "contracts/tavix-local-file-response-v1.schema.json",
+      "permission": "files.local.import",
+      "methods": [
+        "files.local.pick",
+        "files.local.read",
+        "files.local.close",
+        "files.local.cancel"
+      ],
+      "modes": [
+        "embedded",
+        "detached"
+      ],
+      "nativeWindowsAndroidImplementedInTavi_0_3_141": false,
+      "sdkReference": "sdk/tavix-sdk.mjs",
+      "sdkReferenceIsNativeHost": false,
+      "noUploadOrRegistryPublication": true
     }
   },
   "package": {
@@ -221,6 +243,17 @@
       "noGrantByApplicationId": true,
       "assetDependenciesIndependent": true,
       "validator": "tools/tavix_registry_admin.py"
+    },
+    "localFileImport": {
+      "permission": "files.local.import",
+      "manifestField": "fileImports",
+      "manifestSchema": "contracts/tavix-local-file-import-v1.schema.json",
+      "requestOnly": true,
+      "legacyDefault": null,
+      "validator": "tools/tavix_local_file_import.py",
+      "maxBytes": 134217728,
+      "maxChunkBytes": 65536,
+      "hostDoesNotGrantById": true
     }
   },
   "references": {
@@ -243,7 +276,14 @@
     "registryAdminContract": "contracts/tavix-registry-admin-v1.json",
     "registryAdminRequestSchema": "contracts/tavix-registry-admin-request-v1.schema.json",
     "registryAdminResponseSchema": "contracts/tavix-registry-admin-response-v1.schema.json",
-    "registryAdminExample": "examples/registry-admin-request/manifest.json"
+    "registryAdminExample": "examples/registry-admin-request/manifest.json",
+    "localFileImport": "docs/TAVIX_LOCAL_FILE_IMPORT.adoc",
+    "localFileImportContract": "contracts/tavix-local-file-import-v1.json",
+    "localFileImportManifestSchema": "contracts/tavix-local-file-import-v1.schema.json",
+    "localFileImportRequestSchema": "contracts/tavix-local-file-request-v1.schema.json",
+    "localFileImportResponseSchema": "contracts/tavix-local-file-response-v1.schema.json",
+    "localFileSdk": "sdk/tavix-sdk.mjs",
+    "localFileExample": "examples/LOCAL_FILE_IMPORT.adoc"
   },
   "repository": {
     "catalogFile": "tavi.repository.json",
@@ -255,6 +295,6 @@
     "versionedRoot": "extensions/<application-id>/<version>/"
   },
   "schema": "tavix.documentation-contract/v1",
-  "scope": "TaviX 0.1.12 validates optional privileged registry administration permission requests and specifies proposed host-mediated wire schemas; Tavi/Social and LoopRD transport/authority are not implemented or agreed; no publication.",
+  "scope": "TaviX 0.1.13 validates optional local file import requests and provides a reference SDK, strict wire schemas and example; native Windows/Android picker, detached transport, and registry administration remain Tavi/Social/LoopRD responsibilities; no publication.",
   "standard": "tavix/1.0"
 }

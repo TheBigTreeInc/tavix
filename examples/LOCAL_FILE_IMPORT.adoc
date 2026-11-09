@@ -1,0 +1,15 @@
+= Native local-file import reference application
+
+`examples/local-file-import` is a *packable*, unprivileged test application for the proposed `tavix.local-file-import/v1` feature. It requests `files.local.import`, with `.tavia` and two concrete MIME filters. It does not request `assets.registry.admin/v1`, make network requests, install packs or publish to LoopRD.
+
+[source,shell]
+----
+python tools/tavix_package.py validate examples/local-file-import
+python tools/tavix_package.py pack examples/local-file-import /tmp/example.org.local-file-import-0.1.0.tavix
+python tools/tavix_package.py validate-archive /tmp/example.org.local-file-import-0.1.0.tavix
+node --test tests/test_local_file_sdk.mjs
+----
+
+When installed in a *future Tavi host* that supports and approves the feature, the button opens the native file picker. The app displays the selected basename, size, MIME type and the first 32 bytes (hex), using at most one 64 KiB chunk, then closes the opaque handle. The Cancel button sends `files.local.cancel` while a picker is pending. In a host without the feature, the button stays disabled with a clear message.
+
+The TaviX local HTTP preview does not provide a production native picker, and the supplied Tavi 0.3.141 host rejects the new manifest permission/field. Test native Windows and Android acceptance in the Tavi project after implementing the host contract. See `../docs/TAVIX_LOCAL_FILE_IMPORT.adoc`.

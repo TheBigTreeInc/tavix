@@ -161,7 +161,7 @@ class AssetDependencyTests(unittest.TestCase):
 
     def test_contract_source_paths_and_cross_project_status(self):
         j=json.loads((ROOT/'contracts/tavix-1.0.json').read_text())
-        self.assertEqual(j['documentationVersion'],'0.1.12')
+        self.assertEqual(j['documentationVersion'],'0.1.13')
         self.assertEqual(j['package']['assetDependencies']['field'],'assetDependencies')
         self.assertEqual(j['package']['assetDependencies']['permissions'],['assets.read','assets.preferences.write'])
         self.assertFalse(j['hostWire']['assetAccess']['productionAvailableInTavi_0_3_141'])

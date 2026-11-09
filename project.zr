@@ -1,7 +1,7 @@
 {
   "schema": "ziprunner.zr/v1",
   "project_key": "tavix",
-  "label": "TaviX — reviewed extension distribution repository",
+  "label": "TaviX \u2014 reviewed extension distribution repository",
   "match": [
     "tavix-*-ziprunner.zip"
   ],
@@ -38,5 +38,5 @@
   "require_clean_git_before_overlay": false,
   "mechanisms_require_build_success": true,
   "post_build_mechanisms": [],
-  "version": "0.1.12"
+  "version": "0.1.13"
 }
