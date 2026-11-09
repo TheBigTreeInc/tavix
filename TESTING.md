@@ -35,3 +35,7 @@ Run `python -m unittest discover -s tests -p test_classification.py -v` and the 
 == Asset dependency contract regression (0.1.11)
 
 Run `python -m unittest discover -s tests -p test_asset_dependencies.py -v`. This covers legacy package acceptance, strict dependency and permission requests, lock-consistent forged archives, host-only grant subset checking, JSON schemas and local repository staging. It is **not** proof that Tavi 0.3.141 accepts these manifests or that real Tavi Assets engine/LoopRD entitlements are integrated.
+
+## Registry administration contract (0.1.12)
+
+Run `python -m unittest discover -s tests -p test_registry_admin.py -v`, full unit suite, strict repository check, and package/archive validation of `examples/registry-admin-request`. These are source/specification checks only. Tavi host authorization, LoopRD `ecosystemAdmin`, native confirmations, upload streaming, revocation and end-to-end Windows/Android acceptance require separately reviewed integrations and operator evidence. Do not mark production authorization passed based on these tests.

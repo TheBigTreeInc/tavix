@@ -3,14 +3,14 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.11",
-    "base_version": "0.1.10"
+    "version": "0.1.12",
+    "base_version": "0.1.11"
   },
   "update": {
-    "id": "TAVIX-20261108-0111",
+    "id": "TAVIX-20261109-0112",
     "kind": "source_update",
-    "created_at": "2026-11-08T10:25:00+01:00",
-    "summary": "Add validated optional Tavi Assets pack dependencies, requested permission tokens and a host-only scoped grant contract; preserve existing packages and release assets; no runtime grants or publication."
+    "created_at": "2026-11-09T02:55:00+01:00",
+    "summary": "Specify request-only host-mediated assets.registry.admin/v1 capability with strict request/response schemas, manifest validation, and explicit confirmation/LoopRD authority; no admin runtime, publication or wallet implementation."
   },
   "planned_work": [
     {
@@ -66,6 +66,12 @@
       "title": "TaviX asset dependency and permission request contract",
       "priority": "high",
       "acceptance_criteria": "Validate optional assetDependencies and requested permissions in package, archive and staging; provide host-only per-pack grant subset spec, cross-project evidence, schemas, docs, C4, example and tests; no production host authority claimed."
+    },
+    {
+      "id": "TAVIX-REGISTRY-ADMIN-001",
+      "title": "Privileged host-mediated asset registry administration contract",
+      "priority": "high",
+      "acceptance_criteria": "TaviX request-only manifest permission, strict host-wire request/response schemas and docs, native confirmation, LoopRD authority, revocation, no implicit grant, source tests; no backend or automatic publication."
     }
   ],
   "done_work": [],
@@ -129,53 +135,66 @@
       "id": "TAVIX-ASSET-CONTRACT-001",
       "status": "review",
       "next_action": "Verify source-only asset request/grant schema, exact ZIP Windows QA, Tavi/Assets contract compatibility and explicit operator approval."
+    },
+    {
+      "id": "TAVIX-REGISTRY-ADMIN-001",
+      "status": "review",
+      "next_action": "Run exact ZIP tests in Windows ZipRunner, coordinate and approve transport with Social/LoopRD, verify host grant and native confirmation negative cases, then explicitly approve any Git publication."
     }
   ],
   "validation": {
-    "model_reported": "partial",
+    "model_reported": "source_passed_native_pending",
     "checks": [
       {
-        "id": "TAVIX-0111-FULL-UNIT",
+        "id": "TAVIX-0112-FULL-UNIT",
         "status": "passed",
-        "description": "70 Python tests executed in Linux source checkout; exact ZIP extraction rerun pending",
+        "description": "81 Python unit tests passed in Linux source checkout; exact extracted ZIP verification to follow separately",
         "command": "python -m unittest discover -s tests -v",
         "environment": "Linux container, not Windows ZipRunner"
       },
       {
-        "id": "TAVIX-0111-STRICT-CATALOG",
+        "id": "TAVIX-0112-STRICT-CATALOG",
         "status": "passed",
-        "description": "Strict repository index check passed; 105 historical staged release/catalog files byte-identical",
+        "description": "Strict repository index check passed; no staged release or catalog mutation",
         "command": "python tools/repository.py check --repository . --strict",
         "environment": "Linux container"
       },
       {
-        "id": "TAVIX-0111-EXAMPLE-PACK",
+        "id": "TAVIX-0112-REGISTRY-FIXTURE",
         "status": "passed",
-        "description": "Asset consumer fixture packed and archive-validated with correct lock",
-        "command": "python tools/tavix_package.py pack examples/asset-consumer <temporary-path> && python tools/tavix_package.py validate-archive <temporary-path>",
+        "description": "Admin request-only example validates, packs and validates as .tavix; no host authorization tested",
+        "command": "python tools/tavix_package.py pack examples/registry-admin-request <temporary-path> && python tools/tavix_package.py validate-archive <temporary-path>",
         "environment": "Linux container"
       },
       {
-        "id": "TAVIX-0111-PREFLIGHT",
+        "id": "TAVIX-0112-EXACT-PACKAGE",
         "status": "passed",
-        "description": "Canonical index unchanged; preflight returned unchanged",
-        "command": "python tools/ziprunner_catalog_preflight.py --repository .",
+        "description": "Existing Atrium 1.0.5 exact-package QA 7/7 checks passed",
+        "command": "python tools/local-client/qa.py --repository . --extension inc.thebigtree.tavi.atrium --version 1.0.5",
+        "environment": "Linux container"
+      },
+      {
+        "id": "TAVIX-0112-STRUCTURIZR",
+        "status": "not_run",
+        "description": "Structurizr CLI unavailable; C4 source-contract tests passed but no DSL parser validation",
         "environment": "Linux container"
       }
     ]
   },
   "handover": {
-    "next_pass": "Verify exact 0.1.11 ZIP on Windows; Tavi 0.3.141 must accept asset request metadata and enforce pack-scoped grants before integration.",
+    "next_pass": "Social/LoopRD review proposed registry admin wire and transport; Tavi implements exact-revision host authorization, native confirmations and LoopRD forwarding before any production capability exposure.",
     "risks": [
       "Tavi 0.3.141 rejects new assetDependencies and assets.* permission tokens; no live asset feature or attached engine.",
       "Tavi 0.3.141 flat pack/capability grants cannot enforce pack-specific customization without host changes.",
       "Tavi Assets 0.1.7 provides a reference portable engine but not accepted native/entitlement/storefront integration.",
       "TaviX package validation is not proof of publisher trust, installation, entitlement, authorization or operator acceptance.",
-      "Windows ZipRunner and separate Git publication approval remain pending."
+      "Windows ZipRunner and separate Git publication approval remain pending.",
+      "assets.registry.admin/v1 is specification-only; Tavi 0.3.141 rejects permission and has no trusted admin transport; LoopRD ecosystemAdmin checks and confirmation evidence unverified."
     ],
     "blockers": [
       "Native Tavi/Assets engine and grant integration is external and not completed by this TaviX ZIP.",
-      "Operator Windows/native acceptance and release approval not provided."
+      "Operator Windows/native acceptance and release approval not provided.",
+      "Trusted host-mediated LoopRD admin transport, verified ecosystemAdmin authorization and native confirmation flow are not implemented; application admin controls must stay disabled."
     ],
     "notes": [
       "The TaviX ZipRunner checkout is intended to be adjacent to Atrium and Companion; scripts do not invoke Git."
@@ -183,21 +202,21 @@
   },
   "operator_actions": [
     {
-      "id": "TAVIX-OP-0111-1",
-      "description": "Import exact 0.1.11 source ZIP over 0.1.10 in existing TaviX ZipRunner project without overwriting protected operator state."
+      "id": "TAVIX-OP-0112-1",
+      "description": "Import exact TaviX 0.1.12 ZIP over reviewed 0.1.11, preserving protected operator paths and existing immutable staged releases."
     },
     {
-      "id": "TAVIX-OP-0111-2",
-      "description": "Run Windows build, full unit suite, strict catalog and example .tavix pack/validate; confirm historical immutable releases unchanged."
+      "id": "TAVIX-OP-0112-2",
+      "description": "Run Windows full tests, strict catalog integrity, and registry admin example package/archive checks."
     },
     {
-      "id": "TAVIX-OP-0111-3",
-      "description": "Review asset request vs grant semantics with Tavi 0.3.141 and Tavi Assets 0.1.7 teams; separately approve any Git publication. Do not enable new host permissions before implementation."
+      "id": "TAVIX-OP-0112-3",
+      "description": "Have Social/LoopRD approve/adjust proposed host-wire schemas and security model before implementing or enabling the feature; publication requires separate operator approval."
     }
   ],
   "release": {
     "requested": false,
     "requires_operator_approval": true,
-    "notes": "Source-only asset dependency requests and host grant schema; no Tavi engine, entitlement, wallet or Git publication authorized."
+    "notes": "Specification-only privileged capability request; no live grants, credentials, registry mutation, host dispatch or publication."
   }
 }

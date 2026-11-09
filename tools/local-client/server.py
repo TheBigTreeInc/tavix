@@ -5,6 +5,7 @@ sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[2]
 from tools.local_client import local_packages
 from tools.tavix_classification import resolve_classification
 from tools.tavix_asset_dependencies import validate_asset_dependencies
+from tools.tavix_registry_admin import validate_registry_admin_request
 from urllib.parse import unquote
 
 import json
@@ -28,7 +29,7 @@ def discover(root=ROOT):
             entry = (base / panel).resolve()
             if not entry.is_relative_to(base) or not entry.is_file():
                 continue
-            found.append({"id": m["id"], "version": m["version"], "name": m.get("name", m["id"]), "classification": resolve_classification(m), "assetDependencies": validate_asset_dependencies(m), "panel": "/" + entry.relative_to(root.resolve()).as_posix(), "permissions": m.get("permissions", [])})
+            found.append({"id": m["id"], "version": m["version"], "name": m.get("name", m["id"]), "classification": resolve_classification(m), "assetDependencies": validate_asset_dependencies(m), "registryAdminRequested": validate_registry_admin_request(m), "panel": "/" + entry.relative_to(root.resolve()).as_posix(), "permissions": m.get("permissions", [])})
         except (ValueError, KeyError, OSError, TypeError):
             continue
     return found

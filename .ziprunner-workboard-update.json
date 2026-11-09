@@ -1,8 +1,8 @@
 {
   "schema": "ziprunner.workboard-update.v1",
   "project": "tavix",
-  "version": "0.1.11",
-  "summary": "TaviX asset dependency and requested-permission contract with host-only scoped grant projection; no runtime authorization, install, wallet or publication.",
+  "version": "0.1.12",
+  "summary": "Proposed request-only host-mediated registry admin contract, versioned wire schemas and source validators; no LoopRD transport or admin grant enabled.",
   "implemented": [
     {
       "id": "TAVIX-ASSET-CONTRACT-001",
@@ -13,6 +13,17 @@
         "Confirm legacy app/game packages still install; new dependency-bearing example is rejected by Tavi 0.3.141 until host updated.",
         "Review Tavi Assets 0.1.7 compatibility and no cross-pack grant or entitlement bypass.",
         "Approve Git publication separately; no automatic push or release."
+      ]
+    },
+    {
+      "id": "TAVIX-REGISTRY-ADMIN-001",
+      "title": "Versioned registry admin manifest request and proposed wire contract",
+      "summary": "Optional assets.registry.admin/v1 requested permission, strict method schemas, docs, request-only example, regression tests and C4; operator acceptance pending.",
+      "operator_checks": [
+        "Verify Windows source ZIP build and example pack/archive",
+        "Social/LoopRD approve proposed method names, upload transport, audit and confirmation semantics",
+        "Verify copied app ID, unapproved digest, revoked role, denied operation and missing transport all fail closed",
+        "No Git publication or production host feature without explicit approval"
       ]
     }
   ],
@@ -58,6 +69,18 @@
       "title": "Transitive HTML/CSS/JS package reference validation",
       "summary": "Archive codec validates lock and manifest references but not all transitive UI asset references.",
       "next_action": "Add fail-closed referenced asset validation in a separate pass."
+    },
+    {
+      "id": "TAVI-REGISTRY-ADMIN-HOST-001",
+      "title": "Tavi trusted admin session and native confirmation transport",
+      "summary": "Tavi must bind reviewed package digest, explicit approval, authenticated user and LoopRD authorization; implement bounded upload and native confirmations; never expose credentials.",
+      "next_action": "Social/Tavi agree wire contract and implement fail-closed host adapter with negative tests."
+    },
+    {
+      "id": "LOOPRD-REGISTRY-ADMIN-001",
+      "title": "LoopRD authoritative asset registry operations and audit",
+      "summary": "LoopRD must implement ecosystemAdmin and per-operation registry permissions, immutable record revisions, idempotent stage/price/publish/revoke, audit and revocation.",
+      "next_action": "Agree backend transport, authenticated assertions, confirmation evidence and price/publish/revoke transaction semantics."
     }
   ]
 }

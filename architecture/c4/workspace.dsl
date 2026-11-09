@@ -1,4 +1,4 @@
-workspace "TaviX" "TaviX reviewed extension distribution and local development preview, based on source 0.1.11." {
+workspace "TaviX" "TaviX reviewed extension distribution and local development preview, based on source 0.1.12." {
 
     model {
         operator = person "Extension maintainer" "Reviews, stages and locally tests TaviX extension packages before choosing whether to publish."
@@ -6,6 +6,8 @@ workspace "TaviX" "TaviX reviewed extension distribution and local development p
         producer = softwareSystem "Extension producer" "Independent application source/build (e.g. Companion or Atrium); supplies compiled bundles to TaviX." "External"
         tavi = softwareSystem "Tavi" "Messenger application that discovers and installs reviewed TaviX extensions." "External"
         ziprunner = softwareSystem "ZipRunner" "Operator-controlled source import, build, workboard and Git review workflow." "External"
+        looprd = softwareSystem "LoopRD asset registry" "External authoritative admin role, pack staging, pricing, publishing, revocation and audit; trusted host transport not implemented by TaviX." "External"
+        taviAssets = softwareSystem "Tavi Assets" "External canonical data-only .tavia validation, asset pack engine and consumer SDK." "External"
         pages = softwareSystem "GitHub repository and Pages" "External Git source host and static HTTPS distribution of approved TaviX catalog/assets." "External"
 
         tavix = softwareSystem "TaviX" "Versioned extension packaging, static repository/catalog tooling, package QA, and a loopback-only development preview." {
@@ -17,6 +19,7 @@ workspace "TaviX" "TaviX reviewed extension distribution and local development p
             cli = container "Repository and validation toolchain" "CLI commands and reusable Python modules for immutable package staging, index verification and exact-package QA." "Python 3 CLI/library" {
                 stage = component "Release staging" "Validates the incoming release; refuses changed same-version bytes; copies staged assets into a versioned directory." "Python; tools/repository.py"
                 package = component "TaviX archive codec" "Builds deterministic .tavix archives and verifies package lock paths, sizes, SHA-256 and optional manifest classification and asset dependency requests; not publisher trust." "Python; tools/tavix_package.py"
+                registryAdminContract = component "Registry admin manifest request and proposed wire contract" "Validates optional assets.registry.admin/v1 request and documents strict host-mediated method schemas; does not issue host grants or call LoopRD." "Python; tools/tavix_registry_admin.py and contracts/tavix-registry-admin-v1.json"
                 assetContract = component "Asset dependency request and grant shape validation" "Validates optional per-pack asset requests and permissions and checks host-issued grant subsets as pure data; never authorizes access or installs content." "Python; tools/tavix_asset_dependencies.py, tools/tavix_asset_grants.py"
                 catalog = component "Catalog builder and integrity checker" "Validates all on-disk releases, selects the highest version per application and compares/writes canonical tavi.repository.json bytes." "Python; tools/repository.py"
                 preflight = component "Windows catalog preflight" "Reconciles only verified safe catalog drift and leaves unexpected releases/tampering blocked." "Python; tools/ziprunner_catalog_preflight.py"
@@ -54,11 +57,15 @@ workspace "TaviX" "TaviX reviewed extension distribution and local development p
         cli -> releases "Stages immutable releases and maintains the canonical catalog" "Filesystem"
         releases -> pages "Provides approved source/catalog/assets after an explicitly reviewed Git push" "Git/Pages workflow; operator gated"
         tavi -> pages "Fetches published catalog and extension assets" "HTTPS"
+        tavi -> looprd "Proposed trusted authenticated registry admin transport; NOT implemented by TaviX" "Host-mediated backend protocol pending approval"
+        tavi -> taviAssets "Hosts and authorizes asset engine access; external integration pending" "Trusted runtime adapter"
 
         stageInvocation -> stage "Starts stage command with the compiled bundle" "Process invocation"
         stage -> package "Validates and packs the extension archive" "Python call"
         package -> assetContract "Validates asset request/permission metadata" "Python call"
+        package -> registryAdminContract "Validates privileged admin permission request only" "Python call"
         stage -> assetContract "Validates reviewed source manifest requests" "Python call"
+        stage -> registryAdminContract "Validates requested admin permission, never authorizes it" "Python call"
         stage -> catalog "Checks existing index and regenerates after safe staging" "Python call"
         stage -> releases "Copies an immutable release directory" "Filesystem"
         package -> releases "Reads .tavix archives during release validation" "Filesystem"

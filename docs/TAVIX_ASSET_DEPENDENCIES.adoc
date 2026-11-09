@@ -84,3 +84,7 @@ No new dependency-bearing extension should be published as compatible with Tavi 
 == Tests and operator gate
 
 Run `python -m unittest discover -s tests -p test_asset_dependencies.py -v`, then the full test suite and strict repository check. Verify that old packages still pack and stage, invalid dependency manifests fail, and the example packages with correct locks. Windows/Android native integration, real grants, ownership, asset updates, storefront and operator acceptance remain pending. No Git push, tag, release or public publication without approval.
+
+== Separation from registry administration (0.1.12)
+
+`assets.registry.admin/v1` is a separate privileged *request* for LoopRD registry operations, never a pack-scoped `assets.read` or `assets.preferences.write` grant. It does not weaken or extend the `tavi.assets/v1` consumer API. See link:TAVIX_REGISTRY_ADMIN.adoc[the proposed admin contract].

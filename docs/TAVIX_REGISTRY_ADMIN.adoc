@@ -1,0 +1,122 @@
+= TaviX 0.1.12 — trusted asset registry administration (contract candidate)
+:toc:
+
+== Status and ownership
+
+This is a *TaviX specification candidate*, not an implemented or externally accepted administrative transport. Based on Tavi 0.3.141 and Tavi Assets 0.1.7 supplied sources. TaviX owns the optional manifest permission, package validation and versioned request/response schemas. Tavi/Social owns the trusted extension host session, user authentication, native confirmation UI and secure LoopRD forwarding. LoopRD is authoritative for `ecosystemAdmin`, per-operation registry permissions, pricing, immutable revision transitions, audit and revocation. Tavi Assets owns `.tavia` validation, data-only pack rules and the runtime asset engine. The TaviX repository is NOT the LoopRD asset registry.
+
+This feature is *not* enabled by Tavi 0.3.141, by the local TaviX preview, by Tavi Assets 0.1.7 or by the TaviX 0.1.12 package validator. Do not turn on Tavi Asset Studio's administrative controls until Social/LoopRD agree on and implement the transport and operator acceptance succeeds.
+
+== Manifest declaration — request only
+
+A normal `.tavix` application can request the capability through its existing `permissions` array:
+
+[source,json]
+----
+{
+  "schema": "tavi.extension/v1",
+  "id": "org.tavi.tools.asset-studio",
+  "version": "0.1.0",
+  "name": "Tavi Asset Studio",
+  "summary": "Preview and manage approved Tavi Assets packs",
+  "publisher": "tavi",
+  "kind": "app",
+  "hostApi": {"min": "1.0.0", "maxExclusive": "2.0.0"},
+  "entrypoints": {"panel": "ui/index.html"},
+  "contributions": [{"slot":"app.launcher","id":"asset-studio","label":"Asset Studio","action":"openPanel"}],
+  "permissions": ["ui.panel", "assets.registry.admin/v1"],
+  "platforms": ["web", "windows", "android"]
+}
+----
+
+The above is a *manifest example*, not an approved publisher identity or verified Tavi Asset Studio package. The full packable test fixture is `examples/registry-admin-request/manifest.json` and does not implement admin operations. A copied application ID or the permission string alone never grants access. No additional manifest field is required. The existing `assetDependencies`, `assets.read`, `assets.preferences.write` and `tavi.assets/v1` remain separate and unchanged. The admin permission is not an asset entitlement, storefront purchase, asset pack read grant or access to a wallet.
+
+The TaviX packager, archive validator and repository staging accept this *requested* permission after syntax validation; old packages without it remain unchanged. Tavi's strict manifest validator must explicitly recognize the new permission before such an app can be installed. A repository reviewer must separately approve any package requesting it.
+
+== Trusted approval chain
+
+. Host verifies the installed `.tavix` source/provenance, approved publisher and *exact installed revision digest*. An ID, digest alone or a locally imported package claiming an official ID is insufficient. Developer previews require a separate explicitly approved, digest-pinned trust route; otherwise admin is unavailable.
+. Host obtains explicit approval of the requested feature for that verified revision and current account/session; approval is revocable and does not persist across unreviewed updates, logout or account changes.
+. Host authenticates the current user using its existing first-party identity transport, without sending tokens or credentials into the extension iframe.
+. LoopRD checks `ecosystemAdmin` AND operation-specific registry permissions on every request. The host may narrow allowed operations; neither host nor application may override a LoopRD denial.
+. Tavi communicates with LoopRD through a trusted authenticated backend transport. The application cannot access LoopRD directly, read database tables, choose the actor, forge an authorization proof or supply a privileged endpoint URL.
+. The host checks session freshness and revocation at dispatch and after any asynchronous confirmation. LoopRD rechecks on mutation, with audit logs and idempotency. Deny unsupported methods, stale revisions, revoked permissions and unavailable transport by default.
+
+The host MUST NOT expose `assets.registry.admin/v1` in `host.info.features` or return it in `host.capabilities` unless the feature is actually usable by the *current* approved extension session and LoopRD has authorized it. The admin feature MUST NOT be exposed to the TaviX local preview or arbitrary installed applications. Do not infer admin permission from a declared `permissions` array.
+
+== Version negotiation
+
+* TaviX standard remains `tavix/1.0`; manifest and wire channel remain `tavi.extension/v1`. The host's `host.info.api` remains a separate host API version, currently observed as `1.0.0` in Tavi 0.3.141.
+* Request `host.info`, check the *exact* feature string `assets.registry.admin/v1`, and verify the granted permission via `host.capabilities`. Both are necessary but not sufficient: the host/LoopRD still reauthorize each operation.
+* If both checks succeed, call `assets.registry.admin.status` with `params:{}`. It returns `apiVersion: "1.0.0"`, an operation allowlist and upload limits. Operations absent from `allowedOperations` are disabled in the UI; the host/LoopRD still enforce them.
+* A future incompatible contract uses `/v2`; v1 unknown method names, unknown request fields and unsupported versions MUST be rejected. No fallback to `assets.read`, `tavi.assets/v1`, `wallet.*`, arbitrary HTTP or extension-private storage.
+* v1 can gain optional fields only via an explicitly reviewed compatible schema revision. Until then the v1 request schema rejects unknown fields. Upload limits are negotiated per session; the host may impose lower limits, rate limiting and shorter expiry.
+
+== Wire envelope
+
+The host request uses `request.params` for all admin methods. This is distinct from older top-level arguments for methods such as `storage.get` and `storage.set`.
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"request","id":21,"method":"assets.registry.admin.status","params":{}}
+----
+
+Successful response (correlate `id` with the requested method):
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"response","id":21,"ok":true,"result":{"schema":"tavix.registry-admin.status/v1","apiVersion":"1.0.0","allowedOperations":["status","records.list","records.get"],"maxUploadBytes":16777216,"maxChunkBytes":262144}}
+----
+
+Denied response:
+
+[source,json]
+----
+{"channel":"tavi.extension/v1","direction":"response","id":21,"ok":false,"error":"permission_denied"}
+----
+
+The `error` field remains a string, as in the existing TaviX response envelope; use the enumerated codes from the contract rather than exposing raw LoopRD errors. Never return bearer tokens, database credentials or unfiltered backend exception messages.
+
+== Proposed methods
+
+[cols="2,3,3",options="header"]
+|===
+|Method (prefix `assets.registry.admin.`) |Request `params` |Result / side effects
+|`status` |`{}` |Verified operations and upload limits; no mutation
+|`stage.begin` |`fileName`, `byteLength`, `sha256`, `idempotencyKey` |Bounded upload session ID, chunk limit and expiry; no registry publication
+|`stage.chunk` |`uploadId`, contiguous `offset`, `dataBase64` |Received byte count; strict base64, hash and size enforcement
+|`stage.commit` |`uploadId`, `sha256`, `idempotencyKey` |Canonical `.tavia` validation; creates staged record, never publishes
+|`stage.abort` |`uploadId` |Discards incomplete upload
+|`records.list` |Optional `state`, `limit`, `cursor` |Sanitized accessible staged/published/revoked/failed record summaries
+|`records.get` |`recordId` |Sanitized version, validation results and optionally canonical manifest
+|`price.propose` |`recordId`, `expectedRevision`, `priceGold`, `idempotencyKey` |Native confirmation required; proposes Gold price (0 means free), no wallet debit
+|`publish` |`recordId`, `expectedRevision`, `idempotencyKey` |Native confirmation required; LoopRD validates and publishes exact staged digest
+|`revoke` |`recordId`, `expectedRevision`, `reason`, `idempotencyKey` |Native confirmation required; LoopRD revokes exact version and audits
+|===
+
+All methods require a verified admin session. LoopRD may authorize only a subset. Staging is not publication. `price.propose` applies to a staged revision; published pricing changes require a new approved staged offer/revision rather than silently mutating an existing published offer. Price is an integer in Gold between 0 and 1,000,000; pricing is not a wallet charge, ownership grant or free-gold transfer. LoopRD decides actual offer availability and child-safe purchase policies. The host may enforce a smaller price limit.
+
+A `.tavia` file is *data-only*. The host must accept uploaded bytes only through the bounded session, reject caller-provided URLs and filesystem paths, validate contiguous offsets, prevent ZIP bombs and traversal, recompute the full SHA-256, and call the canonical Tavi Assets validator before LoopRD staging. `stage.commit` must fail with `validation_failed` rather than storing a usable published record if the pack is invalid. Failed/staged records must never become installed assets by implication.
+
+== Native confirmation and audit
+
+For `price.propose`, `publish` and `revoke`, the host MUST show its own trusted confirmation surface, with the actual target pack ID, version, SHA-256, proposed Gold price or revocation reason, and the operation to be performed. A JavaScript dialog or `{confirmed:true}` supplied by the extension is not authorization. The host binds confirmation evidence to the authenticated account, session, exact record/revision, operation and payload, then forwards it to LoopRD through the trusted transport. LoopRD must reject stale, missing, mismatched or replayed confirmation evidence and enforce idempotency and audit. Cancel means `confirmation_declined` and no mutation.
+
+The concrete service-to-service assertion format, authentication mechanism, evidence signature, upload retention and LoopRD endpoint paths are **unresolved cross-project contracts**. TaviX does not invent them or implement a transport. No live administrative feature may be enabled until Social/LoopRD formally approves those details.
+
+== JSON Schemas and example
+
+* `contracts/tavix-registry-admin-v1.json` — machine-readable method index, negotiation, ownership and authority requirements.
+* `contracts/tavix-registry-admin-request-v1.schema.json` — JSON Schema 2020-12 `oneOf` of exact method/request envelope shapes.
+* `contracts/tavix-registry-admin-response-v1.schema.json` — JSON Schema 2020-12 success/error envelopes and method result schemas, including versioned record shapes.
+* `examples/registry-admin-request/manifest.json` — packable request-only fixture; it does NOT publish, stage or grant anything.
+
+== Acceptance and negative cases
+
+* Existing `.tavix` applications without the permission remain unchanged. `assetDependencies`, pack-scoped grants and `tavi.assets/v1` are unaffected.
+* Unknown admin permission spelling or method fails closed. A request with extra fields (e.g. caller-supplied `userId`, `role`, `token`, `confirmed`, `url`) fails validation.
+* Copied official app ID, unreviewed digest, disabled app, account switch, revoked host approval, revoked LoopRD admin role, unavailable transport or unsupported API version cannot access admin methods.
+* Local `.tavia` preview works without the feature; publishing, staging and pricing controls are disabled without a verified grant.
+* Upload size, SHA-256, offsets, duplicate chunks, expiry, invalid packs, stale revisions, duplicate idempotency keys and concurrent mutation are rejected or handled deterministically by the authoritative host/backend.
+* Native confirmations are displayed for price proposals, publication and revocation, and LoopRD records audit evidence; no client-only boolean can bypass confirmation.
+* Run source tests and exact ZIP archive checks in ZipRunner; verify real Windows/Android Tavi host and LoopRD integration separately. Do not publish or approve the feature automatically.

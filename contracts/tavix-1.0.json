@@ -1,5 +1,5 @@
 {
-  "documentationVersion": "0.1.11",
+  "documentationVersion": "0.1.12",
   "hostWire": {
     "channel": "tavi.extension/v1",
     "eventDirection": "event",
@@ -134,6 +134,28 @@
       "currentTaviPerPackCustomizationGrant": false,
       "consumerContract": "Tavi Assets 0.1.7 contracts/tavi-assets-consumer-v1.json",
       "grantAuthority": "Tavi host only; extension declaration cannot issue grants"
+    },
+    "proposedRegistryAdmin": {
+      "feature": "assets.registry.admin/v1",
+      "status": "proposed_for_Social_LoopRD_review_not_implemented",
+      "contractFile": "contracts/tavix-registry-admin-v1.json",
+      "requestSchema": "contracts/tavix-registry-admin-request-v1.schema.json",
+      "responseSchema": "contracts/tavix-registry-admin-response-v1.schema.json",
+      "manifestRequestIsNotGrant": true,
+      "currentTavi_0_3_141_support": false,
+      "currentLoopRDAdminTransportVerified": false,
+      "methods": [
+        "assets.registry.admin.status",
+        "assets.registry.admin.stage.begin",
+        "assets.registry.admin.stage.chunk",
+        "assets.registry.admin.stage.commit",
+        "assets.registry.admin.stage.abort",
+        "assets.registry.admin.records.list",
+        "assets.registry.admin.records.get",
+        "assets.registry.admin.price.propose",
+        "assets.registry.admin.publish",
+        "assets.registry.admin.revoke"
+      ]
     }
   },
   "package": {
@@ -191,6 +213,14 @@
       "maxDistinctCapabilities": 256,
       "hostMustApprovePackCapabilityPairs": true,
       "ownershipOrInstallationImplied": false
+    },
+    "registryAdmin": {
+      "permission": "assets.registry.admin/v1",
+      "requestOnly": true,
+      "optional": true,
+      "noGrantByApplicationId": true,
+      "assetDependenciesIndependent": true,
+      "validator": "tools/tavix_registry_admin.py"
     }
   },
   "references": {
@@ -208,7 +238,12 @@
     "assetDependencies": "docs/TAVIX_ASSET_DEPENDENCIES.adoc",
     "assetDependenciesSchema": "contracts/tavix-asset-dependencies-v1.schema.json",
     "assetGrantsSchema": "contracts/tavix-asset-grants-v1.schema.json",
-    "assetConsumerExample": "examples/asset-consumer/manifest.json"
+    "assetConsumerExample": "examples/asset-consumer/manifest.json",
+    "registryAdmin": "docs/TAVIX_REGISTRY_ADMIN.adoc",
+    "registryAdminContract": "contracts/tavix-registry-admin-v1.json",
+    "registryAdminRequestSchema": "contracts/tavix-registry-admin-request-v1.schema.json",
+    "registryAdminResponseSchema": "contracts/tavix-registry-admin-response-v1.schema.json",
+    "registryAdminExample": "examples/registry-admin-request/manifest.json"
   },
   "repository": {
     "catalogFile": "tavi.repository.json",
@@ -220,6 +255,6 @@
     "versionedRoot": "extensions/<application-id>/<version>/"
   },
   "schema": "tavix.documentation-contract/v1",
-  "scope": "TaviX 0.1.11 packager and repository validate optional asset dependency requests, based on Tavi 0.3.141 and Tavi Assets 0.1.7 source; Tavi production asset grants/runtime remain unavailable; no publication.",
+  "scope": "TaviX 0.1.12 validates optional privileged registry administration permission requests and specifies proposed host-mediated wire schemas; Tavi/Social and LoopRD transport/authority are not implemented or agreed; no publication.",
   "standard": "tavix/1.0"
 }

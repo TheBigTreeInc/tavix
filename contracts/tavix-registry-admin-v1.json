@@ -1,0 +1,142 @@
+{
+  "schema": "tavix.registry-admin-contract/v1",
+  "status": "proposed_for_Social_LoopRD_review_not_implemented",
+  "documentationVersion": "0.1.12",
+  "feature": "assets.registry.admin/v1",
+  "manifestPermission": "assets.registry.admin/v1",
+  "wire": {
+    "channel": "tavi.extension/v1",
+    "standard": "tavix/1.0",
+    "requestDirection": "request",
+    "responseDirection": "response",
+    "paramsLocation": "request.params",
+    "requestId": "positive integer unique among pending requests",
+    "hostApiVersion": "1.0.0 (unchanged; feature gated)",
+    "featureApiVersion": "1.0.0"
+  },
+  "negotiation": {
+    "hostInfoFeature": "assets.registry.admin/v1",
+    "hostCapabilitiesPermission": "assets.registry.admin/v1",
+    "featureAdvertisedOnlyAfter": "verified installed revision + host approval + authenticated account + LoopRD registry authorization + live trusted transport",
+    "absence": "fail closed; local preview still works; never infer rights from ID, package hash alone or assets.read",
+    "unsupportedMajor": "deny; no fallback to other host methods",
+    "minor": "additive only, unknown fields or methods denied in v1",
+    "limits": "status returns maxUploadBytes/maxChunkBytes; host may enforce lower limits and rate limiting"
+  },
+  "authorization": {
+    "manifestRequestOnly": true,
+    "grantByAppIdAlone": false,
+    "requiresApprovedPublisherAndExactDigest": true,
+    "requiresExplicitHostApproval": true,
+    "requiresAuthenticatedUser": true,
+    "looprdAuthoritativeFor": [
+      "ecosystemAdmin",
+      "registry operation permissions",
+      "record revision",
+      "publication state",
+      "pricing and audit"
+    ],
+    "sessionBound": true,
+    "revalidateEachOperation": true,
+    "credentialsInApp": false,
+    "directDatabaseOrNetworkFromApp": false,
+    "hostNativeConfirmationRequiredFor": [
+      "price.propose",
+      "publish",
+      "revoke"
+    ],
+    "noCallerProvidedConfirmationFlag": true,
+    "adminGrantSeparateFromAssetsGrants": true
+  },
+  "canonicalAssets": {
+    "packSchema": "https://github.com/TheBigTreeInc/tavi-assets/contracts/tavi-assets-pack-v1.schema.json",
+    "consumerFeature": "tavi.assets/v1",
+    "preservedPermissions": [
+      "assets.read",
+      "assets.preferences.write"
+    ],
+    "preview": "unprivileged local .tavia inspection, no install or publish"
+  },
+  "requestSchema": "contracts/tavix-registry-admin-request-v1.schema.json",
+  "responseSchema": "contracts/tavix-registry-admin-response-v1.schema.json",
+  "methods": {
+    "assets.registry.admin.status": {
+      "paramsSchema": "#/$defs/statusParams",
+      "resultSchema": "#/$defs/statusResult",
+      "confirmationRequired": false,
+      "description": "Verify current host approval and LoopRD permissions before returning operations; no cached role authority."
+    },
+    "assets.registry.admin.stage.begin": {
+      "paramsSchema": "#/$defs/stageBeginParams",
+      "resultSchema": "#/$defs/stageBeginResult",
+      "confirmationRequired": false,
+      "description": "Start a bounded, digest-bound upload session for a .tavia file; never import from a caller URL."
+    },
+    "assets.registry.admin.stage.chunk": {
+      "paramsSchema": "#/$defs/stageChunkParams",
+      "resultSchema": "#/$defs/stageChunkResult",
+      "confirmationRequired": false,
+      "description": "Upload a contiguous base64 chunk; host enforces advertised byte limits and session binding."
+    },
+    "assets.registry.admin.stage.commit": {
+      "paramsSchema": "#/$defs/stageCommitParams",
+      "resultSchema": "#/$defs/stageCommitResult",
+      "confirmationRequired": false,
+      "description": "Validate the complete digest and canonical Tavi Assets pack before staging; never publish."
+    },
+    "assets.registry.admin.stage.abort": {
+      "paramsSchema": "#/$defs/stageAbortParams",
+      "resultSchema": "#/$defs/stageAbortResult",
+      "confirmationRequired": false,
+      "description": "Discard an incomplete upload session."
+    },
+    "assets.registry.admin.records.list": {
+      "paramsSchema": "#/$defs/recordsListParams",
+      "resultSchema": "#/$defs/recordsListResult",
+      "confirmationRequired": false,
+      "description": "List only records visible to the authenticated administrator."
+    },
+    "assets.registry.admin.records.get": {
+      "paramsSchema": "#/$defs/recordsGetParams",
+      "resultSchema": "#/$defs/recordsGetResult",
+      "confirmationRequired": false,
+      "description": "Inspect an authorized staged, published, revoked or failed version; no arbitrary raw file read."
+    },
+    "assets.registry.admin.price.propose": {
+      "paramsSchema": "#/$defs/priceProposeParams",
+      "resultSchema": "#/$defs/priceProposeResult",
+      "confirmationRequired": true,
+      "description": "Requires native host confirmation; proposed Gold price is not a wallet charge or entitlement."
+    },
+    "assets.registry.admin.publish": {
+      "paramsSchema": "#/$defs/publishParams",
+      "resultSchema": "#/$defs/publishResult",
+      "confirmationRequired": true,
+      "description": "Requires native host confirmation bound to exact record digest, price and revision; LoopRD makes the final decision."
+    },
+    "assets.registry.admin.revoke": {
+      "paramsSchema": "#/$defs/revokeParams",
+      "resultSchema": "#/$defs/revokeResult",
+      "confirmationRequired": true,
+      "description": "Requires native host confirmation; LoopRD revokes the specified immutable version and records audit evidence."
+    }
+  },
+  "errorCodes": [
+    "feature_unavailable",
+    "auth_required",
+    "permission_denied",
+    "operation_not_allowed",
+    "unsupported_method",
+    "unsupported_version",
+    "invalid_request",
+    "validation_failed",
+    "confirmation_declined",
+    "confirmation_required",
+    "conflict",
+    "revoked",
+    "rate_limited",
+    "transport_unavailable",
+    "upload_expired"
+  ],
+  "scope": "TaviX validates the request permission and documents host wire shapes. Tavi/Social must implement trusted host dispatch; LoopRD must implement the authoritative backend; no TaviX runtime or publication."
+}

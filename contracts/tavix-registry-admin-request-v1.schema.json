@@ -1,0 +1,519 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/TheBigTreeInc/tavix/contracts/tavix-registry-admin-request-v1.schema.json",
+  "title": "TaviX host-mediated registry administration request wire (proposal)",
+  "description": "Permission request is not a grant; host must reauthorize every operation and never trust caller-supplied identity, credentials or confirmation.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "method": {
+          "const": "assets.registry.admin.status"
+        },
+        "params": {
+          "$ref": "#/$defs/statusParams"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "method": {
+          "const": "assets.registry.admin.stage.begin"
+        },
+        "params": {
+          "$ref": "#/$defs/stageBeginParams"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "method": {
+          "const": "assets.registry.admin.stage.chunk"
+        },
+        "params": {
+          "$ref": "#/$defs/stageChunkParams"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "method": {
+          "const": "assets.registry.admin.stage.commit"
+        },
+        "params": {
+          "$ref": "#/$defs/stageCommitParams"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "method": {
+          "const": "assets.registry.admin.stage.abort"
+        },
+        "params": {
+          "$ref": "#/$defs/stageAbortParams"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "method": {
+          "const": "assets.registry.admin.records.list"
+        },
+        "params": {
+          "$ref": "#/$defs/recordsListParams"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "method": {
+          "const": "assets.registry.admin.records.get"
+        },
+        "params": {
+          "$ref": "#/$defs/recordsGetParams"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "method": {
+          "const": "assets.registry.admin.price.propose"
+        },
+        "params": {
+          "$ref": "#/$defs/priceProposeParams"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "method": {
+          "const": "assets.registry.admin.publish"
+        },
+        "params": {
+          "$ref": "#/$defs/publishParams"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "method": {
+          "const": "assets.registry.admin.revoke"
+        },
+        "params": {
+          "$ref": "#/$defs/revokeParams"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "statusParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {}
+    },
+    "stageBeginParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fileName",
+        "byteLength",
+        "sha256",
+        "idempotencyKey"
+      ],
+      "properties": {
+        "fileName": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,119}\\.tavia$"
+        },
+        "byteLength": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 67108864
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        }
+      }
+    },
+    "stageChunkParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uploadId",
+        "offset",
+        "dataBase64"
+      ],
+      "properties": {
+        "uploadId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 67108863
+        },
+        "dataBase64": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 349528,
+          "contentEncoding": "base64"
+        }
+      }
+    },
+    "stageCommitParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uploadId",
+        "sha256",
+        "idempotencyKey"
+      ],
+      "properties": {
+        "uploadId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        }
+      }
+    },
+    "stageAbortParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uploadId"
+      ],
+      "properties": {
+        "uploadId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        }
+      }
+    },
+    "recordsListParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "state": {
+          "enum": [
+            "staged",
+            "published",
+            "revoked",
+            "failed"
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "recordsGetParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recordId"
+      ],
+      "properties": {
+        "recordId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        }
+      }
+    },
+    "priceProposeParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recordId",
+        "expectedRevision",
+        "priceGold",
+        "idempotencyKey"
+      ],
+      "properties": {
+        "recordId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "priceGold": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        }
+      }
+    },
+    "publishParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recordId",
+        "expectedRevision",
+        "idempotencyKey"
+      ],
+      "properties": {
+        "recordId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        }
+      }
+    },
+    "revokeParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recordId",
+        "expectedRevision",
+        "reason",
+        "idempotencyKey"
+      ],
+      "properties": {
+        "recordId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 500
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        }
+      }
+    }
+  }
+}

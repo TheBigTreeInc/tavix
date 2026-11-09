@@ -1,0 +1,451 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/TheBigTreeInc/tavix/contracts/tavix-registry-admin-response-v1.schema.json",
+  "title": "TaviX host-mediated registry administration response wire (proposal)",
+  "description": "Responses retain the existing TaviX envelope. Client correlates response.id to the original request.method to select its result schema.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "ok",
+        "result"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "response"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ok": {
+          "const": true
+        },
+        "result": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/statusResult"
+            },
+            {
+              "$ref": "#/$defs/stageBeginResult"
+            },
+            {
+              "$ref": "#/$defs/stageChunkResult"
+            },
+            {
+              "$ref": "#/$defs/stageCommitResult"
+            },
+            {
+              "$ref": "#/$defs/stageAbortResult"
+            },
+            {
+              "$ref": "#/$defs/recordsListResult"
+            },
+            {
+              "$ref": "#/$defs/recordsGetResult"
+            },
+            {
+              "$ref": "#/$defs/priceProposeResult"
+            },
+            {
+              "$ref": "#/$defs/publishResult"
+            },
+            {
+              "$ref": "#/$defs/revokeResult"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "direction",
+        "id",
+        "ok",
+        "error"
+      ],
+      "properties": {
+        "channel": {
+          "const": "tavi.extension/v1"
+        },
+        "direction": {
+          "const": "response"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ok": {
+          "const": false
+        },
+        "error": {
+          "enum": [
+            "feature_unavailable",
+            "auth_required",
+            "permission_denied",
+            "operation_not_allowed",
+            "unsupported_method",
+            "unsupported_version",
+            "invalid_request",
+            "validation_failed",
+            "confirmation_declined",
+            "confirmation_required",
+            "conflict",
+            "revoked",
+            "rate_limited",
+            "transport_unavailable",
+            "upload_expired"
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "recordId",
+        "packId",
+        "version",
+        "sha256",
+        "state",
+        "revision",
+        "priceGold",
+        "name",
+        "validation"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.record/v1"
+        },
+        "recordId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        },
+        "packId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{0,126}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "state": {
+          "enum": [
+            "staged",
+            "published",
+            "revoked",
+            "failed"
+          ]
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "priceGold": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "description": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 1024
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "errors",
+            "warnings"
+          ],
+          "properties": {
+            "errors": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              }
+            },
+            "warnings": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              }
+            }
+          }
+        }
+      }
+    },
+    "statusResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "apiVersion",
+        "allowedOperations",
+        "maxUploadBytes",
+        "maxChunkBytes"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.status/v1"
+        },
+        "apiVersion": {
+          "const": "1.0.0"
+        },
+        "allowedOperations": {
+          "type": "array",
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "status",
+              "stage.begin",
+              "stage.chunk",
+              "stage.commit",
+              "stage.abort",
+              "records.list",
+              "records.get",
+              "price.propose",
+              "publish",
+              "revoke"
+            ]
+          }
+        },
+        "maxUploadBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 67108864
+        },
+        "maxChunkBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 262144
+        }
+      }
+    },
+    "stageBeginResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "uploadId",
+        "maxChunkBytes",
+        "expiresAt"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.stage-begin/v1"
+        },
+        "uploadId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,128}$"
+        },
+        "maxChunkBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 262144
+        },
+        "expiresAt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      }
+    },
+    "stageChunkResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "receivedBytes"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.stage-chunk/v1"
+        },
+        "receivedBytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 67108864
+        }
+      }
+    },
+    "stageCommitResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "record"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.stage-commit/v1"
+        },
+        "record": {
+          "$ref": "#/$defs/record"
+        }
+      }
+    },
+    "stageAbortResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "aborted"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.stage-abort/v1"
+        },
+        "aborted": {
+          "const": true
+        }
+      }
+    },
+    "recordsListResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "records",
+        "nextCursor"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.records-list/v1"
+        },
+        "records": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/record"
+          }
+        },
+        "nextCursor": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "recordsGetResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "record"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.records-get/v1"
+        },
+        "record": {
+          "$ref": "#/$defs/record"
+        },
+        "manifest": {
+          "type": "object",
+          "required": [
+            "schema"
+          ],
+          "properties": {
+            "schema": {
+              "const": "tavi.assets.pack/v1"
+            }
+          },
+          "description": "Canonical Tavi Assets manifest; full validation is owned by Tavi Assets, not redefined by TaviX."
+        }
+      }
+    },
+    "priceProposeResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "record"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.price-propose/v1"
+        },
+        "record": {
+          "$ref": "#/$defs/record"
+        }
+      }
+    },
+    "publishResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "record"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.publish/v1"
+        },
+        "record": {
+          "$ref": "#/$defs/record"
+        }
+      }
+    },
+    "revokeResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "record"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tavix.registry-admin.revoke/v1"
+        },
+        "record": {
+          "$ref": "#/$defs/record"
+        }
+      }
+    }
+  }
+}

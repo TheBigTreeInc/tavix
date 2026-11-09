@@ -95,3 +95,8 @@ An extension may declare optional `assetDependencies` and request `assets.read` 
 The supplied **Tavi 0.3.141** source has a guarded `tavi.assets/v1` dispatcher, but its strict manifest validator rejects these new fields/permissions, and the runtime has **no connected Assets engine or approved grants**. Tavi Assets 0.1.7 provides reference services/SDK but is not yet production-integrated. Do not publish the new example as host-compatible until Tavi implements and verifies the contract. See `docs/TAVIX_ASSET_DEPENDENCIES.adoc` and `examples/asset-consumer/manifest.json`.
 
 The older 0.3.124 classification incompatibility noted above is historical: Tavi 0.3.141 source accepts game classification, while native/operator acceptance is separate.
+
+
+## Trusted registry administration contract candidate (0.1.12)
+
+`docs/TAVIX_REGISTRY_ADMIN.adoc`, `contracts/tavix-registry-admin-v1.json`, `contracts/tavix-registry-admin-request-v1.schema.json` and `contracts/tavix-registry-admin-response-v1.schema.json` specify the optional **request-only** `assets.registry.admin/v1` capability for Tavi Asset Studio and future approved applications. `examples/registry-admin-request/manifest.json` is a packable no-op fixture. TaviX does **not** provide host admin grants, LoopRD registry transport, native confirmations or publication; Tavi 0.3.141 does not support this permission. No change to `tavi.assets/v1`, existing pack-scoped asset grants, staged releases, operator approval gates or wallet authority.

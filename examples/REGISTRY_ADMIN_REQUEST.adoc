@@ -1,0 +1,3 @@
+= Registry administration permission request example
+
+`examples/registry-admin-request/manifest.json` is a complete packable `.tavix` fixture for `assets.registry.admin/v1`. It contains no administrative SDK calls, transport, credentials or publication logic. Its HTML explicitly states that no administrator rights are available. The fixture tests manifest/ZIP compatibility only. See `docs/TAVIX_REGISTRY_ADMIN.adoc` for the proposed host-mediated wire and approval requirements. Tavi 0.3.141 rejects this permission until its strict validator is updated; the TaviX local preview never grants it.

@@ -8,9 +8,11 @@ from __future__ import annotations
 if __package__:
     from .tavix_classification import resolve_classification
     from .tavix_asset_dependencies import validate_asset_dependencies
+    from .tavix_registry_admin import validate_registry_admin_request
 else:
     from tavix_classification import resolve_classification
     from tavix_asset_dependencies import validate_asset_dependencies
+    from tavix_registry_admin import validate_registry_admin_request
 import argparse, hashlib, json, os, pathlib, re, stat, sys, zipfile
 
 STANDARD='tavix/1.0'
@@ -54,6 +56,7 @@ def validate(root:pathlib.Path):
     if 'kind' in manifest and manifest['kind'] != 'app': raise ValueError('TaviX v1 kind must remain app; use classification.type for games')
     resolve_classification(manifest)
     validate_asset_dependencies(manifest)
+    validate_registry_admin_request(manifest)
     entry=manifest.get('entrypoints',{}).get('panel')
     if not isinstance(entry,str) or not (root/entry).is_file(): raise ValueError('manifest panel entrypoint is missing')
     icon=manifest.get('icon')
@@ -90,6 +93,7 @@ def validate_archive(path:pathlib.Path):
         if 'kind' in manifest and manifest['kind'] != 'app': raise ValueError('TaviX v1 kind must remain app; use classification.type for games')
         resolve_classification(manifest)
         validate_asset_dependencies(manifest)
+        validate_registry_admin_request(manifest)
         if lock.get('applicationId')!=manifest.get('id') or lock.get('version')!=manifest.get('version'): raise ValueError('TaviX manifest/lock identity mismatch')
         expected={x['path']:x for x in lock.get('files',[])}
         if set(names)!=(set(expected)|{'tavix.lock.json'}): raise ValueError('TaviX lock/archive file mismatch')

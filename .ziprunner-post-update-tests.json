@@ -1,6 +1,6 @@
 {
   "schema": "ziprunner.post-update-tests.v1",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "tests": [
     {
       "kind": "command",
@@ -98,6 +98,15 @@
       "definition_revision": "1",
       "rerun_policy": "every_update",
       "command": "python -m unittest discover -s tests -p test_asset_dependencies.py -v",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-registry-admin-contract-tests",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_registry_admin.py -v",
       "attention_on_failure": true,
       "gating": false
     }

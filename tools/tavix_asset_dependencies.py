@@ -13,7 +13,8 @@ MAX_DEPENDENCIES = 16
 MAX_CAPABILITIES_PER_PACK = 32
 MAX_TOTAL_CAPABILITIES = 256
 ASSET_PERMISSIONS = frozenset({'assets.read', 'assets.preferences.write'})
-PUBLISHABLE_PERMISSIONS = frozenset({'ui.panel', 'ui.toast', 'storage.private'}) | ASSET_PERMISSIONS
+REGISTRY_ADMIN_PERMISSION = 'assets.registry.admin/v1'
+PUBLISHABLE_PERMISSIONS = frozenset({'ui.panel', 'ui.toast', 'storage.private', REGISTRY_ADMIN_PERMISSION}) | ASSET_PERMISSIONS
 
 
 def _semver(value: str):

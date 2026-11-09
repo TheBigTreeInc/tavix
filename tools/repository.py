@@ -18,6 +18,7 @@ from urllib.parse import urlparse
 from tavix_package import validate, pack, validate_archive
 from tavix_classification import resolve_classification
 from tavix_asset_dependencies import validate_asset_dependencies, PUBLISHABLE_PERMISSIONS
+from tavix_registry_admin import validate_registry_admin_request
 
 APP_ID = re.compile(r'^[a-z][a-z0-9.-]{2,118}$')
 VERSION = re.compile(r'^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$')
@@ -63,6 +64,7 @@ def validate_manifest(m):
     if 'platforms' in m and (not isinstance(m['platforms'],list) or not m['platforms'] or set(m['platforms'])-{'web','windows','android'}):raise ValueError('Unsupported platform')
     resolve_classification(m)
     validate_asset_dependencies(m)
+    validate_registry_admin_request(m)
     return True
 
 def release_path(root, app_id, version):
