@@ -123,3 +123,7 @@ The TaviX-owned `tools/tavix_registry_admin.py` only recognizes a *manifest requ
 == Host-mediated native file import proposal (0.1.13)
 
 The TaviX-owned `localFileContract` component validates `files.local.import` and the paired `manifest.fileImports` filter declaration; the package codec, repository stage and local-only installer/discovery use the same request validator. The new `sdk/tavix-sdk.mjs` and `examples/local-file-import` provide a *reference client*, not a production host. Tavi/Social (external) must implement Windows and Android native pickers, bounded read handles and detached-window session routing. No new TaviX backend, filesystem service, runtime grant or LoopRD communication is introduced. The source-local SDK mock tests validate wire shapes only. See `../../docs/TAVIX_LOCAL_FILE_IMPORT.adoc` and `../../contracts/tavix-local-file-import-v1.json`.
+
+== 0.1.14 UI kit source distribution
+
+`uiKitContract` is a TaviX toolchain component representing the reviewed JSON catalog, offline `sdk/ui-kit/` SVG/CSS/JS files, and a packable example. The archive codec packages files chosen by an app; it does not install global fonts/icons, add production host methods or manage other project internals. Structurizr CLI validation is required separately when available.

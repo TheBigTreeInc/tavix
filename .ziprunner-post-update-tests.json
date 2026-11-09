@@ -1,6 +1,6 @@
 {
   "schema": "ziprunner.post-update-tests.v1",
-  "version": "0.1.13",
+  "version": "0.1.15",
   "tests": [
     {
       "kind": "command",
@@ -116,6 +116,15 @@
       "definition_revision": "1",
       "rerun_policy": "every_update",
       "command": "python -m unittest discover -s tests -p test_local_file_import.py -v",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-ui-kit-014",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_ui_kit.py -v && node --test tests/test_ui_kit.mjs && node --test tests/test_ui_controller.mjs && python tools/tavix_ui_conformance.py --package examples/ui-kit",
       "attention_on_failure": true,
       "gating": false
     }

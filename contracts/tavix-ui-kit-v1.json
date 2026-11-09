@@ -1,0 +1,127 @@
+{
+  "schema": "tavix.ui-kit/v1",
+  "icons": {
+    "schema": "tavix.icons/v1",
+    "source": "Lucide reviewed locally bundled subset",
+    "sizePx": {
+      "sm": 16,
+      "md": 20,
+      "lg": 24,
+      "xl": 32
+    },
+    "names": [
+      "chevron-right",
+      "search",
+      "user-round",
+      "users-round",
+      "monitor",
+      "palette",
+      "shield",
+      "database",
+      "info",
+      "eye",
+      "volume-2",
+      "refresh-cw",
+      "key-round",
+      "log-out",
+      "download",
+      "chart-no-axes-column",
+      "arrow-left",
+      "house",
+      "send",
+      "circle-question-mark",
+      "minus",
+      "message-square-text",
+      "gamepad-2",
+      "wallet",
+      "bell",
+      "paw-print",
+      "store",
+      "user-round-plus",
+      "settings",
+      "puzzle",
+      "landmark",
+      "notebook-pen",
+      "layout-grid",
+      "star",
+      "folder",
+      "folder-open",
+      "file",
+      "file-text",
+      "save",
+      "pencil",
+      "trash-2",
+      "plus",
+      "x",
+      "menu",
+      "check",
+      "chevron-down",
+      "chevron-left",
+      "external-link",
+      "upload",
+      "sliders-horizontal"
+    ],
+    "defaultDecorative": true,
+    "accessibleIconRequiresLabel": true
+  },
+  "typography": {
+    "schema": "tavix.typography/v1",
+    "platformStack": [
+      "Segoe UI",
+      "Roboto",
+      "Noto Sans",
+      "system-ui",
+      "sans-serif"
+    ],
+    "fontFilesBundled": false,
+    "bodyPx": 14,
+    "titlePx": 16,
+    "fontSizeTokens": {
+      "xs": 12,
+      "sm": 13,
+      "body": 14,
+      "title": 16,
+      "display": 20
+    },
+    "allowUserTextScaling": true
+  },
+  "appIdentity": {
+    "manifestField": "icon",
+    "recommendedCanvasPx": 512,
+    "safeMarginPercent": 12,
+    "formats": [
+      "svg",
+      "png",
+      "webp"
+    ],
+    "fallback": "host launcher icon",
+    "hostAppliesMask": false
+  },
+  "deployment": {
+    "requiresSdkBundleInsideTavix": true,
+    "hostRpcRequired": false,
+    "requiresNewPermissions": false,
+    "gamesMayKeepOwnArt": true
+  },
+  "responsive": {
+    "schema": "tavix.layout/v1",
+    "source": "application viewport width",
+    "breakpointsCssPx": {
+      "compactBelow": 600,
+      "mediumBelow": 960
+    },
+    "attribute": "data-tavi-layout",
+    "hostDeviceIsPlatformPolicy": true,
+    "nativeWindowCanBeCompact": true
+  },
+  "lifecycle": {
+    "controller": "createTaviUIController",
+    "hostFeature": "tavix.ui/v1",
+    "hostEvents": [
+      "ui.contextChanged"
+    ],
+    "readOnly": true,
+    "fallback": "local appearance and viewport",
+    "disposeRequired": true
+  }
+}

@@ -47,3 +47,13 @@ The packable `examples/registry-admin-request/` fixture demonstrates requesting 
 == Native file picker reference (0.1.13)
 
 To build the self-contained `.tavia` import test application, run `python tools/tavix_package.py pack examples/local-file-import /tmp/example.org.local-file-import-0.1.0.tavix` and `python tools/tavix_package.py validate-archive /tmp/example.org.local-file-import-0.1.0.tavix`. Run `node --test tests/test_local_file_sdk.mjs` for mock host tests. The app's `ui/tavix-sdk.mjs` is a copy of the new reference `sdk/tavix-sdk.mjs`; historical staged extension SDK files are not modified. The test app cannot open the native picker in Tavi 0.3.141 or the loopback preview: the host must first implement and advertise `tavix.local-file-import/v1` and grant `files.local.import`. Read link:TAVIX_LOCAL_FILE_IMPORT.adoc[the contract] before building Asset Studio.
+
+== Shared icon and typography kit (0.1.14)
+
+Read link:TAVIX_UI_KIT_001.adoc[the UI kit specification]. Run `python tools/tavix_package.py validate examples/ui-kit`, then pack and install `examples/ui-kit` in the local preview. The complete UI kit source lives at `sdk/ui-kit/`; an app must *bundle it locally* with its own assets. Use `createTaviIcon('search')`, keep accessible names on interactive controls, and import `ui.css` for the system-font stack. Do not fetch CDN icon fonts or implement your own Tavi Back bar. Existing games may use their own rendering. Native viewport acceptance still belongs to Tavi.
+
+== Native-looking TaviX applications (0.1.15 developer-readiness pass)
+
+Copy `sdk/ui-kit/` into the `.tavix` app's own UI directory; sandboxed iframes cannot read the Tavi host's stylesheet. Build an embedded layout first and use `createTaviUIController(root, {sdk})` from the portable `ui.js` for automatic theme, width and host-event synchronization. Always use `controller.dispose()` on view teardown. The helper neither creates SDK permissions nor duplicates Tavi navigation. See `docs/TAVIX_UI_KIT_001.adoc` for the contract and `examples/ui-kit/` for the installable example.
+
+Static source/archive check: `python tools/tavix_ui_conformance.py --package examples/ui-kit` or `--package path/to/example.tavix`. This checks exact offline kit bytes and package integrity, but does not replace Windows/Android/device acceptance.

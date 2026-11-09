@@ -108,3 +108,7 @@ The older 0.3.124 classification incompatibility noted above is historical: Tavi
 ## Native local-file import proposal (0.1.13)
 
 `manifest.fileImports` plus `permissions: ["ui.panel", "files.local.import"]` requests a host-mediated native picker with declared `.tavia`/MIME filters and a bounded maximum file size. `tavix.local-file-import/v1` is advertised only by an operational, approved Tavi host. `sdk.localFiles.negotiate()` checks both the feature and the granted permission. `files.local.pick/read/close/cancel` use the existing `tavi.extension/v1` message channel, 128 MiB max file size and 64 KiB max base64 read chunks. A complete reference app is in `examples/local-file-import/`. Tavi 0.3.141 and the TaviX browser preview do not provide the native picker; Windows/Android implementation belongs to Social/Tavi. This request cannot upload or publish `.tavia` packs and does not grant `assets.registry.admin/v1`.
+
+## Integrated UI kit (0.1.14)
+
+Use `docs/TAVIX_UI_KIT_001.adoc` and `contracts/tavix-ui-kit-v1.json` for shared icons, typography, and independent app identity icons. The offline `sdk/ui-kit/` source and `examples/ui-kit/` package demonstrate the actual CSS and SVG assets; they never require host permissions. See `docs/INDEX.adoc` and `docs/DEVELOPER_GUIDE.adoc`.

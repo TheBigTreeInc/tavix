@@ -1,4 +1,4 @@
-workspace "TaviX" "TaviX reviewed extension distribution and local development preview, based on source 0.1.13." {
+workspace "TaviX" "TaviX reviewed extension distribution and local development preview, based on source 0.1.15." {
 
     model {
         operator = person "Extension maintainer" "Reviews, stages and locally tests TaviX extension packages before choosing whether to publish."
@@ -19,6 +19,8 @@ workspace "TaviX" "TaviX reviewed extension distribution and local development p
             cli = container "Repository and validation toolchain" "CLI commands and reusable Python modules for immutable package staging, index verification and exact-package QA." "Python 3 CLI/library" {
                 stage = component "Release staging" "Validates the incoming release; refuses changed same-version bytes; copies staged assets into a versioned directory." "Python; tools/repository.py"
                 package = component "TaviX archive codec" "Builds deterministic .tavix archives and verifies package lock paths, sizes, SHA-256 and optional manifest classification and asset dependency requests; not publisher trust." "Python; tools/tavix_package.py"
+                uiKitContract = component "Offline TaviX UI kit and contract" "Distributes reviewed SVG icon shapes, system-font CSS and accessibility rules for apps; no host API or font CDN." "ES modules, CSS, JSON; sdk/ui-kit/, contracts/tavix-ui-kit-v1.json"
+                uiConformance = component "Optional UI kit conformance checker" "Read-only exact reviewed file check for app directory and validated .tavix archive; never claims native acceptance." "Python; tools/tavix_ui_conformance.py"
                 localFileContract = component "Local file import manifest and SDK wire contract" "Validates optional files.local.import and fileImports request filters and documents host-mediated native picker/read/close/cancel; does not open files or grant access." "Python; tools/tavix_local_file_import.py and contracts/tavix-local-file-import-v1.json"
                 registryAdminContract = component "Registry admin manifest request and proposed wire contract" "Validates optional assets.registry.admin/v1 request and documents strict host-mediated method schemas; does not issue host grants or call LoopRD." "Python; tools/tavix_registry_admin.py and contracts/tavix-registry-admin-v1.json"
                 assetContract = component "Asset dependency request and grant shape validation" "Validates optional per-pack asset requests and permissions and checks host-issued grant subsets as pure data; never authorizes access or installs content." "Python; tools/tavix_asset_dependencies.py, tools/tavix_asset_grants.py"
@@ -63,6 +65,9 @@ workspace "TaviX" "TaviX reviewed extension distribution and local development p
 
         stageInvocation -> stage "Starts stage command with the compiled bundle" "Process invocation"
         stage -> package "Validates and packs the extension archive" "Python call"
+        package -> uiKitContract "Packages UI kit files only when explicitly included by the producer" "Static extension assets"
+        uiConformance -> package "Validates app source directory or archive integrity" "Python calls"
+        uiConformance -> uiKitContract "Compares exact bundled CSS/JS with reviewed kit" "SHA-compatible byte check"
         package -> assetContract "Validates asset request/permission metadata" "Python call"
         package -> registryAdminContract "Validates privileged admin permission request only" "Python call"
         package -> localFileContract "Validates optional native file import request filters" "Python call"

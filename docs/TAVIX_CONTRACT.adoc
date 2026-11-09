@@ -85,3 +85,7 @@ The new source-validated request contract is `TAVIX_ASSET_DEPENDENCIES.adoc`. Th
 == Optional native local-file import (0.1.13 proposal)
 
 `files.local.import` is a manifest *permission request*, paired with strict `manifest.fileImports` filters. `tavix.local-file-import/v1` is a negotiated host feature, not a granted permission and not a registry upload API. `sdk.localFiles.negotiate()` checks `host.info.features` *and* `host.capabilities`. After a user click, the SDK uses `files.local.pick`, `files.local.read`, `files.local.close` and `files.local.cancel` with `request.params` envelopes and bounded base64 binary responses. The feature works with embedded or future host-authenticated detached transports, and must be implemented natively by Tavi on Windows/Android. Tavi 0.3.141 does **not** implement it. See link:TAVIX_LOCAL_FILE_IMPORT.adoc[full contract and request/response schemas]. The SDK reference is `sdk/tavix-sdk.mjs`; the historical immutable Atrium 1.0.5 SDK above is unchanged. No publication, asset installation or admin grant is inferred.
+
+== App-owned design system (0.1.14)
+
+The source-distributed `tavix.ui-kit/v1` adds offline action icons and system font tokens, not a new host API, host feature or permission. See link:TAVIX_UI_KIT_001.adoc[UI kit] and link:../contracts/tavix-ui-kit-v1.json[machine contract]. The reference SDK also exposes `workspace.info()` and `uiContext()` wrappers for Tavi 0.3.162+ hosts that advertise the capabilities. These do not exist in the standalone loopback preview.

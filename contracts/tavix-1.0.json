@@ -1,5 +1,5 @@
 {
-  "documentationVersion": "0.1.13",
+  "documentationVersion": "0.1.15",
   "hostWire": {
     "channel": "tavi.extension/v1",
     "eventDirection": "event",
@@ -295,6 +295,16 @@
     "versionedRoot": "extensions/<application-id>/<version>/"
   },
   "schema": "tavix.documentation-contract/v1",
-  "scope": "TaviX 0.1.13 validates optional local file import requests and provides a reference SDK, strict wire schemas and example; native Windows/Android picker, detached transport, and registry administration remain Tavi/Social/LoopRD responsibilities; no publication.",
-  "standard": "tavix/1.0"
+  "scope": "TaviX 0.1.14 retains the 0.1.13 native local-file request contract and adds an offline UI icon/typography kit, reference app and read-only UI/workspace SDK wrappers. Tavi owns all native SDK grants, placement and window lifecycle; no publication.",
+  "standard": "tavix/1.0",
+  "uiKit": {
+    "schema": "tavix.ui-kit/v1",
+    "contract": "contracts/tavix-ui-kit-v1.json",
+    "guide": "docs/TAVIX_UI_KIT_001.adoc",
+    "sdk": "sdk/ui-kit/icons.js",
+    "example": "examples/ui-kit/manifest.json",
+    "hostPermissionRequired": false,
+    "hostNativeAcceptance": "pending",
+    "responsiveController": "createTaviUIController"
+  }
 }

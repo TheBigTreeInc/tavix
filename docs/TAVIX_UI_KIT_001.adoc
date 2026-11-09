@@ -1,0 +1,57 @@
+= TaviX UI Kit — Icons and Typography Contract
+:revnumber: 1.0.0
+:revdate: 2026-11-09
+:toc:
+
+== Scope and host boundary
+
+The *tavix.ui-kit/v1* contract is a **source-distributed, locally bundled app UI kit**, not a host privilege or new wire method. Tavi still owns Home, Back, native window controls, operating-system orientation and authenticated communication. App developers own the controls *inside* their viewport. Games may use custom artwork and typography, but accessibility and host navigation still apply. The UI kit works in phone, tablet, desktop embedded and desktop detached iframe views. It does not implement tablet floating panels, window lifecycle APIs or Android rotation enforcement.
+
+The canonical reference is `contracts/tavix-ui-kit-v1.json` in the TaviX repository and the matching `docs/contracts/tavix-ui-kit-v1.json` in Social. Both ship the same JSON; release integrity tests assert the source data and geometry match.
+
+== Interface icon set (`tavix.icons/v1`)
+
+* UI action icons come from an **offline 50-icon, 24×24 viewBox curated Lucide SVG subset**, including `search`, `folder`, `folder-open`, `file`, `file-text`, `save`, `pencil`, `trash-2`, `plus`, `x`, `menu`, `check`, `chevron-left`, `chevron-right`, `chevron-down`, `download`, `upload` and `settings`.
+* Use the exact case-sensitive names listed in `contracts/tavix-ui-kit-v1.json`; no emoji fallback or arbitrary SVG from manifest strings.
+* Import `createTaviIcon(name, {size:'md'})` and append the returned DOM SVG to the control. This returns a *decorative* icon, so the surrounding button must have a readable label or an `aria-label`. For standalone meaningful icons use `{decorative:false,label:'Your label'}`; an absent label is rejected. Unknown names and sizes are rejected.
+* Size names: `sm` 16px, `md` 20px (default), `lg` 24px, `xl` 32px. Use CSS `currentColor` instead of setting icon fills by hand; CSS sets a consistent stroke and scales with browser zoom. Icon-only touch controls have at least a 44px target on phones/tablets. Do not indicate a status by color alone.
+* Icons require no network, installed icon font, unreviewed HTML, new host RPC or permission. The included Lucide attribution/license must accompany redistributed source/bundles (the packed example includes `ui/kit/LUCIDE_LICENSE.json` because TaviX packages permit JSON, not TXT).
+
+== Application identity icons (not action icons)
+
+A `.tavix` manifest can refer to an included `ui/icon.svg`, `.png` or `.webp`. The 512×512 canvas and 12% internal content margin are *recommendations*; TaviX validates that a referenced icon exists and is in the packaged archive. Preserve transparent backgrounds, allow launcher masking/cropping without putting essential content on edges, and never embed remote images or dynamic scripts. Identity images are separate from the action catalog; a game, Asset Studio or Companion may have its own artwork. Tavi owns launcher presentation and fallback, not application-internal navigation.
+
+== Typography (`tavix.typography/v1`)
+
+No remote fonts and no redistributed font binaries are required. Use the OS-native stack `Segoe UI`, `Roboto`, `Noto Sans`, `system-ui`, `sans-serif`. This integrates with Windows and Android without imposing one proprietary font. Monospace uses platform fallbacks. The CSS tokens (`--tavix-font-*`) define 12px xs, 13px sm, 14px body, 16px title, 20px display. Keep text scalable under browser zoom and native accessibility text settings: don't lock pixels through viewport transforms or disable zoom. The line height is 1.45 for body; headings use compact explicit line heights. Buttons and inputs inherit the family. Use semantic heading and form labeling elements even when using typography classes.
+
+== Integration and compatibility
+
+Social's source-distributed package: `client/extension-sdk/ui.css`, `icons.js`, `icon-shapes.js`, `ui.js`, TypeScript types and `LUCIDE_LICENSE.txt`. TaviX's portable reference files: `sdk/ui-kit/`, and an installable local example in `examples/ui-kit/`. Copy the required kit files **into the app package**; sandboxed apps do not inherit Tavi's host styles, and an installed package must work offline. Do not import a loose file outside the app bundle or fetch an icon CDN.
+
+Apply host context only after `host.info().features` advertises `tavix.ui/v1`, then request `ui.info` via `sdk.uiContext()`, subscribe to `ui.contextChanged` and call `applyTaviUI`. In a local preview without a Tavi host, use a safe CSS/light-dark fallback; do not fabricate a permission grant. TaviX's toolchain release 0.1.14 does not itself add production Tavi SDK support to the loopback preview. `workspace.info()` presents actual available presentation modes. Split panes/floating panels are not yet native-ready. Old `.tavix` packages and `tavix/1.0` host protocol remain unchanged.
+
+== Required acceptance checks
+
+. Package `examples/ui-kit/` and validate its archive; verify SVG, CSS and JavaScript are all inside the ZIP and no remote calls are used for the UI kit.
+. Launch in local loopback preview: 50 icons render, text uses the OS font, button labels are accessible, small viewport wraps with no second Tavi Back bar.
+. On an actual Tavi 0.3.165 Windows client and Android device, verify dark and light theme, 200% zoom, host Home/Back, app resizing and screen-reader icon labels. *Source tests do not replace this operator acceptance.*
+. Verify no window management or storage authorization is implied by importing the UI kit. Keep both projects' ZipRunner and publication gates independent.
+
+== Responsive lifecycle and conformance (0.1.15)
+
+`createTaviUIController(root, {sdk})` is the recommended app-owned lifecycle helper. It applies the local OS theme immediately, then calls `sdk.info()` only when an SDK is provided. Only an advertised `tavix.ui/v1` feature allows `ui.info` and `ui.contextChanged` synchronization. Denied/missing/older hosts fall back to local styling; they *do not* acquire permissions. `controller.ready` resolves `{source:'host'|'local'}`; apps must call `controller.dispose()` when unmounted, and separately dispose their SDK when they own its lifecycle.
+
+The host's `device` and `orientation` describe *host policy* and are never substituted for local layout width. The helper uses `ResizeObserver` on the app's own root, with a window `resize` fallback, and sets `data-tavi-layout`:
+
+[cols="1,2",options="header"]
+|===
+|App viewport width |Layout class
+|Below 600 CSS pixels |`compact` — touch targets at least 44px, single-column grids
+|600–959 CSS pixels |`medium` — flexible multi-column grids
+|960 CSS pixels and above |`wide` — flexible desktop grids
+|===
+
+A 350px detached *Windows* app is therefore compact even though the host reports `device:desktop`; a tablet floating panel can be compact independently of the overall tablet orientation. Use responsive internal tabs/reader panes; do not add your own Tavi Home/Back, window controls, chat orientation locks or secondary browser scrollbars. Chat remains portrait on phones while games may prefer landscape; those policies are enforced by Tavi, not this UI kit.
+
+For a new source app, run `python tools/tavix_ui_conformance.py --package path/to/app` in the TaviX project. For an already packed `.tavix`, use `--package path/to/app.tavix`. This checks offline bundle integrity and the exact reviewed kit files; it is **static conformance**, not proof of layout quality or native Android/Windows behavior. Apps using custom game visuals do not need the kit. Legacy TaviX apps remain supported and should not be rejected for not adopting the kit.

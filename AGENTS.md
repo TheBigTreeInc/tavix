@@ -52,3 +52,7 @@ Before modifying any privileged extension permission, host feature negotiation, 
 ## Local-file import capability (0.1.13+)
 
 Before changing file-import permissions, picker methods, SDK wrappers or native host assumptions, read `docs/TAVIX_LOCAL_FILE_IMPORT.adoc`, `contracts/tavix-local-file-import-v1.json` and the three `contracts/tavix-local-file-*v1.schema.json` files. `files.local.import` is a manifest request only; the `tavix.local-file-import/v1` host feature must be negotiated independently of permission approval. No unrestricted filesystem paths, file URLs, broad storage permissions, uploads or automatic registry publication. Tavi owns Windows/Android native pickers and embedded/detached session routing; TaviX only defines/validates requests and provides a reference SDK. Run `tests/test_local_file_import.py`, `tests/test_local_file_sdk.mjs`, contract docs and the full suite. Keep C4, Workboard and release gates synchronized.
+
+## UI kit source parity (0.1.14+)
+
+If changing an application icon, typography, theme or public UI helper, update `docs/TAVIX_UI_KIT_001.adoc`, `contracts/tavix-ui-kit-v1.json`, `sdk/ui-kit/` and the packable `examples/ui-kit/` together, with source-bound regression tests. This kit is independent from host SDK grants, and source parity is not Windows/Android operator acceptance.

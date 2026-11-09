@@ -3,14 +3,15 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.13",
-    "base_version": "0.1.12"
+    "version": "0.1.15",
+    "base_version": "0.1.14",
+    "summary": "0.1.15: portable UI lifecycle controller and exact-package static developer conformance; native QA pending."
   },
   "update": {
-    "id": "TAVIX-20261109-0113",
+    "id": "TAVIX-UI-CONFORMANCE-015",
     "kind": "source_update",
-    "created_at": "2026-11-09T20:26:00+01:00",
-    "summary": "Define optional files.local.import manifest request and tavix.local-file-import/v1 native host feature with strict schemas, bounded binary SDK, cancellation, detached transport adapter, and packable reference app; no native Tavi host implementation or publication."
+    "created_at": "2026-11-09T21:00:00+01:00",
+    "summary": "0.1.15: portable UI lifecycle controller and exact-package static developer conformance; native QA pending."
   },
   "planned_work": [
     {
@@ -78,6 +79,12 @@
       "title": "Host-mediated local file import contract and SDK",
       "priority": "high",
       "acceptance_criteria": "Validate optional fileImports manifest and permission, specify strict picker/read/close/cancel wire, provide negotiated SDK and packable reference app, test fail-closed host and detached transport, preserve existing packages and approval gates; native host belongs to Tavi."
+    },
+    {
+      "id": "TAVIX-UI-CONFORMANCE-015",
+      "title": "Portable developer kit conformance command",
+      "priority": "high",
+      "acceptance_criteria": "Pass exact-archive source tests, preserve existing local configuration/approval gates; native Windows and Android viewport acceptance remains pending."
     }
   ],
   "done_work": [],

@@ -1,3 +1,19 @@
+# 0.1.15 — Next-pass Source Handoff (2026-11-09)
+
+Base: 0.1.14. This package contains only Git-trackable source, docs, tests and update metadata. Native Windows/Android operator acceptance is **not proven**. Existing session data, configuration and publish gates remain external and untouched.
+
+TaviX: portable UI lifecycle controller, refreshed example, and read-only static source/archive kit conformance CLI. No new host privileges.
+
+## Operator review
+
+. Import candidate into ZipRunner and ensure Workboard metadata does not conflict; approval gate remains explicit.
+. Run the packaged source checks and verify exact source hash.
+. On native Windows, confirm messenger startup and open UI kit example; resize detached window and switch dark/light.
+. Test Android phone app viewport, return to portrait chat, and tablet behavior where supported.
+. Do not deploy/publish/tag without operator approval.
+
+---
+
 # TaviX 0.1.13 — host-mediated local file import contract and reference SDK
 
 **Base:** TaviX 0.1.12. **Status:** TaviX source candidate; Windows ZipRunner, native Windows/Android operator acceptance and Git publication pending.

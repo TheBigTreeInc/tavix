@@ -3,7 +3,7 @@
 
 == Read this before implementing an extension
 
-TaviX version 0.1.13 documentation; protocol standard `tavix/1.0`, wire channel `tavi.extension/v1`, manifest `tavi.extension/v1`. The *toolchain version* (0.1.9) is not a new protocol version.
+TaviX version 0.1.14 documentation; protocol standard `tavix/1.0`, wire channel `tavi.extension/v1`, manifest `tavi.extension/v1`. The *toolchain version* (0.1.14) is not a new protocol version.
 
 [cols="2,4",options="header"]
 |===
@@ -75,3 +75,12 @@ After *separate* operator-approved Git publication, pin a reviewed commit for th
 * link:../examples/LOCAL_FILE_IMPORT.adoc[Packable reference application and tests].
 
 Publication requires a separate operator-approved Git push. Source paths above are not a live feature endpoint.
+
+== Shared UI kit and action icons (0.1.14 candidate)
+
+* link:TAVIX_UI_KIT_001.adoc[UI kit contract — icons, font stack, responsive behavior and host boundary].
+* link:../contracts/tavix-ui-kit-v1.json[Machine-readable names, sizes and typography].
+* link:../sdk/ui-kit/icons.js[Offline icons module] and link:../sdk/ui-kit/ui.css[offline CSS tokens]; bundle these with each extension.
+* link:../examples/ui-kit/manifest.json[Packable icon/type reference application] (preview runs without Tavi authentication).
+
+These are local source artifacts, not newly published GitHub URLs. They do not grant window privileges or enable tablet floating panels.

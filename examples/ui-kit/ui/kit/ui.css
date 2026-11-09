@@ -1,0 +1,36 @@
+/* TaviX app-owned UI primitives. Imported explicitly in sandboxed apps. */
+.tavix-app {--tavix-bg:#e7f3e8;--tavix-surface:#fcfdf8;--tavix-raised:#f2f9f0;--tavix-text:#213e30;--tavix-muted:#53725e;--tavix-accent:#2d7755;--tavix-contrast:white;--tavix-border:#afcdb7;--tavix-focus:#155ec1;--tavix-space:8px;--tavix-radius:12px;--tavix-font-family:'Segoe UI',Roboto,'Noto Sans',system-ui,sans-serif;--tavix-font-mono:ui-monospace,'Cascadia Code',Consolas,monospace;--tavix-font-xs:12px;--tavix-font-sm:13px;--tavix-font-body:14px;--tavix-font-title:16px;--tavix-font-display:20px;--tavix-line-height:1.45;--tavix-icon-size:20px;color:var(--tavix-text);background:var(--tavix-bg);font:var(--tavix-font-body)/var(--tavix-line-height) var(--tavix-font-family);min-width:0;min-height:100%;box-sizing:border-box;}
+.tavix-app[data-tavi-theme='dark'] {color-scheme:dark;--tavix-bg:#0f201a;--tavix-surface:#162d24;--tavix-raised:#1b382c;--tavix-text:#e1f5e9;--tavix-muted:#aecdbb;--tavix-accent:#87cfa6;--tavix-contrast:#0b2419;--tavix-border:#476b58;--tavix-focus:#acd2ff;}
+.tavix-app *, .tavix-app *::before, .tavix-app *::after{box-sizing:border-box}
+.tavix-app-header{display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:54px;border-bottom:1px solid var(--tavix-border);background:var(--tavix-surface)}
+.tavix-app-header h1{font-size:var(--tavix-font-title);margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tavix-panel{border:1px solid var(--tavix-border);background:var(--tavix-surface);border-radius:var(--tavix-radius);padding:16px;min-width:0}
+.tavix-stack{display:flex;flex-direction:column;gap:var(--tavix-space);min-width:0}
+.tavix-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.tavix-button,.tavix-tab,.tavix-input{min-height:40px;padding:8px 12px;font:inherit;color:var(--tavix-text);background:var(--tavix-surface);border:1px solid var(--tavix-border);border-radius:8px}
+.tavix-button{cursor:pointer}.tavix-button--primary{background:var(--tavix-accent);color:var(--tavix-contrast);border-color:var(--tavix-accent)}
+.tavix-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:4px}.tavix-tab[aria-selected='true']{background:var(--tavix-raised);font-weight:650}
+.tavix-field{display:flex;flex-direction:column;gap:5px}.tavix-dialog{max-width:min(95vw,560px);padding:18px;border:1px solid var(--tavix-border);border-radius:var(--tavix-radius);color:var(--tavix-text);background:var(--tavix-surface)}
+.tavix-app :is(button,input,select,textarea,a):focus-visible{outline:2px solid var(--tavix-focus);outline-offset:2px}
+.tavix-app[data-tavi-device='phone'] :is(.tavix-button,.tavix-tab,.tavix-input),.tavix-app[data-tavi-device='tablet'] :is(.tavix-button,.tavix-tab,.tavix-input){min-height:44px}
+@media(max-width:599px){.tavix-app-header{padding-inline:12px}.tavix-grid{grid-template-columns:minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){.tavix-app *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Versioned TaviX icon + typography rules; scale with browser zoom and currentColor. */
+.tavix-text--muted{color:var(--tavix-muted)}
+.tavix-text--small{font-size:var(--tavix-font-sm)}
+.tavix-text--title{font-size:var(--tavix-font-title);font-weight:650;line-height:1.3}
+.tavix-text--display{font-size:var(--tavix-font-display);font-weight:700;line-height:1.25}
+.tavix-code{font-family:var(--tavix-font-mono)}
+.tavix-icon{display:inline-block;vertical-align:middle;flex:none;width:var(--tavix-icon-size);height:var(--tavix-icon-size);color:inherit;stroke:currentColor}
+.tavix-icon--sm{--tavix-icon-size:16px}.tavix-icon--md{--tavix-icon-size:20px}
+.tavix-icon--lg{--tavix-icon-size:24px}.tavix-icon--xl{--tavix-icon-size:32px}
+.tavix-icon-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:40px;min-height:40px;padding:8px;border:1px solid var(--tavix-border);border-radius:8px;background:var(--tavix-surface);color:var(--tavix-text);cursor:pointer}
+.tavix-app[data-tavi-device='phone'] .tavix-icon-button,.tavix-app[data-tavi-device='tablet'] .tavix-icon-button{min-height:44px;min-width:44px}
+.tavix-app-icon{width:48px;height:48px;object-fit:contain;flex:none;border-radius:12px}
+
+/* Independent responsive application viewports (detached desktop can be narrow). */
+.tavix-app[data-tavi-layout='compact'] .tavix-grid{grid-template-columns:minmax(0,1fr)}
+.tavix-app[data-tavi-layout='compact'] .tavix-app-header{padding-inline:12px}
+.tavix-app[data-tavi-layout='compact'] :is(.tavix-button,.tavix-tab,.tavix-input,.tavix-icon-button){min-width:44px;min-height:44px}
+.tavix-app[data-tavi-layout='medium'] .tavix-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}

@@ -68,6 +68,8 @@ export function createTaviXSDK(target=window.parent,source=window,options={}){
   info:()=>request('host.info'),
   conformance:async()=>assertTaviXHostInfo(await request('host.info')),
   capabilities:()=>request('host.capabilities'),
+  workspace:{info:()=>request('workspace.info')},
+  uiContext:()=>request('ui.info'),
   navigation:{back:()=>request('navigation.back'),close:()=>request('navigation.close')},
   storage:{get:key=>request('storage.get',{key}),set:(key,value)=>request('storage.set',{key,value})},
   ui:{toast:message=>request('ui.toast',{message}),close:()=>request('ui.close'),
