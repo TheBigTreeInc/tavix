@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <title>TaviX Store Editor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon" aria-hidden="true">✦</span><div><strong>TaviX Studio</strong><small>Store listing editor · offline</small></div></div>
+    <div class="top-actions"><label class="btn primary file-button" for="packageFile">Open .tavix<input type="file" id="packageFile" accept=".tavix,application/zip" /></label><button class="btn secondary" id="demoBtn" type="button">Demo</button></div>
+  </header>
+  <div class="banner"><span aria-hidden="true">🔒</span><span><strong>Private preview.</strong> Nothing is uploaded or published. Catalog appearance is simulated; media galleries require future host support.</span></div>
+  <main class="workspace">
+    <section class="edit-panel" aria-label="Store listing editor">
+      <div class="panel-head"><div><p class="eyebrow">LISTING</p><h1>Make your app shine <span aria-hidden="true">✨</span></h1><p>Import a TaviX package, then customize its store presentation.</p></div></div>
+      <div id="status" class="status" role="status" aria-live="polite">Open a .tavix package or choose Demo to start.</div>
+      <div class="field"><label for="name">App name <span class="required">*</span></label><input id="name" maxlength="60" autocomplete="off" value="Klondike Solitaire"/></div>
+      <div class="field"><label for="summary">Short description <span class="required">*</span></label><textarea id="summary" maxlength="240" rows="3">Classic offline solitaire with smooth, relaxing card play.</textarea><small id="summaryCount">0 / 240</small></div>
+      <div class="field"><label for="description">About this app <span class="subtle">(draft-only until Store metadata support)</span></label><textarea id="description" maxlength="2000" rows="4">Enjoy a classic game of solitaire. Build sequences, move cards to the foundations, and play at your own pace—no ads, no purchases, no internet required.</textarea></div>
+      <div class="two-fields">
+        <div class="field"><label for="version">New package version</label><input id="version" value="0.1.2" inputmode="numeric" placeholder="0.1.2"/></div>
+        <div class="field"><label for="publisher">Publisher <span class="subtle">(read-only)</span></label><input id="publisher" readonly value="example-org"/></div>
+      </div>
+      <div class="two-fields">
+        <div class="field"><label for="category">Store category</label><input id="category" value="Cards · Solitaire" maxlength="80"/></div>
+        <div class="field"><label for="platforms">Package platforms</label><input id="platforms" value="Windows · Android · Web" readonly/></div>
+      </div>
+      <div class="assets-head"><h2>Artwork</h2><p>Images stay on your device. Package images must be PNG, SVG or WebP and under 1 MB each.</p></div>
+      <div class="upload-grid">
+        <label class="upload" for="iconFile"><span class="upload-symbol">🃏</span><strong>App icon</strong><small>Square image</small><input id="iconFile" type="file" accept="image/png,image/webp,image/svg+xml"/></label>
+        <label class="upload" for="coverFile"><span class="upload-symbol">🖼️</span><strong>Cover artwork</strong><small>Product hero</small><input id="coverFile" type="file" accept="image/png,image/webp,image/svg+xml"/></label>
+        <label class="upload" for="screensFile"><span class="upload-symbol">📱</span><strong>Screenshots</strong><small>Up to 3</small><input id="screensFile" type="file" accept="image/png,image/webp" multiple/></label>
+      </div>
+      <div class="identity"><div><strong>Application ID</strong><span id="appId">example.org.klondike</span></div><div><strong>Permissions</strong><span id="permissions">ui.panel · storage.private</span></div><div><strong>Gold</strong><span>Not editable; Wallet / registry authority only</span></div></div>
+      <div class="action-stack"><button class="btn primary" id="exportPackage" disabled>Export updated .tavix</button><button class="btn secondary" id="exportDraft">Export listing draft (.json)</button></div>
+      <p class="help">To export a new .tavix version, choose a version higher than the one imported. The archive hashes are regenerated, but validation and publisher approval are still required.</p>
+    </section>
+    <section class="preview-panel" aria-label="Live store preview">
+      <div class="preview-toolbar"><div><p class="eyebrow">LIVE PREVIEW</p><h2>As seen in Tavi Store</h2></div><span class="preview-badge">Not published</span></div>
+      <div class="toolbar-controls"><select id="renderMode" aria-label="Store appearance"><option value="current">Current Store</option><option value="future">Rich concept</option></select><div class="segmented" aria-label="Preview screen" role="group"><button type="button" data-screen="catalog" aria-pressed="true" class="active">Catalog</button><button type="button" data-screen="details" aria-pressed="false">Details</button></div><div class="segmented" aria-label="Viewport" role="group"><button type="button" data-device="phone" class="active" aria-pressed="true">Phone</button><button type="button" data-device="tablet" aria-pressed="false">Tablet</button><button type="button" data-device="desktop" aria-pressed="false">Desktop</button></div></div>
+      <div class="device-stage"><div class="device phone" id="device"><div class="device-title"><span>Tavi</span><span class="preview-only">PREVIEW</span></div><div class="store-head"><span class="back">‹</span><strong>Tavi Store</strong><span class="avatar">D</span></div><div class="store-scroll"><div class="store-catalog" id="catalogPane"><div class="store-brow">DISCOVER · PLAY · CREATE</div><h3>Find something fun ✨</h3><div class="store-tabs"><span>✨ Discover</span><span>🧩 Apps</span><span class="selected">🎮 Games</span><span>🎨 Assets</span></div><div class="store-search">⌕ &nbsp; What sounds fun today?</div><h4>Explore games</h4><p class="store-muted">Games available through TaviX</p><div class="catalog-products"><article class="product"><button class="image-target" id="cardSelect" type="button" title="Open product details"><span class="product-icon" id="cardIcon">♥</span><strong id="cardName">Klondike Solitaire</strong><small id="cardCategory">Cards · Solitaire</small></button><button class="install-button" id="fakeInstall" type="button">Install</button></article></div></div>
+      <div class="store-details hidden" id="detailsPane"><button type="button" id="backToCatalog" class="store-back">‹ Back to Store</button><img class="detail-cover hidden" id="detailCover" alt="Artwork preview"/><div class="detail-intro"><div class="detail-icon" id="detailIcon">♥</div><div><small id="detailType">GAME</small><h3 id="detailName">Klondike Solitaire</h3><p class="detail-byline" id="detailPublisher">by example-org</p></div></div><p id="detailSummary" class="detail-summary">Classic offline solitaire.</p><button class="detail-install" type="button">Install</button><h4>About this game</h4><p id="detailDescription"></p><div id="gallery" class="gallery"></div><details class="store-info"><summary>App information</summary><p id="detailMeta"></p></details></div></div><nav class="store-nav" aria-label="Example Tavi bottom navigation"><span>⌂<small>Home</small></span><span>☰<small>Chats</small></span><span>♧<small>Games</small></span><span class="on">▦<small>Apps</small></span></nav></div></div>
+      <p class="preview-footnote">Current Tavi 0.3.175 uses manifest name, summary and icon. The cover/gallery and longer description shown here are proposed rich-product features, not currently rendered from package metadata.</p>
+    </section>
+  </main>
+</div>
+<script src="zip.js"></script>
+<script src="editor.js"></script>
+</body></html>

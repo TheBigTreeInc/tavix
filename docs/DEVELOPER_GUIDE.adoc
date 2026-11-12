@@ -57,3 +57,8 @@ Read link:TAVIX_UI_KIT_001.adoc[the UI kit specification]. Run `python tools/tav
 Copy `sdk/ui-kit/` into the `.tavix` app's own UI directory; sandboxed iframes cannot read the Tavi host's stylesheet. Build an embedded layout first and use `createTaviUIController(root, {sdk})` from the portable `ui.js` for automatic theme, width and host-event synchronization. Always use `controller.dispose()` on view teardown. The helper neither creates SDK permissions nor duplicates Tavi navigation. See `docs/TAVIX_UI_KIT_001.adoc` for the contract and `examples/ui-kit/` for the installable example.
 
 Static source/archive check: `python tools/tavix_ui_conformance.py --package examples/ui-kit` or `--package path/to/example.tavix`. This checks exact offline kit bytes and package integrity, but does not replace Windows/Android/device acceptance.
+
+
+== Review the Store appearance before staging (0.1.18)
+
+Package and install the private developer example under `examples/store-editor/` as described in link:TAVIX_STORE_EDITOR_001.adoc[the Store Editor guide]. It runs offline and supports desktop/phone/tablet Store catalog and product-detail previews. No Store or host contract is added by this example; Tavi's native file picker and download behavior require separate acceptance.

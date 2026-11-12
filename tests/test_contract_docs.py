@@ -93,7 +93,7 @@ class DocumentationContractTests(unittest.TestCase):
     def test_version_metadata_and_approval_gates(self):
         for f in ('project.zr','tavix.zr','.ziprunner-post-update-tests.json',
                   '.ziprunner-workboard-update.json'):
-            self.assertEqual(json.loads((ROOT / f).read_text())['version'], '0.1.15', f)
+            self.assertEqual(json.loads((ROOT / f).read_text())['version'], '0.1.18', f)
         z=json.loads((ROOT / 'project.zr').read_text())
         self.assertIn('ziprunner.config.json', z['protected_paths'])
         self.assertEqual(z['post_build_mechanisms'], [])

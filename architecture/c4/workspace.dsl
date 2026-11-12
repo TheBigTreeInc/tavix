@@ -1,4 +1,4 @@
-workspace "TaviX" "TaviX reviewed extension distribution and local development preview, based on source 0.1.15." {
+workspace "TaviX" "TaviX reviewed extension distribution and local development preview, based on source 0.1.16." {
 
     model {
         operator = person "Extension maintainer" "Reviews, stages and locally tests TaviX extension packages before choosing whether to publish."
@@ -21,6 +21,7 @@ workspace "TaviX" "TaviX reviewed extension distribution and local development p
                 package = component "TaviX archive codec" "Builds deterministic .tavix archives and verifies package lock paths, sizes, SHA-256 and optional manifest classification and asset dependency requests; not publisher trust." "Python; tools/tavix_package.py"
                 uiKitContract = component "Offline TaviX UI kit and contract" "Distributes reviewed SVG icon shapes, system-font CSS and accessibility rules for apps; no host API or font CDN." "ES modules, CSS, JSON; sdk/ui-kit/, contracts/tavix-ui-kit-v1.json"
                 uiConformance = component "Optional UI kit conformance checker" "Read-only exact reviewed file check for app directory and validated .tavix archive; never claims native acceptance." "Python; tools/tavix_ui_conformance.py"
+                gameCompletionContract = component "Game completion result schema" "Documents server-owned game final result envelopes for future Wallet integration; does not validate live game state or grant client mint rights." "JSON schema and AsciiDoc; contracts/tavix-game-completion-v1.schema.json"
                 localFileContract = component "Local file import manifest and SDK wire contract" "Validates optional files.local.import and fileImports request filters and documents host-mediated native picker/read/close/cancel; does not open files or grant access." "Python; tools/tavix_local_file_import.py and contracts/tavix-local-file-import-v1.json"
                 registryAdminContract = component "Registry admin manifest request and proposed wire contract" "Validates optional assets.registry.admin/v1 request and documents strict host-mediated method schemas; does not issue host grants or call LoopRD." "Python; tools/tavix_registry_admin.py and contracts/tavix-registry-admin-v1.json"
                 assetContract = component "Asset dependency request and grant shape validation" "Validates optional per-pack asset requests and permissions and checks host-issued grant subsets as pure data; never authorizes access or installs content." "Python; tools/tavix_asset_dependencies.py, tools/tavix_asset_grants.py"
@@ -52,6 +53,7 @@ workspace "TaviX" "TaviX reviewed extension distribution and local development p
         }
 
         operator -> cli "Runs staging, integrity and package QA commands" "CLI"
+        operator -> gameCompletionContract "Reviews proposed completed-game service result and trusted issuer requirements" "AsciiDoc/JSON schema"
         operator -> previewUi "Chooses .tavix files and previews installed or staged extensions" "Local browser"
         producer -> adapter "Runs optional adapter after compiling a Companion extension" "Node.js process"
         adapter -> cli "Invokes repository.py stage with compiled bundle" "Python subprocess"

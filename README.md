@@ -1,6 +1,6 @@
 # TaviX — extension tooling, local preview and reviewed distribution
 
-**Source/tooling version: 0.1.13 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
+**Source/tooling version: 0.1.18 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
 
 TaviX provides a reviewed, immutable distribution repository for compiled Tavi extensions, plus Python pack/validate/staging tools and a **standalone loopback development client** for opening `.tavix` panels on a PC without Tavi. It does **not** include the Tavi messenger, a game server, the production Tavi SDK host or trusted publisher signing. The `extensions/` tree contains distributed application builds, not their original authoring source.
 
@@ -112,3 +112,12 @@ The older 0.3.124 classification incompatibility noted above is historical: Tavi
 ## Integrated UI kit (0.1.14)
 
 Use `docs/TAVIX_UI_KIT_001.adoc` and `contracts/tavix-ui-kit-v1.json` for shared icons, typography, and independent app identity icons. The offline `sdk/ui-kit/` source and `examples/ui-kit/` package demonstrate the actual CSS and SVG assets; they never require host permissions. See `docs/INDEX.adoc` and `docs/DEVELOPER_GUIDE.adoc`.
+
+
+## Offline Store Editor — private developer example (0.1.17)
+
+`examples/store-editor/` is a packable local **TaviX Store Editor**. Open a user-supplied `.tavix`, verify its archive/lock, edit the Store name/summary/artwork, switch catalog/detail previews at phone/tablet/desktop widths, and export a draft or a bumped-version `.tavix` with regenerated integrity data. This tool neither stages nor publishes packages and cannot set Wallet/Gold prices. Cover art and gallery remain a clearly marked preview concept until Tavi adds a reviewed media metadata contract. See `docs/TAVIX_STORE_EDITOR_001.adoc`.
+
+## Windows test encoding portability repair (0.1.18)
+
+The 0.1.17 ZipRunner build failed on Windows because Store Editor tests read UTF-8 HTML with the system CP1252 default. Source test reads now explicitly use UTF-8 and include a regression guard. The Store Editor package, immutable published extensions, public catalog and host/wallet authority are unchanged. Windows ZipRunner execution and native Store Editor acceptance remain operator gates.

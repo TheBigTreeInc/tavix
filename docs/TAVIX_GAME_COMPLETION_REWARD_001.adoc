@@ -1,0 +1,25 @@
+= TaviX game completion and wallet reward developer contract — proposal
+:revnumber: 0.1
+:revdate: 2026-11-09
+
+== Game surface and host preference
+
+On Windows desktop, Tavi 0.3.167 selects a separate native application viewport by default for verified games classified `type:game`. This is a *user/device host preference*, not a mandatory TaviX manifest setting or a new permission. A developer may declare `tavix.presentation/v1` with `supported: [embedded, native-window]`; the app still must render responsively when embedded or when resized. Closing the window is not equivalent to ending a game. The first-party App Store is host-owned and requires a different, not yet implemented native shell.
+
+== Completed-game Gold
+
+The platform wants a small Gold award for *finishing* a game, independent of winning. This document defines the inter-service result shape for development coordination. **No payment, reward, trusted game completion issuer, wallet mint capability or client-side `finish()` RPC is added to the public TaviX SDK by this change.**
+
+The schema is `contracts/tavix-game-completion-v1.schema.json`. An issuer of this event must be a trusted, authenticated *game service* that commits the terminal game state and final result durably, not a sandboxed app reporting its own result. The service must verify the exact participant and produce stable session/completion IDs and terminal revision/digest. Only then may a separately enrolled `tavi-wallet` service principal receive the existing `tavi.wallet-reward/v1` request with the stable completion ID as `eventId`.
+
+A suggested starting policy is **5 earned Gold per genuinely completed session**, subject to explicit operator approval and per-day caps. Gold in the Wallet's free 100-Gold floor remains restricted to play, while valid earned Gold is shopping-eligible. Replayed events, abandonments, disconnected/incomplete sessions and unverifiable offline scores **must not** produce Gold. Anti-farming policy and first-party Klondike completion proof need game-owner review. There is no real money.
+
+== Developer actions
+
+* Declare classification `type:game` and supported embedded/native-window presentation as appropriate.
+* Save game progress independently of window lifecycle and implement proper completion rules.
+* For online games, expose server-authoritative terminal results with stable participant/session/revision; integrate with the operator-admitted LoopRD wallet reward service after approval.
+* For offline single-player games, do **not** send a wallet mint request from the TaviX app. A secure server-side verification policy is required first. If none exists, show completed play locally without inventing a Gold payout.
+* UI may show reward as *pending* until the wallet confirms the authenticated receipt; never derive the balance from local animation.
+
+Native and real-account acceptance are outstanding. This document and schema alone do not make game reward payout operational.

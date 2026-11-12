@@ -3,15 +3,15 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.15",
-    "base_version": "0.1.14",
-    "summary": "0.1.15: portable UI lifecycle controller and exact-package static developer conformance; native QA pending."
+    "version": "0.1.18",
+    "base_version": "0.1.17",
+    "summary": "0.1.18: Windows CP1252/UTF-8 source-test portability repair for private TaviX Store Editor; behavior and public catalog unchanged."
   },
   "update": {
-    "id": "TAVIX-UI-CONFORMANCE-015",
+    "id": "TAVIX-STORE-EDITOR-WIN-UTF8-018",
     "kind": "source_update",
-    "created_at": "2026-11-09T21:00:00+01:00",
-    "summary": "0.1.15: portable UI lifecycle controller and exact-package static developer conformance; native QA pending."
+    "created_at": "2026-11-12T22:18:00+01:00",
+    "summary": "Explicit UTF-8 reads for Store Editor source tests to prevent Windows default CP1252 UnicodeDecodeError; regression guard added."
   },
   "planned_work": [
     {
@@ -85,6 +85,25 @@
       "title": "Portable developer kit conformance command",
       "priority": "high",
       "acceptance_criteria": "Pass exact-archive source tests, preserve existing local configuration/approval gates; native Windows and Android viewport acceptance remains pending."
+    },
+    {
+      "id": "TAVIX-GAME-COMPLETION-016",
+      "title": "Document server-owned completed-game receipt and Tavi desktop presentation",
+      "priority": "high",
+      "status": "review",
+      "acceptance_criteria": "Schema checked, documentation no game SDK mint, legacy packages and repository unchanged, staged game/Wallet authority and real gameplay QA remain separate."
+    },
+    {
+      "id": "TAVIX-STORE-EDITOR-017",
+      "title": "Offline TaviX Store listing editor",
+      "priority": "medium",
+      "acceptance_criteria": "Private editor example imports and verifies package and lock, previews current and future Store layouts, exports draft and bumped package, no published metadata or Wallet authority; Windows/Android acceptance separate."
+    },
+    {
+      "id": "TAVIX-STORE-EDITOR-WIN-UTF8-018",
+      "title": "Repair Windows UTF-8 Store Editor test portability",
+      "priority": "high",
+      "acceptance_criteria": "Run ZipRunner Python build on Windows with default CP1252 decoding: Store Editor tests use explicit UTF-8; pass all tests and strict catalog without changing published extensions, config or approvals. Operator acceptance remains separate."
     }
   ],
   "done_work": [],

@@ -84,3 +84,9 @@ Publication requires a separate operator-approved Git push. Source paths above a
 * link:../examples/ui-kit/manifest.json[Packable icon/type reference application] (preview runs without Tavi authentication).
 
 These are local source artifacts, not newly published GitHub URLs. They do not grant window privileges or enable tablet floating panels.
+
+
+== Private Store listing editor (0.1.18)
+
+* link:TAVIX_STORE_EDITOR_001.adoc[Offline TaviX Store Editor developer preview and security limits].
+* link:../examples/store-editor/manifest.json[Packable private example]: user-initiated `.tavix` import, archive lock verification, current/rich Store previews, draft and bumped-version export. No host APIs, Gold checkout, publisher grants or publication.

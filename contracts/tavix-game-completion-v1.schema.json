@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tavix.local/contracts/tavix-game-completion-v1.schema.json",
+  "title": "Server-owned verified game completion event (not a TaviX host SDK method)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "gameId", "sessionId", "completionId", "recipientId", "finalRevision", "finalStateDigest", "completedAt", "outcome"],
+  "properties": {
+    "schema": {"const": "tavix.game-completion/v1"},
+    "gameId": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+){2,}$", "maxLength": 120},
+    "sessionId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{7,127}$"},
+    "completionId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{7,127}$"},
+    "recipientId": {"type": "string", "minLength": 1, "maxLength": 160},
+    "finalRevision": {"type": "integer", "minimum": 1},
+    "finalStateDigest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "completedAt": {"type": "string", "format": "date-time"},
+    "outcome": {"enum": ["completed", "won", "lost"]}
+  }
+}

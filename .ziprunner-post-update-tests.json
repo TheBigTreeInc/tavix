@@ -1,6 +1,6 @@
 {
   "schema": "ziprunner.post-update-tests.v1",
-  "version": "0.1.15",
+  "version": "0.1.18",
   "tests": [
     {
       "kind": "command",
@@ -125,6 +125,15 @@
       "definition_revision": "1",
       "rerun_policy": "every_update",
       "command": "python -m unittest discover -s tests -p test_ui_kit.py -v && node --test tests/test_ui_kit.mjs && node --test tests/test_ui_controller.mjs && python tools/tavix_ui_conformance.py --package examples/ui-kit",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-store-editor-package",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_store_editor.py -v && node --test tests/test_store_editor.mjs && python tools/tavix_package.py validate examples/store-editor",
       "attention_on_failure": true,
       "gating": false
     }

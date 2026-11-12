@@ -1,0 +1,43 @@
+= TaviX Store Editor 0.1.1 — local publisher-preview utility
+:toc:
+
+== Scope and ownership
+
+This independent, offline Store Editor is a *private/developer-only* TaviX example in `examples/store-editor`. It does not change the `tavix/1.0` package format, native Tavi host SDK, Tavi Store screens, permissions, publishing catalog, ownership or Wallet. It is not part of the public `tavi.repository.json` catalog.
+
+The editor is a practical preview-only helper for packaging and publisher review, not a trusted registry administration tool. It must not be granted admin or Wallet permissions. The existing `tools/tavix_package.py` packer and `tools/repository.py` publisher staging tool remain authoritative.
+
+== User workflow
+
+1. Open the self-contained editor `.tavix` using Tavi's approved local importer, or open the extracted `examples/store-editor/ui/index.html` in a compatible offline Chromium-based local preview. Browser file picker availability inside the real Windows/Android Tavi WebView has not been operator-verified; use the TaviX standalone local development client if the native file picker is blocked.
+2. Select a `.tavix` archive through an explicit user-initiated file chooser. The editor bounds archive and file sizes, rejects unsafe paths and unsupported compression, checks CRC-32 and recomputes SHA-256 lockfile hashes before exposing its contents.
+3. Edit the name, summary, rich-description *draft* and category presentation. Identity and publisher remain read-only. The application ID and already-approved capabilities are preserved.
+4. Preview the Store catalog card or product-details page in phone, tablet and desktop widths. The "Current Store" mode uses manifest title, summary and icon; the "Rich concept" adds a cover and image gallery. Rich description, covers, screenshots and layout are *preview-only*: Tavi 0.3.175 does not automatically render them from `.tavix` package media.
+5. Upload optional PNG/WebP/SVG icon or cover art and up to three PNG/WebP screenshots, each under 1 MiB. Artwork stays on-device; no network or credentials are involved.
+6. Download a `tavix.store-listing-draft/v1` JSON file, which is an *editor-owned sidecar draft*, not a public schema or catalog entry.
+7. After importing a package, bump its version and export a rebuilt `.tavix`. This preserves code and sensitive identity fields, generates new `tavix.lock.json` SHA-256 entries, and round-trips the resulting ZIP before download. A changed published version may never be overwritten without a version bump.
+8. Revalidate the resulting package with `python tools/tavix_package.py validate-archive`, then conduct source ownership, license, user consent, platform acceptance and publisher approval before staging. No automatic Git push, Pages publication, app installation or Gold checkout occurs.
+
+== Security and constraints
+
+* Editor local input is at most 25 MiB compressed, at most 300 entries, 32 MiB total uncompressed and at most 1 MiB per entry. It rejects unsafe names, duplicate entries, ZIP64, encrypted and streamed ZIP entries. Browsers must support raw DEFLATE or imports fail closed.
+* Export is ZIP method STORED for portability; both imported and exported ZIPs are validated. No application scripts from an imported package are run in the editor.
+* No code from a loaded package is injected into the parent page. Text is rendered via textContent, and previews load image blobs from validated ZIP entries or explicit user uploads.
+* The `store/editor-draft.json` file embedded into an exported archive is a non-normative proposal. It is not interpreted by Tavi 0.3.175 or TaviX's catalog generator. Pricing, ratings, popularity, official publisher identity, install counts and entitlements may not be invented or edited by this utility.
+* The editor package itself is intentionally identified as `example.org.tavix-store-editor` / `example-org` and must not be publicly published under a Tavi official publisher until ownership is approved.
+* Browser-only tests are not native Android/WebView acceptance. Sandbox download or user file picker behavior in embedded/detached host is unverified.
+
+== Acceptance and tests
+
+[source,bash]
+----
+python tools/tavix_package.py validate examples/store-editor
+python tools/tavix_package.py pack examples/store-editor /tmp/tavix-store-editor.tavix
+python tools/tavix_package.py validate-archive /tmp/tavix-store-editor.tavix
+python -m unittest discover -s tests -p test_store_editor.py -v
+node --test tests/test_store_editor.mjs
+python -m unittest discover -s tests -v
+python tools/repository.py check --repository . --strict
+----
+
+Manual acceptance includes importing the reviewed Klondike 0.1.1, checking both viewports and modes, editing the summary, exporting 0.1.2 with a new lockfile, validating in TaviX, and confirming no network/publishing requests. Tavi/Android operator acceptance remains separately required.
