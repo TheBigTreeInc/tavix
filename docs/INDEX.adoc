@@ -94,3 +94,11 @@ These are local source artifacts, not newly published GitHub URLs. They do not g
 == Klondike reviewed catalog candidate (0.1.19)
 
 * link:KLONDIKE_STORE_PUBLICATION_0119.adoc[Klondike catalog staging, provenance blockers and native clean-phone acceptance].
+
+== Klondike 0.1.2 optional card-back consumer (TaviX 0.1.23 candidate)
+
+* link:KLONDIKE_ASSET_CONSUMER_0123.adoc[Klondike source-to-runtime handoff, consent and acceptance].
+* link:../examples/klondike-assets-0.1.2/manifest.json[Validated game dependency request for `org.tavi.cards.standard`].
+* `tests/test_klondike_asset_client_023.mjs` — independent host-consumer success, denial, revocation and malformed media checks.
+
+**Not** a full-deck permission. Collection scopes remain separately reviewed future work. No Git/Pages publication or native operator acceptance is implied.

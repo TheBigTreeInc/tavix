@@ -41,9 +41,23 @@
       "source": "https://github.com/TheBigTreeInc/atrium"
     },
     {
-      "entrypoint": "https://thebigtreeinc.github.io/tavix/extensions/inc.thebigtree.tavi.klondike/0.1.1/ui/index.html",
+      "entrypoint": "https://thebigtreeinc.github.io/tavix/extensions/inc.thebigtree.tavi.klondike/0.1.2/ui/index.html",
       "license": "NOASSERTION",
       "manifest": {
+        "assetDependencies": [
+          {
+            "capabilities": [
+              "card.back"
+            ],
+            "compatibility": {
+              "maxExclusive": "1.0.0",
+              "min": "0.1.0"
+            },
+            "optional": true,
+            "packId": "org.tavi.cards.standard",
+            "requestCustomization": false
+          }
+        ],
         "classification": {
           "categories": [
             "cards",
@@ -72,7 +86,8 @@
         "name": "Klondike Solitaire",
         "permissions": [
           "ui.panel",
-          "storage.private"
+          "storage.private",
+          "assets.read"
         ],
         "platforms": [
           "web",
@@ -81,11 +96,11 @@
         ],
         "publisher": "thebigtreeinc",
         "schema": "tavi.extension/v1",
-        "summary": "A fully offline Klondike card game. No network, no account, no advertising, no purchases.",
-        "version": "0.1.1"
+        "summary": "Offline Klondike Solitaire with optional Tavi Assets card-back customization and bundled fallback.",
+        "version": "0.1.2"
       },
       "release": {
-        "revision": "da4ecd43299c0f05e49beebc5a51fed7146325be8b54b663ac2327103025be92"
+        "revision": "2997ebfe1a815788e1056c242abca22efd6392ae3cf891d4b2e0a128fb8b9bbc"
       },
       "source": "https://github.com/TheBigTreeInc/tavix"
     },

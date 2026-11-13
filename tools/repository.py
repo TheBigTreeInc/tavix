@@ -15,11 +15,20 @@ import sys
 import tempfile
 from urllib.parse import urlparse
 
-from tavix_package import validate, pack, validate_archive
-from tavix_classification import resolve_classification
-from tavix_asset_dependencies import validate_asset_dependencies, PUBLISHABLE_PERMISSIONS
-from tavix_registry_admin import validate_registry_admin_request
-from tavix_local_file_import import validate_local_file_import
+# Support both direct `python tools/repository.py` execution and importing the
+# staging tools from isolated source-contract tests. Never alter staging gates.
+if __package__:
+    from .tavix_package import validate, pack, validate_archive
+    from .tavix_classification import resolve_classification
+    from .tavix_asset_dependencies import validate_asset_dependencies, PUBLISHABLE_PERMISSIONS
+    from .tavix_registry_admin import validate_registry_admin_request
+    from .tavix_local_file_import import validate_local_file_import
+else:
+    from tavix_package import validate, pack, validate_archive
+    from tavix_classification import resolve_classification
+    from tavix_asset_dependencies import validate_asset_dependencies, PUBLISHABLE_PERMISSIONS
+    from tavix_registry_admin import validate_registry_admin_request
+    from tavix_local_file_import import validate_local_file_import
 
 APP_ID = re.compile(r'^[a-z][a-z0-9.-]{2,118}$')
 VERSION = re.compile(r'^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$')

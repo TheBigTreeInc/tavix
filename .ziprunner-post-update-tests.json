@@ -1,6 +1,6 @@
 {
   "schema": "ziprunner.post-update-tests.v1",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "tests": [
     {
       "kind": "command",
@@ -139,10 +139,10 @@
     },
     {
       "kind": "command",
-      "semantic_id": "tavix-workboard-operator-checks",
+      "semantic_id": "tavix-klondike-asset-integration-023",
       "definition_revision": "1",
       "rerun_policy": "every_update",
-      "command": "python -m unittest discover -s tests -p test_workboard_operator_checks.py -v",
+      "command": "node --test tests/test_klondike_asset_client_023.mjs",
       "attention_on_failure": true,
       "gating": false
     }

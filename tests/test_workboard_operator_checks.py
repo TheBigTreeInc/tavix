@@ -11,7 +11,7 @@ class WorkboardOperatorChecksTests(unittest.TestCase):
         workboard = json.loads((ROOT / '.ziprunner-workboard-update.json').read_text(encoding='utf-8'))
         self.assertEqual(workboard['schema'], 'ziprunner.workboard-update.v1')
         self.assertEqual(workboard['project'], 'tavix')
-        self.assertEqual(workboard['version'], '0.1.22')
+        self.assertEqual(workboard['version'], '0.1.23')
         for section in ('implemented', 'remaining'):
             items = workboard[section]
             self.assertTrue(items, section)
@@ -28,7 +28,7 @@ class WorkboardOperatorChecksTests(unittest.TestCase):
 
     def test_tavix_release_approval_is_still_gated(self):
         p = json.loads((ROOT / 'project.zr').read_text(encoding='utf-8'))
-        self.assertEqual(p['version'], '0.1.22')
+        self.assertEqual(p['version'], '0.1.23')
         self.assertFalse(p['delete_missing'])
         self.assertEqual(p['post_build_mechanisms'], [])
         self.assertIn('ziprunner.config.json', p['protected_paths'])

@@ -1,18 +1,13 @@
-= TaviX 0.1.22 ZipRunner source handoff
+= TaviX 0.1.23 — Klondike optional card-back consumer candidate
 
 Project: tavix
-Version: 0.1.22
-Base version: 0.1.20 (0.1.21 was rejected by Workboard parsing before source overlay)
+Version: 0.1.23
+Base: 0.1.22 (approved TheBigTreeInc Klondike 0.1.1 remains immutable)
 
-Repair: ZipRunner 1.2.304.278 rejected 0.1.21 because `TAVIX-KLONDIKE-DRAFT-ARCHIVE-021` lacked mandatory `operator_checks`. This self-contained overlay retains every 0.1.21 source change and adds non-empty operator checklists to implemented and remaining Workboard entries, plus regression tests. It preserves the approved TheBigTreeInc Klondike 0.1.1, Companion 0.6.40, guarded legacy draft archive, TaviX Store Editor and original approval gates.
+Implemented: immutable Klondike 0.1.2 staging with `assets.read`, approved `org.tavi.cards.standard` / `card.back` request, source-pinned read-only Assets SDK, host negotiation, guarded media and bundled fallback. Node negative tests and exact archive validation. No Wallet, install, file access, remote packs or extra grants.
 
-Windows ZipRunner should execute (operator acceptance pending):
-* Workboard update parses before any overlay changes
-* python tools/klondike_legacy_draft_archive.py --repository .
-* python tools/ziprunner_catalog_preflight.py --repository .
-* python -m unittest discover -s tests -v
-* python tools/repository.py check --repository . --strict
-* node --test tests/*.mjs
+Important source note: The previous 0.1.22 ZipRunner overlay assumes a complete current Git checkout with Companion 0.6.40. The older 0.1.19 full ZIP does not contain that release. Rebuilt source on this host could not run full canonical repo checks against the incomplete historical reconstruction; native ZipRunner must re-run all gates on actual current checkout.
 
-Next: obtain separate operator approval for the reviewed Git push/Pages publication, then test the Klondike listing and Install button on the phone BEFORE installation.
-No Git push or public release is authorized by this ZIP.
+Acceptance: Node/client and package fixtures can run off-host; full repository/Windows, detached, Android and user-consent QA remain pending. Inspect the exact Git diff. Never auto-push, tag or publish.
+
+No Git push or public release is authorized by this source ZIP.

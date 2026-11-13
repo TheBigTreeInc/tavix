@@ -1,5 +1,6 @@
 workspace "TaviX" "TaviX reviewed extension distribution and local development preview, based on source 0.1.16." {
 
+    // 0.1.23: Klondike 0.1.2 card-back use remains owned by external Tavi + Tavi Assets.
     model {
         operator = person "Extension maintainer" "Reviews, stages and locally tests TaviX extension packages before choosing whether to publish."
 

@@ -127,3 +127,7 @@ The TaviX-owned `localFileContract` component validates `files.local.import` and
 == 0.1.14 UI kit source distribution
 
 `uiKitContract` is a TaviX toolchain component representing the reviewed JSON catalog, offline `sdk/ui-kit/` SVG/CSS/JS files, and a packable example. The archive codec packages files chosen by an app; it does not install global fonts/icons, add production host methods or manage other project internals. Structurizr CLI validation is required separately when available.
+
+== Klondike optional asset consumer (0.1.23)
+
+A new immutable Klondike 0.1.2 compiled release in TaviX declares an optional `org.tavi.cards.standard` / `card.back` dependency and bundles the Tavi Assets read-only SDK. TaviX validates and distributes this request only. The external Tavi host controls installed-pack consent and session-bound grants; the Tavi Assets runtime supplies validated media. No new TaviX service or storage is introduced; the existing external component boundary is unchanged. Refer to `docs/KLONDIKE_ASSET_CONSUMER_0123.adoc`.

@@ -1,0 +1,26 @@
+= Klondike 0.1.2 — read-only Tavi Assets card back (TaviX 0.1.23 candidate)
+:toc:
+
+== Source ownership and compatibility
+
+The TaviX distribution owns `extensions/inc.thebigtree.tavi.klondike/0.1.2/` and its immutable `.tavix`; it does not own the Tavi Assets engine, account consent, purchased entitlements or Tavi host. The existing compiled Klondike engine (`ui/klondike.js`) is unchanged from 0.1.1. The new unprivileged `ui/asset-integration.mjs` imports the **source-pinned Tavi Assets 0.1.16 consumer SDK**, negotiates `tavi.assets/v1` and requests only `assets.resolve` for the explicitly requested `org.tavi.cards.standard` / `card.back`. No `assets.preferences.write` permission is requested: Tavi owns global preference changes.
+
+The game plays immediately with its bundled CSS cards, even without Tavi. The optional module is loaded only for a host frame and cannot block game startup. The media response is restricted to approved image formats, base64, a bounded size, the correct pack/capability pair and the `tavi.assets.resource/v1` schema. It sets one transient CSS custom property and never persists image data, filesystem paths, grants, tokens, Wallet state or purchases.
+
+== Host-side prerequisites and safe failure
+
+The **actual Tavi 0.3.173 source** already supports `manifest.assetDependencies`, per-pack account consent, an installed free `org.tavi.cards.standard` fixture, scoped host grants and `tavi.assets/v1` when ready. The game still needs both an installed compatible pack and explicit user consent to obtain `assets.read`. The existing host may not advertise this feature in some windows or sessions. The game checks both feature negotiation and `host.capabilities`, then uses `assets.resolve`. Denial, missing content, malformed media, failed import or app close leaves the original CSS card backs. A fresh request is made on focus or when document visibility returns; loaded pixels cannot be remotely destroyed mid-display without a host event. Host approval and live revocation acceptance are still required.
+
+== Deliberately excluded work
+
+* `tavix.asset-grants/v1` remains an exact pack/capability subset, not a collection wildcard. The 32-capability limit is unchanged, so full 52-face deck overrides require a **new separately reviewed collection-scoped contract** across TaviX, Assets and Tavi.
+* Gold purchases, entitlement binding, downloading packs, automatic updates, publisher signing and asset store publication are not implemented by this release.
+* The card back is **not** a saved Klondike game rule or shared gameplay state. Host selection takes precedence only when the host grants the current content.
+* Old 0.1.1 immutable files and existing Companion/Atrium releases may not be mutated.
+
+== Acceptance gates
+
+. Validate and pack `examples/klondike-assets-0.1.2/`, and run `node --test tests/test_klondike_asset_client_023.mjs`.
+. On current *complete* TaviX Git checkout (including Companion 0.6.40), validate current immutable releases and strict repository index; inspect source diff before separate approval to push.
+. In Windows Tavi, install reviewed 0.1.2, grant card-pack read consent, install/select the Tavi bundled sample pack, verify image replacement, focus/restart persistence and revoke back to bundled cards. Repeat embedded/detached and Android tests.
+. Keep Workboard operator checks, Windows acceptance, release approval and Git/Pages authorization separate.

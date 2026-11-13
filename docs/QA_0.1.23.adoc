@@ -1,0 +1,34 @@
+= TaviX 0.1.23 — Klondike card-back consumer verification
+:toc:
+
+== Proven locally (2026-11-13)
+
+* Klondike 0.1.2 complete immutable `.tavix` archive validates against its manifest and generated lock; new catalog revision equals the exact archive's SHA-256.
+* The original TheBigTreeInc Klondike 0.1.1 immutable archive remains unchanged at SHA-256 `da4ecd43299c0f05e49beebc5a51fed7146325be8b54b663ac2327103025be92`; its core game JavaScript is byte-for-byte identical in 0.1.2.
+* Node source tests for the asset adapter cover approved `card.back`, unavailable feature, denied permission, revoked read, unsupported media, wrong pack, oversized response and cleanup of in-flight requests.
+* The current Tavi 0.3.173 host source validates the Klondike 0.1.2 manifest and permits its scoped optional dependency. The corresponding 22 source tests passed, but are not native Windows/Android integration or operator acceptance.
+* Tavi Assets 0.1.16 `python tools/check.py` passed its 108 Python tests and the associated Node SDK/portable-service fixtures. This is not an entitlement, live registry or Gold payment test.
+
+== Reconstruction limitation and mandatory Windows gates
+
+The available historical *full* TaviX 0.1.19 source ZIP contains Companion 0.6.33, whereas the current published GitHub TaviX main catalog contains Companion 0.6.40. TaviX 0.1.20 through 0.1.22 were intentionally **source overlay ZIPs** and do not duplicate previously staged immutable Companion binaries. Consequently a local historical reconstruction cannot pass the complete strict repository/catalog test: 115 of 116 Python tests pass, with the remaining catalog test correctly requiring Companion 0.6.40. Do not replace this with a fake fixture or rewrite historical release content to force a pass. Apply this **overlay** to the actual up-to-date TaviX checkout and run the configured preflight, Python tests, Node test and strict index validation there. The archive is not a full repository bootstrap.
+
+On the actual Windows checkout, inspect the Git status and catalog diff after ZipRunner import. If the existing Companion binary is missing, first restore the exact approved 0.6.40 release from canonical Git, not from an invented package. Stop and do not publish if a protected or historical release hash changes.
+
+== Host/operator acceptance still outstanding
+
+. Windows embedded: install reviewed 0.1.2 with `assets.read`, explicitly approve `org.tavi.cards.standard` / `card.back`, select a different permitted back in first-party Assets UI, and observe Klondike replacing the bundled gradient.
+. Windows detached: verify the session transport actually advertises `tavi.assets/v1`, the same card-back selection appears, closing the detached window invalidates the session and app remains available in Tavi.
+. Reopen, reload, account switch, consent denial and revoked grants: verify the unprivileged game shows the fallback and never stores revoked pixels or permissions. Verify offline/no-pack startup is instant and playable.
+. Android: repeat install, portrait/landscape touch, no-pack launch, grant/reset/restart and revoke tests on a real device.
+. Confirm that old 0.1.1 and Atrium and Companion listings remain available; compare immutable hashes and get separate operator approval before Git push/Pages publication.
+
+== Explicit non-goals
+
+* No full-deck 52-card collection grant (TaviX v1 still caps at 32 explicitly scoped capabilities per pack). This requires its own reviewed permission schema and runtime authorization tests.
+* No online paid marketplace, Gold deduction, LoopRD entitlement or live `.tavia` registry publication.
+* No game rewards or authoritative completion minting.
+
+== Release status
+
+Source candidate only. Native build pending. Operator acceptance pending. Git push, Pages deployment and Store release not authorized by these test results.

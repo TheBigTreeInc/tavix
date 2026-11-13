@@ -1,8 +1,13 @@
 # TaviX — extension tooling, local preview and reviewed distribution
 
-**Source/tooling version: 0.1.19 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
+**Source/tooling version: 0.1.23 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
 
 TaviX provides a reviewed, immutable distribution repository for compiled Tavi extensions, plus Python pack/validate/staging tools and a **standalone loopback development client** for opening `.tavix` panels on a PC without Tavi. It does **not** include the Tavi messenger, a game server, the production Tavi SDK host or trusted publisher signing. The `extensions/` tree contains distributed application builds, not their original authoring source.
+
+## Klondike 0.1.2 — first approved-pack consumer candidate
+
+The staged Klondike 0.1.2 release requests only `assets.read` for the optional, explicit `org.tavi.cards.standard` / `card.back` capability. It vendors the read-only Tavi Assets 0.1.16 consumer SDK and displays verified host media; disabled, missing, unsupported or revoked assets fall back to the bundled card design. No new purchases, pack installation, Wallet, code execution, game-rule modification or publisher permission has been added. The historical approved Klondike 0.1.1 package remains immutable. This is source-staged and requires Windows/Android consent and operator publication acceptance. See `docs/KLONDIKE_ASSET_CONSUMER_0123.adoc`.
+
 
 ## Developer contracts — start here
 

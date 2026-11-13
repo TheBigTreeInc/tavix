@@ -51,7 +51,11 @@ class KlondikePublicStoreCandidateTests(unittest.TestCase):
         self.assertEqual(set(entries),{'inc.thebigtree.tavi.atrium','org.tavi.community.companion',APP})
         e=entries[APP]
         self.assertTrue(e['entrypoint'].startswith('https://thebigtreeinc.github.io/tavix/extensions/'))
-        self.assertEqual(e['release']['revision'],EXPECTED)
+        self.assertEqual(e['manifest']['version'],'0.1.2')
+        self.assertEqual(e['manifest']['assetDependencies'][0]['packId'],'org.tavi.cards.standard')
+        self.assertIn('assets.read',e['manifest']['permissions'])
+        candidate=ROOT/'extensions'/APP/'0.1.2'/f'{APP}-0.1.2.tavix'
+        self.assertEqual(e['release']['revision'],hashlib.sha256(candidate.read_bytes()).hexdigest())
         self.assertIn('android',e['manifest']['platforms'])
         self.assertEqual(e['manifest']['classification']['type'],'game')
 

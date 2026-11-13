@@ -1,8 +1,8 @@
 {
   "schema": "ziprunner.workboard-update.v1",
   "project": "tavix",
-  "version": "0.1.22",
-  "summary": "Repair 0.1.21 Workboard metadata rejection by adding required operator checks and a regression guard; retain the staged Klondike migration and release approval gates.",
+  "version": "0.1.23",
+  "summary": "Stage only a new immutable Klondike 0.1.2 optional asset-backed card-back candidate, retaining approved historical release bytes and publisher/approval gates.",
   "implemented": [
     {
       "id": "TAVIX-KLONDIKE-DRAFT-ARCHIVE-021",
@@ -23,6 +23,16 @@
         "Confirm Windows unit tests, repository preflight and strict catalog validation pass after the guarded archive stage.",
         "Leave Git push and Pages publication behind operator approval; verify uninstalled Android Store discovery separately."
       ]
+    },
+    {
+      "id": "TAVIX-KLONDIKE-ASSETS-023",
+      "title": "Implement Klondike 0.1.2 optional Tavi Assets card-back consumer",
+      "summary": "New staged candidate .tavix with bundled fallback and pinned consumer SDK, no Wallet or asset-install methods; JavaScript and exact-package tests. Published 0.1.1 is immutable.",
+      "operator_checks": [
+        "Inspect Git diff for Klondike 0.1.2 and ensure 0.1.1 and Companion 0.6.40 are unchanged.",
+        "Run Node asset consumer tests and strict catalog tests against current complete Windows Git checkout.",
+        "Verify real Tavi account installed pack consent, selected card back, revoke/reset, offline restart and detached/mobile behavior; do not approve based only on mocks."
+      ]
     }
   ],
   "remaining": [
@@ -33,6 +43,16 @@
       "operator_checks": [
         "Review exact staged catalog and compare TheBigTreeInc Klondike identity, icon and package hash before approving Git publication.",
         "After an authorized Pages deployment, open Tavi Store > Games on an Android phone without Klondike installed and confirm its listing and Install button."
+      ]
+    },
+    {
+      "id": "TAVIX-KLONDIKE-NATIVE-ASSETS-023",
+      "title": "Native Tavi + Klondike assets acceptance and full deck contract",
+      "summary": "Validate real host consent and card-back rendering; collection-grant protocol, complete 52-face decks and marketplace purchasing remain separate unimplemented work.",
+      "operator_checks": [
+        "Open reviewed Klondike 0.1.2 in Windows and Android Tavi with denied and approved org.tavi.cards.standard grant.",
+        "Switch a Tavi-owned card-back preference and confirm the game follows it after focus/reopen; revoke grant and verify bundled back returns.",
+        "Approve collection-scoped deck authorization in TaviX/Tavi Assets/Tavi only after separate versioned security tests."
       ]
     }
   ]

@@ -3,15 +3,15 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.22",
-    "base_version": "0.1.20",
-    "summary": "Repair rejected 0.1.21 Workboard operator_checks metadata while preserving the guarded Klondike draft archival, approved TheBigTreeInc catalog and Companion 0.6.40."
+    "version": "0.1.23",
+    "base_version": "0.1.22",
+    "summary": "Stage Klondike 0.1.2 opt-in Tavi Assets card-back consumer without changing prior immutable releases or bypassing approvals."
   },
   "update": {
-    "id": "TAVIX-KLONDIKE-WORKBOARD-CHECKS-022",
+    "id": "TAVIX-KLONDIKE-ASSETS-023",
     "kind": "source_update",
-    "created_at": "2026-11-13T01:50:00+01:00",
-    "summary": "Add required nonempty Workboard operator checks and a regression test; preserve 0.1.21 migration code and existing Git/Pages approval gates."
+    "created_at": "2026-11-13T12:50:00+01:00",
+    "summary": "Host-negotiated optional card-back artwork in Klondike, bundled fallback, targeted tests and exact staged package."
   },
   "planned_work": [
     {
@@ -122,6 +122,12 @@
       "title": "Repair pre-overlay ZipRunner Workboard validation for Klondike staging",
       "priority": "high",
       "acceptance_criteria": "All implemented/remaining Workboard entries have nonempty bounded operator_checks; validate exact 0.1.22 ZIP on Windows; run guarded archive and strict source tests; preserve release and Git approval."
+    },
+    {
+      "id": "TAVIX-KLONDIKE-ASSETS-023",
+      "title": "Klondike optional Tavi Assets card back",
+      "priority": "high",
+      "acceptance_criteria": "0.1.2 package loads offline without host, uses only granted org.tavi.cards.standard/card.back through tavi.assets/v1, clears transient visuals when refreshed/revoked, keeps 0.1.1 immutable and requires reviewed Store staging."
     }
   ],
   "done_work": [],
@@ -293,5 +299,11 @@
     "requested": false,
     "requires_operator_approval": true,
     "notes": "Publisher and free distribution confirmed by owner; source overlay stages verified Klondike, not Git publication. NOASSERTION is not a general source code license. No Git push/Pages deploy, native phone test or install performed."
+  },
+  "verification": {
+    "source_test": "node --test tests/test_klondike_asset_client_023.mjs",
+    "package_validation": "python tools/tavix_package.py validate-archive <klondike 0.1.2 archive>",
+    "host_acceptance": "pending Windows and Android account consent/revocation",
+    "publication": "operator authorization pending"
   }
 }

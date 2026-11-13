@@ -1,0 +1,56 @@
+{
+  "schema": "tavi.extension/v1",
+  "id": "inc.thebigtree.tavi.klondike",
+  "version": "0.1.2",
+  "name": "Klondike Solitaire",
+  "summary": "Offline Klondike Solitaire with optional Tavi Assets card-back customization and bundled fallback.",
+  "publisher": "thebigtreeinc",
+  "kind": "app",
+  "classification": {
+    "type": "game",
+    "categories": [
+      "cards",
+      "solitaire"
+    ]
+  },
+  "hostApi": {
+    "min": "1.0.0",
+    "maxExclusive": "2.0.0"
+  },
+  "entrypoints": {
+    "panel": "ui/index.html"
+  },
+  "contributions": [
+    {
+      "slot": "app.launcher",
+      "id": "klondike",
+      "label": "Klondike Solitaire",
+      "action": "openPanel"
+    }
+  ],
+  "permissions": [
+    "ui.panel",
+    "storage.private",
+    "assets.read"
+  ],
+  "platforms": [
+    "web",
+    "android",
+    "windows"
+  ],
+  "icon": "ui/icon.png",
+  "assetDependencies": [
+    {
+      "packId": "org.tavi.cards.standard",
+      "compatibility": {
+        "min": "0.1.0",
+        "maxExclusive": "1.0.0"
+      },
+      "capabilities": [
+        "card.back"
+      ],
+      "optional": true,
+      "requestCustomization": false
+    }
+  ]
+}
