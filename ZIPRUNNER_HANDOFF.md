@@ -1,5 +1,18 @@
-# TaviX 0.1.18 — Windows encoding portability repair
+= TaviX 0.1.22 ZipRunner source handoff
 
-Base: 0.1.17 (unaccepted Windows build candidate). Corrected implicit source-test `.read_text()` calls in `tests/test_store_editor.py` to explicitly request UTF-8 and added a regression guard. Windows Python default CP1252 previously raised `UnicodeDecodeError` on editor HTML. No runtime functionality, Store catalog, previously published extension bytes, signing, host permissions, wallet or approval gates changed.
+Project: tavix
+Version: 0.1.22
+Base version: 0.1.20 (0.1.21 was rejected by Workboard parsing before source overlay)
 
-Re-run all three existing ZipRunner build commands, especially `python -m unittest discover -s tests -v`, on the Windows operator machine. Native editor file-picker/export acceptance is still pending. No Git push/public release authorized.
+Repair: ZipRunner 1.2.304.278 rejected 0.1.21 because `TAVIX-KLONDIKE-DRAFT-ARCHIVE-021` lacked mandatory `operator_checks`. This self-contained overlay retains every 0.1.21 source change and adds non-empty operator checklists to implemented and remaining Workboard entries, plus regression tests. It preserves the approved TheBigTreeInc Klondike 0.1.1, Companion 0.6.40, guarded legacy draft archive, TaviX Store Editor and original approval gates.
+
+Windows ZipRunner should execute (operator acceptance pending):
+* Workboard update parses before any overlay changes
+* python tools/klondike_legacy_draft_archive.py --repository .
+* python tools/ziprunner_catalog_preflight.py --repository .
+* python -m unittest discover -s tests -v
+* python tools/repository.py check --repository . --strict
+* node --test tests/*.mjs
+
+Next: obtain separate operator approval for the reviewed Git push/Pages publication, then test the Klondike listing and Install button on the phone BEFORE installation.
+No Git push or public release is authorized by this ZIP.

@@ -206,14 +206,14 @@ class ClassificationTests(unittest.TestCase):
         done={x['id'] for x in update['implemented']}
         pending={x['id'] for x in update['remaining']}
         self.assertFalse(done & pending)
-        self.assertIn('TAVIX-STORE-EDITOR-WIN-UTF8-018',done)
-        # This repair uses a single new implemented ID; previous history remains in planned_work.
+        self.assertIn('TAVIX-KLONDIKE-DRAFT-ARCHIVE-021',done)
+        # This pass uses a single new implemented ID; previous history remains in planned_work.
         self.assertIn('TAVIX-ASSET-CONTRACT-001', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text())['planned_work']})
         self.assertIn('TAVIX-STORE-EDITOR-017', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text())['planned_work']})
         self.assertIn('TAVIX-CLASSIFICATION-001', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text())['planned_work']})
         for fname in ('project.zr','tavix.zr','.ziprunner-post-update-tests.json'):
-            self.assertEqual(json.loads((ROOT/fname).read_text())['version'],'0.1.18')
-        self.assertEqual(json.loads((ROOT/'ziprunner-manifest.json').read_text())['project']['version'],'0.1.18')
+            self.assertEqual(json.loads((ROOT/fname).read_text())['version'],'0.1.22')
+        self.assertEqual(json.loads((ROOT/'ziprunner-manifest.json').read_text())['project']['version'],'0.1.22')
 
 
 if __name__=='__main__':unittest.main()

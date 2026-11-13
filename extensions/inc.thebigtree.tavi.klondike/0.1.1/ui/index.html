@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Klondike Solitaire, a fully offline card game.">
+<title>Klondike Solitaire</title>
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="app-bar">
+  <div class="brand">
+    <img src="icon.png" alt="" width="30" height="30">
+    <div class="brand-text">
+      <h1>Klondike</h1>
+      <p>Solitaire</p>
+    </div>
+  </div>
+  <div class="actions">
+    <button id="btn-undo" type="button">Undo</button>
+    <button id="btn-restart" type="button">Restart</button>
+    <button id="btn-new" type="button">New</button>
+    <button id="btn-theme" type="button">Auto</button>
+  </div>
+</header>
+
+<div class="status-bar">
+  <p id="status">Starting the game…</p>
+  <button id="btn-rules" class="chip" type="button" aria-pressed="false">Kings only</button>
+</div>
+
+<main class="board" id="board">
+  <section class="top-row">
+    <div class="pile-group">
+      <div id="stock" class="pile-slot" role="button" tabindex="0" aria-label="Stock pile, draw a card"></div>
+      <div id="waste" class="pile-slot" role="button" tabindex="0" aria-label="Waste pile"></div>
+    </div>
+    <div class="foundations" id="foundations" aria-label="Foundations"></div>
+  </section>
+  <section class="tableau" id="tableau" aria-label="Tableau"></section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="klondike.js"></script>
+<script src="boot.js"></script>
+</body>
+</html>

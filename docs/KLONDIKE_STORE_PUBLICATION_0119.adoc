@@ -1,0 +1,42 @@
+= Klondike Solitaire 0.1.1 — TaviX public Store candidate
+:revdate: 2026-11-13
+:toc:
+
+== Intended result
+
+On a Tavi Android phone with Klondike *not yet installed*, Games should discover Klondike Solitaire 0.1.1 with its application icon, name, offline-game summary and Install option from the official TaviX repository. This must be tested **before** tapping Install. The source ZIP must not perform Git publication or install the game.
+
+== Exact packaged identity
+
+[cols="1,2"]
+|===
+|Application |Klondike Solitaire
+|Manifest ID |`example.org.klondike` (preserved from locally installed versions)
+|Version |`0.1.1`
+|Publisher metadata |`example-org` (legacy placeholder, ownership unverified)
+|Classification |`game`, categories `cards`, `solitaire`
+|Platforms declared |web, windows, android; native Android not accepted
+|Permissions |`ui.panel`, `storage.private`
+|License field |`NOASSERTION`, not distribution rights approval
+|Catalog source field |`https://github.com/TheBigTreeInc/tavix`, distribution host, **not independently verified original producer source**
+|Supplied reviewed package SHA-256 |`c11a9945e8f9f604c366dd496ae3b7f1195af61df58a3c59b6299ce1d45c4ffc`
+|===
+
+The package icon is `ui/icon.png`; staged `store/cover.webp` is an *illustration* and `store/screenshot-*` are captures from a browser rendering, not physical Android screenshots. The current Social 0.3.175 Store only renders manifest icon/summary and does not expose a gallery contract. Avoid claiming that cover or gallery are live. No paid content, Wallet reward or rating is supplied by this listing.
+
+== Work performed
+
+The existing TaviX repository stage command was run in a disposable source workspace against the exact package. Immutable release assets and `tavix.repository/v1` metadata were generated and validated. Previously indexed Atrium and Companion releases are unchanged. A clean-device Android installation and public GitHub Pages deployment have not run.
+
+== Mandatory separate operator gates
+
+. Review publisher ownership of legacy `example-org`, the production source URL, and legal distribution rights (the compiled bundle lacks an explicit license). Do not silently change the publisher ID or migrate existing sideloaded users. The catalog `NOASSERTION` value does not waive this review.
+. Import candidate into ZipRunner; run preflight, Python tests and strict catalog check on Windows; inspect the exact diff, versions, archive digest and protected paths.
+. Approve the exact Git commit and Pages workflow separately. The operator's general interest in a public Store is not by itself a publisher source/licensing approval.
+. Verify the published `https://thebigtreeinc.github.io/tavix/tavi.repository.json` contains the exact release revision and that the hosted `ui/index.html` and `ui/icon.png` are accessible.
+. **Before installing Klondike** on a phone, open Tavi Store -> Games, refresh and confirm the Klondike card, product details and Install action. If missing, verify Tavi's repository subscription, network, catalog cache and signed-in identity without sideloading.
+. Only after catalog discovery passes, test installation consent, Android portrait/landscape touch interactions, Back/close, persistence and updates. Existing Windows sideloads must not be silently transferred to the public source.
+
+== Ownership boundaries
+
+TaviX owns packaged release and static catalog. Tavi owns repository subscriptions, install consent and Store UI. The producer owns source/license provenance. LoopRD owns authentication. No source ZIP here publishes a Git release, charges Gold or enables game completion rewards.

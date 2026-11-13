@@ -3,15 +3,15 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.18",
-    "base_version": "0.1.17",
-    "summary": "0.1.18: Windows CP1252/UTF-8 source-test portability repair for private TaviX Store Editor; behavior and public catalog unchanged."
+    "version": "0.1.22",
+    "base_version": "0.1.20",
+    "summary": "Repair rejected 0.1.21 Workboard operator_checks metadata while preserving the guarded Klondike draft archival, approved TheBigTreeInc catalog and Companion 0.6.40."
   },
   "update": {
-    "id": "TAVIX-STORE-EDITOR-WIN-UTF8-018",
+    "id": "TAVIX-KLONDIKE-WORKBOARD-CHECKS-022",
     "kind": "source_update",
-    "created_at": "2026-11-12T22:18:00+01:00",
-    "summary": "Explicit UTF-8 reads for Store Editor source tests to prevent Windows default CP1252 UnicodeDecodeError; regression guard added."
+    "created_at": "2026-11-13T01:50:00+01:00",
+    "summary": "Add required nonempty Workboard operator checks and a regression test; preserve 0.1.21 migration code and existing Git/Pages approval gates."
   },
   "planned_work": [
     {
@@ -24,7 +24,7 @@
       "id": "TAVIX-002",
       "title": "Connect published static TaviX repository to Tavi App Store",
       "priority": "high",
-      "acceptance_criteria": "After Git-reviewed push enable Pages and confirm HTTPS public index/assets/CORS, then subscribe on Windows/Android/web and check consented install/update/source transitions."
+      "acceptance_criteria": "After Git-reviewed push enable Pages and confirm HTTPS public index/assets/CORS, then subscribe on Windows/Android/web and check consented install/update/source transitions. Klondike clean phone Store discovery must pass before user taps Install."
     },
     {
       "id": "TAVIX-REPAIR-011",
@@ -104,6 +104,24 @@
       "title": "Repair Windows UTF-8 Store Editor test portability",
       "priority": "high",
       "acceptance_criteria": "Run ZipRunner Python build on Windows with default CP1252 decoding: Store Editor tests use explicit UTF-8; pass all tests and strict catalog without changing published extensions, config or approvals. Operator acceptance remains separate."
+    },
+    {
+      "id": "TAVIX-KLONDIKE-STAGE-019",
+      "title": "Stage Klondike Solitaire 0.1.1 in public catalog for approval",
+      "priority": "high",
+      "acceptance_criteria": "Stage exact package, test immutable release files, correct game classification and Android metadata; verify icon and catalog; native Android and publisher source/license review are separate gates."
+    },
+    {
+      "id": "TAVIX-KLONDIKE-DRAFT-ARCHIVE-021",
+      "title": "Archive obsolete example-org Klondike staging draft without deleting bytes",
+      "priority": "high",
+      "acceptance_criteria": "Verify exact old/new package revisions, preserve 0.6.40 catalog, archive only the superseded draft to ignored local backup, pass Windows preflight/unit/strict checks before Git publication."
+    },
+    {
+      "id": "TAVIX-KLONDIKE-WORKBOARD-CHECKS-022",
+      "title": "Repair pre-overlay ZipRunner Workboard validation for Klondike staging",
+      "priority": "high",
+      "acceptance_criteria": "All implemented/remaining Workboard entries have nonempty bounded operator_checks; validate exact 0.1.22 ZIP on Windows; run guarded archive and strict source tests; preserve release and Git approval."
     }
   ],
   "done_work": [],
@@ -177,99 +195,103 @@
       "id": "TAVIX-LOCAL-FILE-IMPORT-001",
       "status": "review",
       "next_action": "Run exact ZIP Windows source tests and native Tavi integration separately; review contracts and approve Git publication only after operator acceptance."
+    },
+    {
+      "id": "TAVIX-KLONDIKE-PUBLIC-QA-019",
+      "status": "planned",
+      "next_action": "Resolve publisher identity and source provenance, review source licensing and grant publication approval; then push verified TaviX source through ZipRunner, confirm Pages, observe discovery without installing on the phone, and test install afterward."
     }
   ],
   "validation": {
-    "model_reported": "source_passed_native_pending",
+    "model_reported": "source_passed_windows_pending",
     "checks": [
       {
-        "id": "TAVIX-0113-FULL-UNIT",
+        "id": "TAVIX-020-FULL-PYTHON",
         "status": "passed",
-        "description": "91 Python tests passed in Linux source checkout; rerun from extracted ZIP before delivery",
+        "description": "107 Python tests passed against complete local staging baseline with Klondike identity (Companion 0.6.33); does not prove current 0.6.40 overlay runtime.",
         "command": "python -m unittest discover -s tests -v",
-        "environment": "Linux container; not Windows ZipRunner"
+        "environment": "Linux local full-source snapshot"
       },
       {
-        "id": "TAVIX-0113-NODE-SDK",
+        "id": "TAVIX-020-NODE",
         "status": "passed",
-        "description": "6 Node.js mock host tests passed (embedded/detached transport, grants, cancellation, bounded read, error codes)",
-        "command": "node --test tests/test_local_file_sdk.mjs",
-        "environment": "Linux Node.js; not native host"
+        "description": "16 JavaScript tests passed against complete local staging baseline.",
+        "command": "node --test tests/*.mjs",
+        "environment": "Linux Node.js local full-source snapshot"
       },
       {
-        "id": "TAVIX-0113-STRICT-CATALOG",
+        "id": "TAVIX-020-KLONDIKE",
         "status": "passed",
-        "description": "Strict repository check passed; 105 historical staged release/catalog files unchanged",
-        "command": "python tools/repository.py check --repository . --strict",
-        "environment": "Linux container"
+        "description": "TheBigTreeInc Klondike 0.1.1 exact package and manifest lock validated, only manifest differs from the prior placeholder build.",
+        "command": "python tools/tavix_package.py validate-archive extensions/inc.thebigtree.tavi.klondike/0.1.1/inc.thebigtree.tavi.klondike-0.1.1.tavix",
+        "environment": "Linux local source"
       },
       {
-        "id": "TAVIX-0113-LOCAL-FILE-FIXTURE",
+        "id": "TAVIX-020-LIVE-BASE",
         "status": "passed",
-        "description": "Reference .tavix packed and validated; no native picker tested",
-        "command": "python tools/tavix_package.py pack examples/local-file-import <temporary-output> && python tools/tavix_package.py validate-archive <temporary-output>",
-        "environment": "Linux container"
+        "description": "Reconstructed unchanged live 2-app catalog matches GitHub blob SHA; overlay includes Companion 0.6.40 entry and no existing release assets.",
+        "environment": "Local canonical-JSON comparison with GitHub main catalog"
       },
       {
-        "id": "TAVIX-0113-EXACT-PACKAGE",
+        "id": "TAVIX-020-OVERLAY",
         "status": "passed",
-        "description": "Existing Atrium 1.0.5 exact-package QA 7/7 checks passed",
-        "command": "python tools/local-client/qa.py --repository . --extension inc.thebigtree.tavi.atrium --version 1.0.5",
-        "environment": "Linux container"
+        "description": "Source overlay ZIP integrity and extracted new .tavix validation passed; overlay is not a complete checkout; full tests require current repository baseline. Outdated baseline fails closed.",
+        "environment": "Linux extracted archive and negative overlay test"
       },
       {
-        "id": "TAVIX-0113-WINDOWS-ANDROID",
+        "id": "TAVIX-020-WINDOWS",
         "status": "not_run",
-        "description": "Native Tavi picker and detached window tests blocked on Social/Tavi host implementation",
-        "environment": "External Tavi project"
+        "description": "Apply to current Windows TaviX Git checkout, run ZipRunner tests/diff and operator approval pending",
+        "environment": "Windows operator"
       },
       {
-        "id": "TAVIX-0113-STRUCTURIZR",
+        "id": "TAVIX-020-ANDROID",
         "status": "not_run",
-        "description": "Structurizr CLI not installed; source-contract tests pass but parser not run",
-        "environment": "Linux container"
+        "description": "On phone without Klondike installed, verify Games listing/Install before any install",
+        "environment": "Android operator"
+      },
+      {
+        "id": "TAVIX-0121-WINDOWS-RECONCILIATION",
+        "status": "passed",
+        "description": "Local simulated Windows-overlay source tests: 111 Python and 16 JavaScript; exact old draft archived and checksum retained; local Companion 0.6.40 fixture synthetic, not claimed as published binary",
+        "environment": "Linux source simulation; native Windows ZipRunner pending"
       }
     ]
   },
   "handover": {
-    "next_pass": "Social/Tavi implement and approve Windows/Android native picker and detached host transport; Asset Studio integrate sdk.localFiles after host feature acceptance; retain registry admin and Git gates.",
+    "next_pass": "Import 0.1.22 into Windows ZipRunner; confirm Workboard gate, guarded legacy draft archival, full build and exact package acceptance. Then operator-approved Git/Pages publication and phone discovery test, before installation.",
     "risks": [
-      "Tavi 0.3.141 rejects new assetDependencies and assets.* permission tokens; no live asset feature or attached engine.",
-      "Tavi 0.3.141 flat pack/capability grants cannot enforce pack-specific customization without host changes.",
-      "Tavi Assets 0.1.7 provides a reference portable engine but not accepted native/entitlement/storefront integration.",
-      "TaviX package validation is not proof of publisher trust, installation, entitlement, authorization or operator acceptance.",
-      "Windows ZipRunner and separate Git publication approval remain pending.",
-      "assets.registry.admin/v1 is specification-only; Tavi 0.3.141 rejects permission and has no trusted admin transport; LoopRD ecosystemAdmin checks and confirmation evidence unverified.",
-      "Tavi 0.3.141 rejects fileImports/files.local.import and does not implement native picker; source SDK and mocks are not host acceptance.",
-      "Detached window transport requires authenticated host binding; no window.opener fallback."
+      "TaviX live repository contains Companion 0.6.40, but an older local source snapshot contained 0.6.33. The safe overlay intentionally contains no older release assets and requires the current Git checkout; stale checkouts must fail closed.",
+      "TheBigTreeInc publisher/free-distribution permission was explicitly confirmed; public code licensing remains NOASSERTION, not an invented SPDX license.",
+      "Catalog source URL references TaviX distribution repository, not original producer source repository.",
+      "Tavi current Store renders icon and summary; rich cover/screenshots remain packaged until future Social UI contract.",
+      "Phone discovery, install, native touch and orientation remain unverified; no game sideload is needed for discovery.",
+      "Tavi Assets card packs are deferred; bundled card rendering retained for this first test.",
+      "0.1.21 was rejected by ZipRunner Workboard metadata validation before source overlay; this full 0.1.22 overlay includes its unchanged migration code and fixes operator_checks for both implemented and remaining Workboard items."
     ],
     "blockers": [
-      "Native Tavi/Assets engine and grant integration is external and not completed by this TaviX ZIP.",
-      "Operator Windows/native acceptance and release approval not provided.",
-      "Trusted host-mediated LoopRD admin transport, verified ecosystemAdmin authorization and native confirmation flow are not implemented; application admin controls must stay disabled.",
-      "Windows/Android native picker, permission grant and detached transport are external Tavi implementation tasks; no production file import is enabled by this TaviX source ZIP."
-    ],
-    "notes": [
-      "The TaviX ZipRunner checkout is intended to be adjacent to Atrium and Companion; scripts do not invoke Git."
+      "Git/Pages publishing requires separate operator review and approval.",
+      "Windows target checkout must contain valid current Companion 0.6.40 or newer immutable release assets; refuse older source checkout.",
+      "Native Android discovery and installation tests remain operator pending."
     ]
   },
   "operator_actions": [
     {
-      "id": "TAVIX-OP-0113-1",
-      "description": "Import exact TaviX 0.1.13 source ZIP over reviewed 0.1.12 while preserving protected paths and immutable staged releases."
+      "id": "TAVIX-OP-020-1",
+      "description": "Apply 24-file source overlay to current TaviX Git checkout (Companion 0.6.40 or newer); preserve all existing files/config and never delete published releases."
     },
     {
-      "id": "TAVIX-OP-0113-2",
-      "description": "Run Windows full tests, strict repository integrity and local-file import example pack/archive checks; inspect reference SDK and negative cases."
+      "id": "TAVIX-OP-020-2",
+      "description": "Run Windows ZipRunner preflight/Python/strict repository checks and inspect resulting Git diff; reject any Companion downgrade or stale catalog."
     },
     {
-      "id": "TAVIX-OP-0113-3",
-      "description": "Coordinate native Windows/Android implementation and trust model with Social/Tavi; approve Git publication separately. No auto-publish."
+      "id": "TAVIX-OP-020-3",
+      "description": "Approve exact reviewed commit/Pages publication independently. On updated clean phone refresh Store Games and verify Klondike icon/details/Install BEFORE tapping Install."
     }
   ],
   "release": {
     "requested": false,
     "requires_operator_approval": true,
-    "notes": "TaviX source/SDK specification only; no native picker, host permission grant, registry upload or publication."
+    "notes": "Publisher and free distribution confirmed by owner; source overlay stages verified Klondike, not Git publication. NOASSERTION is not a general source code license. No Git push/Pages deploy, native phone test or install performed."
   }
 }

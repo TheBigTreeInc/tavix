@@ -1,31 +1,39 @@
 {
   "schema": "ziprunner.workboard-update.v1",
   "project": "tavix",
-  "version": "0.1.18",
-  "summary": "Repair Store Editor tests on Windows: explicit UTF-8 source decoding and platform-independence regression; no UI, catalog or publisher behavior changes.",
+  "version": "0.1.22",
+  "summary": "Repair 0.1.21 Workboard metadata rejection by adding required operator checks and a regression guard; retain the staged Klondike migration and release approval gates.",
   "implemented": [
     {
-      "id": "TAVIX-STORE-EDITOR-WIN-UTF8-018",
-      "title": "Fix Windows CP1252 UnicodeDecodeError in TaviX Store Editor tests",
-      "summary": "Five test source reads now explicitly specify UTF-8. Added AST regression guard; only test code and source metadata changed. Native Tavi acceptance pending.",
+      "id": "TAVIX-KLONDIKE-DRAFT-ARCHIVE-021",
+      "title": "Archive immutable example-org 0.1.19 draft before validating approved Klondike 0.1.20 catalog",
+      "summary": "After exact immutable SHA checks, relocate obsolete draft to Git-ignored .tavix-local backup. Refuse altered or unknown drafts; keep Git/release approval and installed application state unchanged.",
       "operator_checks": [
-        "Run Python unit tests on Windows with system default locale, verify 0 errors.",
-        "Run strict repository check and ensure immutable catalog/compiled packages untouched."
+        "On Windows ZipRunner, confirm the guarded legacy Klondike draft archive runs before catalog validation and reports the archive location.",
+        "Verify the old draft archive is preserved at its original SHA-256 and the approved TheBigTreeInc Klondike package is unmodified.",
+        "Check the TaviX catalog lists only approved Klondike, Atrium and Companion 0.6.40; inspect the Git diff before release approval."
+      ]
+    },
+    {
+      "id": "TAVIX-KLONDIKE-WORKBOARD-CHECKS-022",
+      "title": "Repair the Klondike staging Workboard operator-checks gate",
+      "summary": "Supply non-empty operator_checks to every implemented and remaining Workboard entry and add a source regression guard; this repairs pre-overlay validation and does not publish any app.",
+      "operator_checks": [
+        "Run Windows ZipRunner with the exact 0.1.22 ZIP; confirm the Workboard update passes before overlay/build.",
+        "Confirm Windows unit tests, repository preflight and strict catalog validation pass after the guarded archive stage.",
+        "Leave Git push and Pages publication behind operator approval; verify uninstalled Android Store discovery separately."
       ]
     }
   ],
   "remaining": [
     {
-      "id": "TAVIX-STORE-EDITOR-NATIVE-QA-017",
-      "title": "Accept editor in real Tavi Windows/Android and resolve picker/download sandbox restrictions",
-      "summary": "Browser-source and isolated smoke tests cannot prove Tavi native picker/download behavior.",
-      "next_action": "Run installed .tavix in Tavi 0.3.175 Windows and Android; verify file chooser, ZIP import, export, portrait/landscape and accessibility."
-    },
-    {
-      "id": "TAVI-STORE-MEDIA-METADATA-CONTRACT",
-      "title": "Tavi Store media and rich listing metadata contract",
-      "summary": "Tavi presently only consumes manifest identity/summary/icon; media gallery and extended description are preview concepts.",
-      "next_action": "Social/Tavi owner propose/version secure media metadata, catalog and approval contracts before live listing galleries."
+      "id": "TAVIX-KLONDIKE-PUBLICATION-APPROVAL",
+      "title": "Approve publishing reviewed TheBigTreeInc Klondike 0.1.1",
+      "summary": "Windows ZipRunner acceptance pending; after reviewed Git push and Pages deployment, confirm uninstalled-phone Store discovery before tapping Install.",
+      "operator_checks": [
+        "Review exact staged catalog and compare TheBigTreeInc Klondike identity, icon and package hash before approving Git publication.",
+        "After an authorized Pages deployment, open Tavi Store > Games on an Android phone without Klondike installed and confirm its listing and Install button."
+      ]
     }
   ]
 }

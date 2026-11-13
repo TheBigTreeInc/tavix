@@ -90,3 +90,7 @@ These are local source artifacts, not newly published GitHub URLs. They do not g
 
 * link:TAVIX_STORE_EDITOR_001.adoc[Offline TaviX Store Editor developer preview and security limits].
 * link:../examples/store-editor/manifest.json[Packable private example]: user-initiated `.tavix` import, archive lock verification, current/rich Store previews, draft and bumped-version export. No host APIs, Gold checkout, publisher grants or publication.
+
+== Klondike reviewed catalog candidate (0.1.19)
+
+* link:KLONDIKE_STORE_PUBLICATION_0119.adoc[Klondike catalog staging, provenance blockers and native clean-phone acceptance].

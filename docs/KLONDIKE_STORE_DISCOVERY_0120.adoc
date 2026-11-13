@@ -1,0 +1,45 @@
+= Klondike Solitaire — first public Games discovery test
+:revdate: 2026-11-13
+:toc:
+
+== Goal and limits
+
+The immediate goal is to see *Klondike Solitaire* with an **Install** option in **Tavi Store > Games** on the updated Android phone **before installing Klondike**. Do not migrate card rendering to Tavi Assets yet. Do not sideload Klondike on the test phone before the discovery check.
+
+== Publisher authorization and package identity
+
+The operator explicitly confirmed that *TheBigTreeInc* is the publisher and may distribute Klondike for free. The legacy `example.org.klondike` / `example-org` identity has not been publicly published and was replaced *only in this new package*, not in any older local installs. Existing sideloaded installations of the old ID are independent and are not automatically migrated or removed.
+
+[cols="1,2"]
+|===
+|Application ID |`inc.thebigtree.tavi.klondike`
+|Publisher |`thebigtreeinc`
+|Game version |`0.1.1`
+|Classification |game, cards and solitaire
+|Android support |declared, not native-tested
+|Permissions |`ui.panel`, `storage.private`
+|Asset packs |none; bundled card rendering retained for this discovery test
+|Package SHA-256 |`da4ecd43299c0f05e49beebc5a51fed7146325be8b54b663ac2327103025be92`
+|License catalog field |`NOASSERTION` (no specific reusable source-code license inferred from permission to distribute freely)
+|Catalog source URL |`https://github.com/TheBigTreeInc/tavix` (distribution repository, not a separately asserted authoring repository)
+|===
+
+The manifest icon is `ui/icon.png`; the `store/cover.webp` and browser-captured `store/screenshot-*` are packaged only. The current Tavi Store displays icon and summary; cover/gallery need a future Store metadata contract. The game still runs offline with its built-in cards. The unrelated Tavi Assets integration is postponed.
+
+== Exact source verification
+
+Run the configured three commands from `project.zr`: catalog preflight, Python test discovery and strict repository validation. Additionally validate `extensions/inc.thebigtree.tavi.klondike/0.1.1/inc.thebigtree.tavi.klondike-0.1.1.tavix` and compare its SHA-256 to the value above. The other immutable releases and their catalog entries must match the prior reviewed source exactly.
+
+== Operator-gated publication
+
+. Review the diff and exact package in ZipRunner on Windows. Check protected configuration and Workboard state remain intact.
+. Explicitly authorize committing/pushing to the TaviX repository and triggering its GitHub Pages publication process; this source ZIP alone must not publish.
+. Confirm the deployed `https://thebigtreeinc.github.io/tavix/tavi.repository.json` includes `inc.thebigtree.tavi.klondike` and its exact release revision `da4ecd43299c0f05e49beebc5a51fed7146325be8b54b663ac2327103025be92`, and that the HTTPS entrypoint and `ui/icon.png` are accessible.
+. On the updated phone **with Klondike not installed**, open **Tavi Store > Games**, refresh and look for Klondike Solitaire. Inspect its icon, summary and Install button. Note whether `installed=false` and report discovery success before tapping Install.
+. Only after the discovery test passes, separately test download consent, installation, launch, mobile touch controls, Back/close, game state and orientation.
+
+The public catalog may be visible to anyone. Native Android acceptance, GitHub Pages deployment and install success are not implied by local tests.
+
+== Safe source overlay delivery
+
+The operator ZIP is a bounded source **overlay**. It includes only the new versioned Klondike release, canonical current catalog, targeted source test/version metadata, this document and an operator handoff. It deliberately does *not* copy any previous Atrium or Companion releases and uses `delete_missing: false`. Its catalog is constructed against and SHA-verified with the actual live official TaviX catalog where Companion is 0.6.40. If local Companion 0.6.40 assets do not exist, the strict repository check must fail rather than silently revert to Companion 0.6.33. For standalone source tests, an existing full-source checkout with the current published releases is mandatory; the overlay ZIP is not an independent full checkout.

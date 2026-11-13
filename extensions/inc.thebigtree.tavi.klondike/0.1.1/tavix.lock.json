@@ -1,0 +1,58 @@
+{
+  "applicationId": "inc.thebigtree.tavi.klondike",
+  "files": [
+    {
+      "path": "manifest.json",
+      "sha256": "a5969ca49062b047daa0164e0e6e643a37e23f7cc597c28d86cc21bac71d692f",
+      "size": 818
+    },
+    {
+      "path": "store/cover.webp",
+      "sha256": "ad4c09e95c52afc96622c4e400cbb7f64ba65b24a9917bc7c3f600de141140fc",
+      "size": 64328
+    },
+    {
+      "path": "store/screenshot-android-landscape.webp",
+      "sha256": "312fa1a8664dda750899c09b1163b00af4c44a5e50780324cb51255d0609178f",
+      "size": 20196
+    },
+    {
+      "path": "store/screenshot-android-portrait.webp",
+      "sha256": "226b6d2e457d1d4ef8a56532d05280b5d1f5afb1d5416b96d799b3e2e60e13b3",
+      "size": 13928
+    },
+    {
+      "path": "store/screenshot-desktop.webp",
+      "sha256": "b4aa2acf7d09fba3ecc740df8938cd8590eaf1d35f0dee37c48b341bb32c5cf1",
+      "size": 20776
+    },
+    {
+      "path": "ui/boot.js",
+      "sha256": "77a0c8070b3f52098a931b59ec16499228f2184afa7c27c70e557ddbf9377138",
+      "size": 1679
+    },
+    {
+      "path": "ui/icon.png",
+      "sha256": "b475588892296d9d82e7e1b92214df9ffa5ffc121bfb8ea803412aaf196e62f6",
+      "size": 274833
+    },
+    {
+      "path": "ui/index.html",
+      "sha256": "8c9770f3aa828f26293b58c7009dc11e1b90baec484e7b431ed19832e8a28759",
+      "size": 1709
+    },
+    {
+      "path": "ui/klondike.js",
+      "sha256": "db84ad19ecf3814496223fcfdc8d00dc8d506003d8b66a5b074dc417362650cf",
+      "size": 100950
+    },
+    {
+      "path": "ui/style.css",
+      "sha256": "5f84a8578a69b7ec4d1e94971d3c1c89db4109667a975c86e44901846abb0f51",
+      "size": 10081
+    }
+  ],
+  "schema": "tavix.package/v1",
+  "standard": "tavix/1.0",
+  "version": "0.1.1"
+}

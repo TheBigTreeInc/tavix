@@ -41,6 +41,55 @@
       "source": "https://github.com/TheBigTreeInc/atrium"
     },
     {
+      "entrypoint": "https://thebigtreeinc.github.io/tavix/extensions/inc.thebigtree.tavi.klondike/0.1.1/ui/index.html",
+      "license": "NOASSERTION",
+      "manifest": {
+        "classification": {
+          "categories": [
+            "cards",
+            "solitaire"
+          ],
+          "type": "game"
+        },
+        "contributions": [
+          {
+            "action": "openPanel",
+            "id": "klondike",
+            "label": "Klondike Solitaire",
+            "slot": "app.launcher"
+          }
+        ],
+        "entrypoints": {
+          "panel": "ui/index.html"
+        },
+        "hostApi": {
+          "maxExclusive": "2.0.0",
+          "min": "1.0.0"
+        },
+        "icon": "ui/icon.png",
+        "id": "inc.thebigtree.tavi.klondike",
+        "kind": "app",
+        "name": "Klondike Solitaire",
+        "permissions": [
+          "ui.panel",
+          "storage.private"
+        ],
+        "platforms": [
+          "web",
+          "android",
+          "windows"
+        ],
+        "publisher": "thebigtreeinc",
+        "schema": "tavi.extension/v1",
+        "summary": "A fully offline Klondike card game. No network, no account, no advertising, no purchases.",
+        "version": "0.1.1"
+      },
+      "release": {
+        "revision": "da4ecd43299c0f05e49beebc5a51fed7146325be8b54b663ac2327103025be92"
+      },
+      "source": "https://github.com/TheBigTreeInc/tavix"
+    },
+    {
       "entrypoint": "https://thebigtreeinc.github.io/tavix/extensions/org.tavi.community.companion/0.6.40/ui/index.html",
       "license": "NOASSERTION",
       "manifest": {

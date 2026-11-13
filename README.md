@@ -1,6 +1,6 @@
 # TaviX — extension tooling, local preview and reviewed distribution
 
-**Source/tooling version: 0.1.18 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
+**Source/tooling version: 0.1.19 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
 
 TaviX provides a reviewed, immutable distribution repository for compiled Tavi extensions, plus Python pack/validate/staging tools and a **standalone loopback development client** for opening `.tavix` panels on a PC without Tavi. It does **not** include the Tavi messenger, a game server, the production Tavi SDK host or trusted publisher signing. The `extensions/` tree contains distributed application builds, not their original authoring source.
 
@@ -121,3 +121,15 @@ Use `docs/TAVIX_UI_KIT_001.adoc` and `contracts/tavix-ui-kit-v1.json` for shared
 ## Windows test encoding portability repair (0.1.18)
 
 The 0.1.17 ZipRunner build failed on Windows because Store Editor tests read UTF-8 HTML with the system CP1252 default. Source test reads now explicitly use UTF-8 and include a regression guard. The Store Editor package, immutable published extensions, public catalog and host/wallet authority are unchanged. Windows ZipRunner execution and native Store Editor acceptance remain operator gates.
+
+## Klondike Games catalog review candidate (0.1.19)
+
+`extensions/example.org.klondike/0.1.1/` and `tavi.repository.json` now include a technically validated, **operator-unpublished** Games entry based on the exact supplied `klondike-0.1.1-store-artwork.tavix` SHA-256. The existing identity `example.org.klondike` and `publisher=example-org` are preserved to avoid silently replacing sideloaded identities. The `source` metadata points to the TaviX **distribution** repository, not a separately verified authoring repository. `license=NOASSERTION` is not rights confirmation. These issues block authorized public publication until reviewed. Store shows icon/summary; cover and browser screenshots are packaged but require separate Social gallery support. Details: `docs/KLONDIKE_STORE_PUBLICATION_0119.adoc`. No Git push, Pages deploy, native mobile test or release approval is implied.
+
+## 0.1.22 Windows ZipRunner Workboard metadata repair
+
+The 0.1.21 archive was rejected **before any source update or Python build** by ZipRunner 1.2.304.278: `TAVIX-KLONDIKE-DRAFT-ARCHIVE-021 requires non-empty operator_checks (max 20)`. The 0.1.22 overlay contains all 0.1.21 source paths (the migration was never applied) and supplies explicit operator acceptance checks for every Workboard `implemented` and `remaining` item. `tests/test_workboard_operator_checks.py` prevents reintroducing the metadata defect. Existing game assets, catalog entries, stage/archive logic, local config and Git/Pages approval gates are untouched.
+
+## 0.1.21 Klondike test repair (Windows overlay)
+
+The staged 0.1.19 `example.org.klondike` draft is NOT the approved public identity. ZipRunner 0.1.20 uses non-deleting overlays; the old release directory may remain and causes `build_index()` to discover both game identities. In 0.1.21 the first build stage `tools/klondike_legacy_draft_archive.py` validates the old draft's exact immutable SHA-256 and the approved `inc.thebigtree.tavi.klondike` release, then moves **only** the verified obsolete draft to Git-ignored `.tavix-local/archived-staging-drafts/`, preserving all bytes for operator inspection. `--check-only` reports planned changes without moving. Unknown files, publisher mismatches or an occupied backup path cause a hard failure. The published `tavi.repository.json` still contains only Atrium, Companion 0.6.40, and Klondike. No Git commit, push, tag, public publication or device install occurs.

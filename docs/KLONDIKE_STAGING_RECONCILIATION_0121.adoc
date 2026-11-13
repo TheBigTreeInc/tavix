@@ -1,0 +1,16 @@
+= TaviX 0.1.21: obsolete Klondike staging draft reconciliation
+:toc:
+
+== Cause
+
+ZipRunner overlays intentionally set `delete_missing=false`. Importing the 0.1.19 `example.org.klondike` catalog draft followed by the 0.1.20 approved `inc.thebigtree.tavi.klondike` release keeps both release directories. `tools/repository.py build_index` legitimately finds four app identities even though the approved catalog contains only Atrium, Companion 0.6.40 and TheBigTreeInc Klondike; the Windows 107-test suite fails one canonical catalog assertion.
+
+== Safe correction
+
+The 0.1.21 source update adds `tools/klondike_legacy_draft_archive.py` before catalog preflight in the ZipRunner build commands. It verifies SHA-256 `c11a9945e8f9f604c366dd496ae3b7f1195af61df58a3c59b6299ce1d45c4ffc` for the obsolete immutable app, plus `da4ecd43299c0f05e49beebc5a51fed7146325be8b54b663ac2327103025be92` for the approved app. It checks manifest publisher, release metadata, exact current catalog IDs and Companion 0.6.40. Only then does it move the verified obsolete draft to an ignored, operator-visible backup under `.tavix-local/archived-staging-drafts/`. It never deletes data or mutates active extension bundles.
+
+A mismatched source, unexpected files, symlink or existing backup causes a clear error without any change. Repeated runs after successful archive are no-ops. To inspect actions without moving anything, run `python tools/klondike_legacy_draft_archive.py --repository . --check-only`.
+
+== Operator acceptance and release gate
+
+Run ZipRunner for this source overlay, inspect the archived legacy draft, and verify the `tavi.repository.json` remains the approved three-entry index. Confirm Windows tests and native phone Store discovery independently. Git push, GitHub Pages publication and phone installation remain gated by operator approval; do not auto-publish. No Tavi Assets conversion is introduced in this release.
