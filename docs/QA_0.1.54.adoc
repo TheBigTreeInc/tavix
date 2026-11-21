@@ -1,0 +1,36 @@
+= Studio 0.1.54 — native LoopRD publisher adapter and TAVIB detail inspector
+:toc:
+
+== Source-owned integration
+
+* `tools/studio-desktop/studio_looprd_adapter.py` implements native-initiated HTTPS/JSON POST to Tavi Assets LoopRD DAPI `/catalog` and `/admin`, bounded and with no ambient proxies or redirect following. Paths are explicit, operator-reviewed and stored alongside the HTTPS hostname in the private Studio profile. The backend contract is `TheBigTreeInc/tavi-assets` `looprd/handler.py` and `looprd/INTEGRATION.adoc` (candidate source, not proof a deployed service exists).
+* `assets:read` checks use a native-environment `LOOPRD_ASSETS_READ_TOKEN`; `assets:ingest` stage requires `LOOPRD_ASSETS_INGEST_TOKEN`; `assets:publish` stage inspection/publication uses `LOOPRD_ASSETS_PUBLISH_TOKEN` from the trusted operator process. Token presence is not treated as server-side authorization. No credential is stored in the Studio webview, private publishing settings or source.
+* Tauri `studio_publish.rs` sends only strict operator-saved URL components to fixed Python review CLI operations. The webview provides **only an existing reviewed digest**, never a token, arbitrary local file path or arbitrary destination URL. For every mutation the native bridge reopens the approved review and original immutable archive, requires the entire digest, explicit confirmation and a separate receipt selected by OS file picker.
+* Staging uses canonical Tavi Assets `unpack_tavia` from a verified locally selected checkout and DAPI `begin/chunk/finalize`. Publication first checks an existing `ready` version and server manifest SHA-256, checks the distinct exact-manifest publish receipt, then invokes `publish` (never a direct DB write). This is registry publication only; no entitlements, Gold, Git source push or automatic store listing.
+* `studio_tavib.py` now has `inspect_member()` for bounded, previously validated embedded `.tavib` details from a retained `.tavix` archive. The new Tauri `review_tavib_detail` accepts only a digest and discovered `schematics/*.tavib` member. The UI shows title, origin, pack types, individually required names, prefix minimums (a partial pack may be valid), optional names, author checklist, read-only README text and optional bounded WebP preview before import. HTML/JS from the application is never executed.
+* `studio_diagnostics.py` now reports the LoopRD adapter's **source availability**, not an authenticated session, and Publishing owns actual connection checks. No change to separate official publication/entitlement authority.
+
+== Producer checks
+
+[source,sh]
+----
+python -m unittest discover -s tests -p 'test_studio_*.py' -v
+python -m unittest discover -s tests -p test_studio_looprd_preview_054.py -v
+node --test tests/test_studio_import_flow_049.mjs tests/test_studio_publishing_readiness_053.mjs tests/test_studio_game_versions_045.mjs
+python -m unittest discover -s tests -v
+----
+
+== Required Windows operator acceptance — NOT performed by source producer
+
+. Run ZipRunner against the *complete* existing checkout; verify all tests and actual Rust/Tauri Windows build/launch, preserving user profile and network credentials.
+. In Publishing, save the deployment-verified LoopRD `/admin` and `/catalog` paths. Without separately supplied native-scoped credentials, Connect shows refusal, not an alleged live session.
+. Obtain legitimate short-lived read and operator scopes through the Tavi/LoopRD owner in a disposable deployment, restart the Studio process with trusted credential injection, and check read-only catalog and version inspection with matching response states.
+. Use an exact locally approved `.tavia` and receipt files outside Git. Stage and publish in **separate** explicit operations. Reject wrong SHA-256, missing receipt, wrong manifest digest, tampering, TLS redirect, absent service scope and stale approval.
+. Verify the embedded `.tavib` preview and detail import without accidentally importing an unchecked blueprint; test malformed ZIP, nested traversal, unknown extension and app lock mismatch.
+. Confirm authorized registry publication does not itself mint user entitlements, install packs on devices, publish Git source, or bypass Tavi Social account authorization.
+
+== Unverified/blockers
+
+No live TaviX Studio Windows 0.1.54 build, actual LoopRD endpoint or short-lived token issuer, native account-based ecosystemAdmin session broker, or remote staging/publication test was available. **Do not claim live connection or official store release** without those acceptance receipts. The Studio adapter is a real client to a documented DAPI protocol, not a login service or a replacement for verified server authorization. Existing `assets:ingest` / `assets:publish` and exact operator receipts remain mandatory.
+
+No Git push or public release was carried out.

@@ -1,0 +1,43 @@
+= TaviX Studio 0.1.53 — publishing readiness and Connection UI repair
+:toc:
+
+== Scope and observed problem
+
+Operator Windows screenshot from 0.1.52 displayed `GITHUB_NATIVE_ADAPTER_PENDING` in Connections even though an operator-only GitHub CLI release gateway exists in Publishing. The previous Connections layout showed oversized diagnostic cards and local review approval was visually conflated with release readiness. This pass changes source-owned Studio presentation/diagnostics only.
+
+== Implemented
+
+* Connections presents two compact rows for local TaviX and Tavi Assets validator readiness. Detailed gateway codes remain visible on request and in diagnostics, but publishing status lives in the Publishing workspace.
+* Safe local health code `GITHUB_RELEASE_GATEWAY_AVAILABLE` means only that the gateway source is present. It NEVER means configured repository, signed-in `gh`, successful GitHub network read or permission to publish. `LOOPRD_NATIVE_ADAPTER_PENDING` remains pending.
+* Publishing checks the pre-existing `gh auth` command independently from public release discovery; a missing `gh` installation cannot hide public read results. Explicit **Check GitHub sign-in**, HTTPS destination probe and **Refresh live GitHub releases** remain read-only.
+* Publishing displays four independent facts: saved destination, observed `gh` sign-in, fetched live releases, and LoopRD official-store adapter status. Unsaved target edits invalidate cached remote status and disable draft/public release requests.
+* A cached receipt is only displayed and actionable when matching both the selected exact artifact digest and the currently saved destination repository.
+* Submission review calls out local approval and separately warns for `ASSET_DEPENDENCIES_EXTERNAL`; the approval is never asserted to be remote publication or verified installed-pack compatibility.
+* No source checkout operations, Git push/pull, package writes, credentials, Gold/Wallet entitlements, Tavi Assets backend changes or automatic releases are introduced. Existing exact SHA-256, manual two-confirmation, approved-review and LoopRD gates stay in force.
+
+== Producer verification
+
+Run the following against extracted 0.1.53 overlay, then the complete Windows checkout:
+
+[source,sh]
+----
+python -m unittest discover -s tests -p 'test_studio_*.py' -v
+python -m unittest discover -s tests -p 'test_native_studio*.py' -v
+python -m unittest discover -s tests -p 'test_studio_publishing_connection_053.py' -v
+node --test tests/test_studio_publishing_readiness_053.mjs tests/test_studio_import_flow_049.mjs tests/test_studio_game_versions_045.mjs
+python -m unittest discover -s tests -v
+----
+
+== Windows operator acceptance (not producer-run)
+
+. Run ZipRunner 0.1.53 on the full managed source tree; confirm all Python/Node tests and native Tauri build succeed before launching Studio. Preserve current operator data.
+. Open Connections: two compact validator rows, no misleading GitHub/LoopRD pending cards and detail disclosure for safe fixed codes.
+. Open Publishing: configured repository and GitHub sign-in are separately reported. Without `gh` login, public release fetch should still be available when public GitHub is reachable. With `gh` login, authenticated reads can show draft releases. Check network failures and repository-not-found states.
+. Modify the repository input without saving; publishing actions and cached live-releases indicators must be blocked/stale. Save then recheck.
+. Select the locally approved Life Loop app with `ASSET_DEPENDENCIES_EXTERNAL`; verify prominent external dependency review caveat and no fake official Store approval.
+. Test draft/public GitHub publishing ONLY with independently authorized disposable repository and exact SHA-256 receipts; verify remote artifact match. Do not publish user production assets as part of this QA.
+. Confirm the trusted LoopRD registry-admin adapter remains pending; no entitlement, purchase or official Store status is minted.
+
+== Unverified
+
+Windows native 0.1.53 build/launch, authenticated GH read/write and real LoopRD store integration are NOT_RUN / PENDING. Source overlay tests do not prove WebView2 visual acceptance. No Git push, source release or public package publication performed.

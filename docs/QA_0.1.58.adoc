@@ -1,0 +1,27 @@
+= TaviX Studio 0.1.58 — TAVIB compatibility, not merchandise
+:toc:
+
+== Scope
+
+This source-only overlay builds on 0.1.57 and removes `.tavib` compatibility schematics from Publishing > Catalog and all associated draft Gold-price, Listed, Testing, description and save controls. Blueprint Library, import-from-TaviX and package compatibility checks are untouched. The existing private draft file stays in place and is not deleted or overwritten by migration; native reads hide old `blueprint:` entries from commercial UI, and writes reject them. Tavi Assets/LoopRD owner still must ratify server-side catalog boundaries. No Git publication, source pull or remote mutation.
+
+== Operator acceptance on Windows
+
+. ZipRunner full checkout Python/Node, TypeScript/Vite and native Tauri build must pass.
+. Publishing > Catalog shows `.tavia`/`.tavix` only, not even blueprint entries when selecting All types.
+. Asset blueprints still lists and inspects imported `.tavib` from application packages; using one in an asset review still works.
+. Existing application and asset-pack draft price/listing/testing data persists after restart.
+. Existing blueprint draft values are not displayed, and no migrations delete protected state.
+. Native API refuses `blueprint:` drafts; other invalid/missing identities fail closed.
+. No remote GitHub, LoopRD or Tavi Store writes occur on upgrade.
+
+== Focused verification
+
+[source,shell]
+----
+python -m unittest discover -s tests -p 'test_studio_blueprints_not_merchandise_058.py' -v
+node --test tests/test_studio_blueprints_not_merchandise_058.mjs tests/test_studio_catalog_rows_055.mjs
+python -m unittest discover -s tests -p 'test_studio_catalog_management_055.py' -v
+----
+
+Linux overlay tests and exact ZIP CRC checks do not imply a Windows native build or full source checkout acceptance.

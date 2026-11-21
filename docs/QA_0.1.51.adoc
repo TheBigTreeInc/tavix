@@ -1,0 +1,25 @@
+= TaviX Studio 0.1.51 — exact Windows regression follow-up
+:toc:
+
+== Observed Windows evidence
+
+On 2026-11-17 the 0.1.50 ZipRunner build failed at `test_studio_utf8_regression_050.WindowsSourceEncoding050.test_no_unqualified_source_read_text_in_python_tests`. The full checkout ran **252 Python tests, one failure and eight skips**. The new 0.1.50 regression scanned *every* Python test file; the packaged Studio overlay did not include seven historical non-Studio test modules that contain **25** pre-existing unqualified `Path.read_text()` calls. The previous CP1252 native Studio failure was fixed; its regression passed. Windows native temp executable builds were observed, but the overall 0.1.50 job failed.
+
+== Exact scoped repair
+
+* Do not replace historical checkout tests with old GitHub snapshots: user-local changes and source hash are unavailable. Preserve source untouched.
+* The regression now rejects any unqualified source read in every Studio, new or unlisted Python test. Seven specifically identified legacy tests have measured ceilings: asset_dependencies=6, c4_architecture=1, game_completion_contract=2, local_file_import=4, registry_admin=3, repository=2, ui_kit=7 (total 25). More calls in any of these files still fail. Legacy debt is explicitly visible rather than silently skipped.
+* Runtime Studio source, local profile storage, native permissions, validators, approved publisher gates and installed package bytes are unchanged except source/native version stamps.
+* Migration of the 25 legacy sites to explicit UTF-8 remains a separate tracked task requiring the complete owned checkout and tests, not forced into an incremental Studio repair.
+
+== Checks and limits
+
+* `python -m unittest discover -s tests -p test_studio_utf8_regression_050.py -v`
+* `python -m unittest discover -s tests -p test_native_studio_028.py -v`
+* `python -m unittest discover -s tests -v` (complete Windows checkout; extracted incremental ZIP omits historical modules)
+* `node --test tests/test_studio_import_flow_049.mjs tests/test_studio_game_versions_045.mjs`
+* `python tools/studio-desktop/build_windows.py` (Windows, after full build suite)
+
+Test passing is not a release approval. Verify native source and managed process independently, preserve all local configuration and state, no Git push or public release is authorized. Exact Windows 0.1.51 build, full QA, human acceptance and publisher integrations remain pending.
+
+Structurizr model remains unchanged; no parser validation claimed.

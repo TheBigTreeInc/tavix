@@ -1,0 +1,45 @@
+= TaviX Studio 0.1.55 — catalog metadata table (source overlay)
+:toc:
+
+== Scope and data ownership
+
+Publishing starts with a filterable table of *all locally retained submissions* (`.tavix` apps and `.tavia` packs), available designer blueprints (`.tavib`), and extra pack versions returned by LoopRD's operator catalog/inspection reads. Table columns show item/name, stable ID, type, version, local review, known server state, draft Gold price, intended `listed` and `testing` flags, draft description and Save draft action.
+
+* Rows are not automatically deemed published or for sale. The table displays `Not checked` until the operator explicitly loads the appropriate remote registry view. A staged/ready pack is not published; a locally approved package is not store-ready if external compatibility issues remain.
+* Pricing is **pack/offer-level draft metadata**, not a price for every card/icon/resource. TAVIB is a reusable schematic, not automatically a purchasable pack; game/app price and listing contracts require owner approval.
+* `priceGold:null` means price not proposed; `0` means proposed free. Maximum 1,000,000 matches the proposed `tavi.assets.store-offer/v1` illustrative display field, not a payment or authorization rule.
+* `listed` and `testing` are independent *proposed operator preferences*, not live deployment flags. Their semantics for an official Tavi Store release are pending Tavi Assets and LoopRD source-owner specification.
+
+== Local persistence contract
+
+Native Rust code `studio_catalog.rs` saves `tavix.studio.catalog-drafts/v1` in the existing private Studio user profile under `catalog-drafts.json`. It binds changes to exact native review digest or an existing bundled/operator blueprint ID+version, rejects arbitrary renderer-supplied filesystem paths and unknown identities, caps rows (400), file size (512 KiB), price (0–1,000,000), description (240 characters), and refuses symlinked records. Read-only LoopRD-only rows cannot be modified until explicitly imported and reviewed. Neither renderer nor archive content is executed. No tokens/credentials are stored.
+
+A saved draft explicitly reports `publicationAuthorized:false` and `remoteApplied:false`. Existing native GitHub draft / publish and LoopRD stage / publish controls retain their separate confirmations, original SHA-256 and receipt checks. Nothing in `studio_catalog_save_draft` calls an external service, grants entitlements, or modifies Wallet/Gold.
+
+== Schema cross-project gap
+
+`TheBigTreeInc/tavi-assets/contracts/tavi-assets-store-offer-v1.schema.json` supports illustrative `displayGoldPrice`, but does **not** describe authoritative price authorization or `listed`/`testing` status; LoopRD's existing `/admin` supports staged-version status transitions and its `/catalog` returns published manifests, but neither API accepts these metadata changes. The Tavi Assets and LoopRD owners must agree on a versioned official catalog/offer state contract, control scopes, signed actor/approval receipts and anti-stale checks before enabling remote metadata updates. No fallback or silent write route was added to Studio.
+
+== Source tests
+
+[source,powershell]
+----
+python -m unittest discover -s tests -p test_studio_catalog_management_055.py -v
+node --test tests/test_studio_catalog_rows_055.mjs
+python -m unittest discover -s tests -v
+python tools/studio-desktop/build_windows.py
+----
+
+== Windows operator checks (not performed in Linux authoring)
+
+. Run the exact 0.1.55 ZIP through ZipRunner against the complete local TaviX checkout. Verify full Python and Node suites, native `cargo` build and start; do not infer acceptance from Linux tests.
+. In Publishing, inspect every local app/pack/blueprint, filter by type and text, and test scrolling at 1280x800 and narrow window. The table must not hide access to the existing Publishing and DAPI settings below it.
+. Set a draft Gold price `0`, another `50`, toggle Listed and Testing, enter a description, save each, switch to other sections and restart Studio: exact values must persist. A blank price remains different from zero. Rejected negative/fractional/over-limit inputs must not be saved.
+. Inspect LoopRD catalog and status: live-only rows appear read-only, exact versions are preserved, status is server-derived and never inferred from local Listed or Testing flags.
+. Confirm unauthorized attempts cannot change arbitrary draft IDs or symlinked files and that corrupt profile JSON fails closed (preserve the corrupted file for diagnosis, no automatic deletion).
+. Verify locally saved draft values do not change LoopRD offers, GitHub releases or Tavi Gold balances. Creating a public GitHub release and staging/publishing an asset remain separately authorized, digest- and receipt-gated operations.
+. **Separate owner Workboard**: define the canonical remote offer/listing/testing API, audit and exact authorization. Do not mark official price management implemented.
+
+== Status
+
+Source candidate, not an accepted Windows release. No Git pull/push, production catalog mutation, Gold change, migration, public release or operator acceptance performed.

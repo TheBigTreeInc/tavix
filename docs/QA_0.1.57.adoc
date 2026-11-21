@@ -1,0 +1,29 @@
+= TaviX Studio 0.1.57 — compact Publishing navigation QA
+:toc:
+
+== Scope
+
+UI-only reorganization of existing Publishing controls into four accessible panels: Catalog, Connections, GitHub releases, Tavi Assets / LoopRD. The initial tab is Catalog. Each hidden panel stays mounted, so unsaved local catalog-draft field edits are retained when switching views. No native IPC, registry, pricing contract, authorization or installer behavior changes.
+
+== Source verification
+
+* `python -m unittest discover -s tests -p test_studio_publishing_tabs_057.py -v`
+* `python -m unittest discover -s tests -p test_studio_catalog_management_055.py -v`
+* `python -m unittest discover -s tests -p test_studio_publishing_connection_053.py -v`
+* `python -m unittest discover -s tests -p test_studio_catalog_rust_ownership_056.py -v`
+* `node --test tests/test_studio_catalog_rows_055.mjs tests/test_studio_publishing_readiness_053.mjs`
+* TypeScript TSX parse using installed TypeScript transpiler; complete native Windows tsc/Vite/Tauri compilation remains operator QA.
+
+== Windows operator acceptance (pending)
+
+. In 1280x800 and full-screen desktop, Publishing defaults to Catalog, with no Connections, GitHub or LoopRD panels stacked below the table. The catalog table scrolls independently and preserves its header.
+. Type an unsaved Gold price, change Listed and Testing, switch sections, return to Catalog and verify the edits were retained. Save, relaunch and confirm native draft persistence; no remote store price changes.
+. Click tabs and use arrows/Home/End with visible focus. Confirm narrow view wraps tab buttons without clipping, and important actions stay keyboard-accessible.
+. Connections: inspect persisted GitHub repo / LoopRD hostname and paths; verify existing Save, probes, readiness and no secret storage. When Registry DAPI paths are missing, its Open connections control navigates directly there.
+. GitHub releases: refresh from its own panel, inspect live releases and select locally approved package. Public release still demands exact SHA and two-stage confirmation.
+. Tavi Assets / LoopRD: inspect permissions and versions, confirm stage and publish still require approved pack, credentials, exact SHA and receipts. No Tavi Store/Gold entitlements are granted by UI navigation.
+. Run full ZipRunner source tests, strict catalog preflight, TypeScript/Vite and native Windows Rust build before accepting. No push, publication or deletion was performed in this source pass.
+
+== Limitations
+
+The live Tavi Assets registry does not currently expose authoritative Gold price, Listed or Testing mutations; these remain private Studio drafts. No Tavi admin-account delegation broker was introduced. This candidate is not a production release.

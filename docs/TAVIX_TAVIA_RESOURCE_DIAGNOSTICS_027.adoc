@@ -1,0 +1,22 @@
+= TaviX 0.1.27 — Unsupported TAVIA resource diagnostics
+:toc:
+
+== Observed incident and root cause
+
+The operator submitted a `.tavia` to the TaviX local Management Suite and reported `Asset validation failed: unsupported TAVIA resource type`. The source of that message is `tavi-assets/src/tavi_assets/tavia.py::unpack_tavia()`: any archive member other than root `manifest.json` whose name does not end in `.svg`, `.png`, `.webp`, `.jpg`, `.jpeg`, `.ogg`, `.wav`, `.mp3` or `.json` is rejected. These are the same canonical media/JSON formats accepted by `tavi_assets.core.SUFFIXES`. Not a Git, credentials, pricing or LoopRD error. The precise rejected pack has not been supplied, so its offending member is unknown. A synthetic archive with `docs/README.md` reproduces the same canonical error.
+
+== Implementation and safety
+
+After receiving **that exact canonical validator reason**, `tools/local_client/manager_assets.py` inspects bounded ZIP central directory metadata for nonconforming suffixes and adds a sanitized *relative archive member* name, suffix list (capped) and invalid member count to the existing `TAVIA_VALIDATION_REJECTED` error. Events persist the bounded message through the existing private redaction journal and return its reference ID. Unsafe paths, control characters, credential-like filenames and long names are hidden; archive bytes, machine file paths, credentials and arbitrary validator stderr are never copied to Events. Other canonical failure messages are unchanged. The preflight does not authorize media and cannot turn a rejection into success. The original `.tavia` is not changed.
+
+The Assets `unpack_tavia` resource policy is not modified, and no new `.tavia` wire version or marketplace permission is introduced. Source and operator approval gates, LoopRD entitlements and Git publication remain unchanged.
+
+== Operator resolution
+
+Open **Assets & objects** in the loopback Management Suite. Import the same file, open **Events**, and copy the newest `assets.import` error. It should now identify the first rejected member (for example `docs/README.md (.md)`), the count of unsupported entries and the allowed data-only formats. Fix the producer source: remove only extraneous files intentionally, or convert legitimately intended resources to the supported safe format; update the manifest's `files`/`resources` mappings and digests as appropriate, and rebuild with `python tools/tavia.py build <source-folder> <new-file.tavia>`. Do not simply rename a file extension without converting the contents. When the archive contains HTML/JavaScript application code it may be a `.tavix` application, not an asset pack, and belongs in Games & apps.
+
+A repaired archive must pass the canonical Assets pack validator. No conversion or repair is performed automatically. If an asset producer genuinely requires additional media types, propose the change in Tavi Assets with security analysis, versioned contract checks and corresponding host tests before expanding the allowlist.
+
+== Evidence and acceptance
+
+New `test_tavia_resource_diagnostics_027.py` verifies canonical rejection details, multiple suffixes, malicious-name filtering, corrupted input, event persistence and valid-type noninterference. Continue to run prior management, documentation, Workboard and Node tests as well as the full strict Windows checkout test suite. Real operator failure reproduction and Windows native/browser acceptance are pending. No Git push, LoopRD write, offer publication or Wallet operation has been performed.

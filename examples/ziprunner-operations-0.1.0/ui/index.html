@@ -1,0 +1,7 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ZipRunner Operations</title><link rel="stylesheet" href="style.css"></head>
+<body><main><header><h1>ZipRunner · All Projects</h1><span id="state" role="status">Connecting…</span></header>
+<p>Read-only project status. The Tavi host must separately authorize ZipRunner access. No secrets are stored in this app.</p>
+<div class="toolbar"><label for="filter">Filter projects</label><input id="filter" type="search" placeholder="Project"><button type="button" id="refresh" disabled>Refresh</button></div>
+<div class="scroll"><table><thead><tr><th>Project</th><th>Version</th><th>Build</th><th>QA</th></tr></thead><tbody id="rows"></tbody></table></div>
+<p id="detail" aria-live="polite">Select a project after connecting.</p>
+<footer>Connection required? Configure the trusted Tavi host relay for <code>ziprunner.status.read</code>. This application cannot use the public TaviX catalog to access private ZipRunner data.</footer></main><script type="module" src="main.mjs"></script></body></html>

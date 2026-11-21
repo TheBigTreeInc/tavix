@@ -1,0 +1,33 @@
+= TaviX 0.1.43 — native review clarity and compact package inspection
+:toc:
+
+== Observed operator evidence on 0.1.42 (not all checks)
+
+Operator screenshots show TaviX Studio 0.1.42 executing natively; both canonical validator probes report ready; Nr Go Up Tarot 0.1.4 is canonically valid with 79 resources, 79 objects, eight collections and 80 files; digest-checked original SVG preview works. This is screenshot and diagnostics evidence only, NOT full native source CI, post-update verification, release authorization or a human Workboard Done decision.
+
+The exact 0.1.42 ZipRunner QA panel separately reports `waiting_for_verification` because recorded post-update checks belong to different ZIP bytes. Do not treat the published GitHub Pages workflow from 2026-11-13 as source or release QA for 0.1.42/0.1.43.
+
+== 0.1.43 implemented changes
+
+* The selected submission now exposes an explicit blueprint-review selector and recheck action beside its findings. A recheck uses the same retained SHA-256 source, resets prior approval in the trusted boundary and does not import, install, price or publish.
+* Canonical validation, required blueprint completeness, and local human approval are clearly distinct. An unselected blueprint is an actionable review requirement rather than an opaque all-purpose validator failure.
+* For the generic `tarot-standard-78` profile, the UI states that it expects exact `tarot.major.*` and `tarot.minor.*` identifiers. The observed `tarot.card.*` IDs are NOT automatically remapped, and having 79 resources does not imply the right faces and card back. Actual producer mapping is a high-priority review item.
+* Submission review now opens package inspection on demand rather than injecting two full scroll regions. Original package contents use native-controlled 12-entry pages and a compact adjacent preview that moves below the list at narrow sizes. Stale in-flight previews cannot overwrite a newer selection. Existing digest/path/media checks and read-only Tauri IPC remain authoritative.
+* No canonical validator or blueprint schema change; no source package rewrite; no GitHub, LoopRD, Wallet or remote preview integration; no automatic publication.
+
+== Source verification
+
+Run `python -m unittest discover -s tests -p test_studio_review_ux_043.py -v`, `python -m unittest discover -s tests -p test_studio_pack_browser_041.py -v`, and full `python -m unittest discover -s tests -v` against the complete Windows checkout. Validate exact source overlay and catalog integrity and run Node tests as configured. Python source-contract tests do not compile Rust or execute the React UI.
+
+== Windows operator checks
+
+. Apply exact TaviX 0.1.43 ZIP via ZipRunner; record source ZIP SHA and current Windows test/build results; do not infer acceptance from the old 0.1.42 launch.
+. Launch Studio 0.1.43. Select the already imported Tarot pack; confirm canonical validation remains green but local review is incomplete until a verified blueprint review is completed.
+. Choose `tarot-standard-78`, recheck the same submission and inspect resource mismatches; do not approve if it fails. Confirm the original SHA and retained source bytes remain the same.
+. Expand `Inspect package files, objects and artwork`. Navigate between resources/objects/collections/files; inspect exact original SVG; confirm 12 rows per page, adjacent non-executing image preview and no nested long scrollbar; test at desktop and narrow window widths.
+. Switch between submissions; ensure the blueprint selection resets to that submission's currently reviewed blueprint. Confirm stale async preview requests cannot populate another package/page.
+. Confirm GitHub and LoopRD native adapters remain pending, official publishing remains disabled, local review does not create Gold entitlements, and Git/remote release/Workboard Done still require independent operator approval.
+
+== Workboard cross-project scope
+
+The generic ZipRunner QA recommended `DGN-CHECKERS-M1-AUTOMATED-QA-001`, whose game-server/lobby/two-client authority belongs to the Atrium, LoopRD/DAPI and Tavi projects, not the TaviX editor. Preserve its existing task ID/status and coordinate package-boundary checks through the correct owner; do not silently implement server rules in TaviX or close that ticket. `TAVIX-STUDIO-TAROT-RESOURCE-MAPPING-043` remains separate and needs actual producer evidence.

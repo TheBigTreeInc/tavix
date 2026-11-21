@@ -1,0 +1,23 @@
+{
+  "schema": "tavix.studio.asset-blueprint/v1",
+  "id": "cards-back-only",
+  "version": "1.0.0",
+  "title": "Playing-card backs — customization pack",
+  "description": "A small customization pack used by games that already supply card faces.",
+  "applicablePackTypes": [
+    "playing-cards",
+    "card-backs"
+  ],
+  "requiredResources": [
+    "card.back"
+  ],
+  "optionalResources": [
+    "card.back.alt"
+  ],
+  "designerChecklist": [
+    "Artwork uses the same proportions as the playing-card faces and includes full bleed and safe-area margins.",
+    "The back can be repeated on every card without identifying the hidden suit or rank.",
+    "Alternate variants use the same media type and remain readable on light/dark backgrounds.",
+    "State whether the pattern is directional; do not embed instructions or executable effects."
+  ]
+}

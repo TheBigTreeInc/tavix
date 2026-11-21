@@ -1,9 +1,18 @@
 {
   "schema": "ziprunner.workboard-update.v1",
   "project": "tavix",
-  "version": "0.1.23",
-  "summary": "Stage only a new immutable Klondike 0.1.2 optional asset-backed card-back candidate, retaining approved historical release bytes and publisher/approval gates.",
+  "version": "0.1.60",
+  "summary": "0.1.60: native GitHub catalog sync for TheBigTreeInc/tavi-assets; read pinned catalog.source.json and catalog.json, preview exact local approved TAVIA draft, operator-confirmed draft PR, browser GitHub CLI sign-in; no public release or LoopRD publication.",
   "implemented": [
+    {
+      "id": "TAVIX-ZIPRUNNER-STATUS-024",
+      "title": "Read-only ZipRunner TaviX app candidate",
+      "summary": "Unpublished .tavix panel and host-mediated status request contract; no direct network permission, token or catalog staging.",
+      "operator_checks": [
+        "Use local TaviX preview to install the candidate and confirm it shows Connection required when Tavi has no approved relay.",
+        "Confirm tavi.repository.json, approved Klondike and Companion release assets are unchanged and app package includes no credentials."
+      ]
+    },
     {
       "id": "TAVIX-KLONDIKE-DRAFT-ARCHIVE-021",
       "title": "Archive immutable example-org 0.1.19 draft before validating approved Klondike 0.1.20 catalog",
@@ -33,9 +42,430 @@
         "Run Node asset consumer tests and strict catalog tests against current complete Windows Git checkout.",
         "Verify real Tavi account installed pack consent, selected card back, revoke/reset, offline restart and detached/mobile behavior; do not approve based only on mocks."
       ]
+    },
+    {
+      "id": "TAVIX-MANAGEMENT-SUITE-025",
+      "title": "Operator-local management suite with canonical TAVIA workflow",
+      "summary": "Six-pane console, local .tavix previews, canonical TAVIA draft validation, Gold price drafts, OS-backed credentials, GitHub read APIs, LoopRD read and separate exact-receipt stage/publish/revoke delegation.",
+      "operator_checks": [
+        "Launch localhost:8765 from current Windows checkout; verify Games & apps preview, install/remove and responsive navigation.",
+        "Configure canonical Tavi Assets checkout; import valid and malformed .tavia files and inspect declared resource/object/collection IDs.",
+        "Verify API key storage under OS user protection, no key in app package/HTTP bootstrap/logs, and cross-origin/CSRF POST denial.",
+        "Connect only approved GitHub/LoopRD credentials; check user/repository reads, catalog/inspect/audit with real scoped service principal, and verify wrong receipts fail before any remote writes.",
+        "With independently authorized disposable LoopRD and exact receipts, stage a pack, then separately publish/revoke and verify authoritative audit; never treat a proposal as wallet value.",
+        "Review exact Git diff, operator acceptance and CI before any push; no static release is auto-published."
+      ]
+    },
+    {
+      "id": "TAVIX-MANAGEMENT-EVENTS-026",
+      "title": "Persistent local diagnostic journal and canonical TAVIA import failures",
+      "summary": "TaviX management UI adds an Events panel with export/copy, bounded private JSONL, structured error ID, canonical allowlisted validation reason, source warning and HTTP action diagnostics; no tokens, full paths or archive content stored.",
+      "operator_checks": [
+        "Start the TaviX console on Windows with the actual Tavi Assets checkout. Import a valid .tavia; confirm success event and no LoopRD publication.",
+        "Import an invalid .tavia; verify the error opens Events, shows canonical cause and an event ID that survives restart; Copy report and Export JSON.",
+        "Verify the private journal lives outside Git and never contains GitHub/LoopRD tokens, archive contents or personal paths. Cross-origin/CSRF denial must still be enforced.",
+        "Verify .tavix install and preview still function and no approval gate or historical published package changed."
+      ]
+    },
+    {
+      "id": "TAVIX-TAVIA-RESOURCE-DIAGNOSTICS-027",
+      "title": "Identify unsupported resource members in rejected TAVIA drafts",
+      "summary": "After the canonical Assets validator rejects unsupported resource types, report a safe relative archive member name, unsupported extension/count and remediation; preserve original archive and events redaction.",
+      "operator_checks": [
+        "Import a .tavia containing README.md or JS in addition to manifest.json; Events must name the unsupported archive member, extension and number, without exposing machine paths or API keys.",
+        "Verify canonical examples/cards-v1 .tavia succeeds, malformed and malicious paths remain denied, and local .tavix install/preview remains unchanged.",
+        "Verify Windows ZipRunner full current checkout tests, Git diff and manual acceptance. Do not push, publish, price or modify LoopRD without separate approval."
+      ]
+    },
+    {
+      "id": "TAVIX-NATIVE-STUDIO-028",
+      "title": "Native PatternFly TaviX Studio read-only foundation",
+      "summary": "Add Tauri 2 Rust desktop shell with PatternFly 6/React navigation, bounded release/Git snapshot and sanitized Events IDs; Node only builds UI. No extension preview or privileged mutation migrated yet.",
+      "operator_checks": [
+        "On Windows, install reviewed locked npm dependencies and Rust/WebView2 prerequisites; build the native Studio app from the exact checkout and record the compiler and UI results.",
+        "Open Studio and confirm local TaviX version, Git state, package inventory and event IDs; verify no credentials, raw event messages or paths appear in the UI.",
+        "Confirm the native Studio exposes only workspace_snapshot and recent_events, starts no production HTTP service, and loads no untrusted .tavix in the privileged WebView.",
+        "Confirm the existing Python browser management suite still imports .tavix/.tavia and retains exact-receipt operator gates; do not claim native parity or remove it."
+      ]
+    },
+    {
+      "id": "TAVIX-POSTRUN-STAMP-029",
+      "title": "Repair ZipRunner 20-entry post-update test stamp preflight",
+      "summary": "Combine related Events and TAVIA resource diagnostics into one post-update command that runs both test modules; bump candidate to 0.1.29, keep installed baseline at 0.1.27 after failed 0.1.28 pre-overlay, and retain all native Studio and catalog release payloads unchanged.",
+      "operator_checks": [
+        "Run exact 0.1.29 ZIP on Windows ZipRunner 1.2.304.299; confirm post-update test stamp passes pre-overlay validation with no more than 20 declarations.",
+        "Confirm both Events and TAVIA diagnostic test suites execute (combined command) and strict source tests pass on complete current checkout.",
+        "Confirm Studio source remains read-only; native Cargo/PatternFly Windows build and human approval are separate release gates.",
+        "Check immutable extension payloads and local config are unchanged, and do not push Git or publish LoopRD/Wallet content automatically."
+      ]
+    },
+    {
+      "id": "TAVIX-NATIVE-STUDIO-BOOT-030",
+      "title": "Native Studio Windows build/launch repair",
+      "summary": "Add verified Windows icon resources, managed build/start path and one canonical TaviX Studio desktop entry; retain existing Python manager as temporary compatibility service, without starting it automatically.",
+      "operator_checks": [
+        "Run ZipRunner native build on Windows and verify no Tauri icon.ico error or omitted compiled binary.",
+        "Launch the managed TaviX Studio and confirm separate PatternFly window, packages/events read-only and no Python web server required.",
+        "Confirm .tavix and .tavia legacy management remains available until native feature parity and does not share privileged IPC with extension preview.",
+        "Review exact ZIP and Git diff; do not push or publish before separate approval."
+      ]
+    },
+    {
+      "id": "TAVIX-NATIVE-STUDIO-RECIPE-031",
+      "title": "Explicit ZipRunner native Studio recipe adoption and build trigger",
+      "summary": "Confirmed QA evidence shows active two Python builds and zero starts despite 0.1.30 source project.zr. ZipRunner treats embedded recipe as review-only. Provide coherent standalone Studio .zr and 0.1.31 source; do not auto-write active configuration.",
+      "operator_checks": [
+        "Select existing tavix project in ZipRunner; review pending 0.1.30/0.1.31 recipe or import tavix-studio-0.1.31.zr, and explicitly approve build/start while preserving host-owned paths.",
+        "Verify effective configuration now contains native Studio build command and one managed Studio start command; do not infer these from ZIP source alone.",
+        "Then import the version-increased tavix-0.1.31-ziprunner.zip; inspect Windows build log for native build command, generated release/tavix-studio.exe and managed window startup.",
+        "Confirm no Git push, LoopRD publication or Wallet operation and no private config overwritten."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-SUBMISSION-REVIEW-032",
+      "title": "Native application and asset submission review with designer blueprints and feedback archives",
+      "summary": "Native submission picker, canonical .tavix/.tavia validation, reusable designer blueprints, private digest-bound review decisions, developer preview and review ZIP export. Local approval only: remote official store publication requires separately approved Git/LoopRD authority.",
+      "operator_checks": [
+        "Import complete and incomplete .tavia packs, confirm blueprint requirements and canonical validator failures are never overridable into approval.",
+        "Import a .tavix game and review assetDependencies; verify untrusted package HTML and JavaScript are never executed in Studio operator WebView.",
+        "Send developer a feedback ZIP containing the original unchanged package, REVIEW.adoc, review.json and chosen blueprint guidance; verify original SHA-256.",
+        "Export a developer preview ZIP only after canonical validation, independently approve local review only after completeness; confirm no public listing is created.",
+        "Restart Windows native Studio to verify retained queue; review local user data protections and no Git push, LoopRD publication, Wallet writes or credential leakage."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-WINDOWS-QA-033",
+      "title": "Repair 0.1.32 Windows source test regressions",
+      "summary": "Correct test-side UTF-8 decoding of PatternFly frontend source and restore the exact previous no Git push/public release authorization statement in handoff; keep remote publication disabled and all existing package bytes unchanged.",
+      "operator_checks": [
+        "Run the full Python suite on Windows using the exact 0.1.33 ZIP; confirm the four previously failing tests now pass and record the full result.",
+        "Confirm the disabled official-store publishing button remains disabled and no Git push, public release, LoopRD mutation or Wallet write occurs.",
+        "Confirm native Studio build/start separately; observe a real window and retain the Windows build log."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-PATTERNFLY-TITLE-034",
+      "title": "Repair PatternFly Title prop compilation on Windows",
+      "summary": "Operator Windows PowerShell 5.1 build of 0.1.33 failed tsc --noEmit at tools/studio-desktop/src/main.tsx:154: Title size=\"sm\" is not assignable to PatternFly 6 Title Size. Change only that Title to size=\"md\" and add a regression test. No permissions or publication changes.",
+      "operator_checks": [
+        "Apply exact 0.1.35 ZIP via ZipRunner; confirm Python full-suite tests reach the native build stage and do not fail the new PatternFly Title size regression.",
+        "Run python tools/studio-desktop/build_windows.py on Windows and confirm npm run build (tsc --noEmit && vite build) passes, followed by a real Tauri Windows executable, recording the full compiler output.",
+        "Run python tools/studio-desktop/run_windows.py and confirm the PatternFly window opens with submission queue, blueprint review and disabled official-store publication.",
+        "Confirm no Git push, public release, LoopRD mutation, wallet operation or local configuration rewrite occurred without independent approval."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-NPM-RECOVERY-035",
+      "title": "Avoid repeat npm ci EBUSY on Windows and repair missing tsc command",
+      "summary": "Operator source 0.1.34 is correct; npm ci failed EBUSY while replacing PatternFly module, leaving missing tsc. Validate installed npm dependencies, skip reinstall if healthy, use incremental npm install on partial tree, preserve exact Git/LoopRD approval gates.",
+      "operator_checks": [
+        "Run source tests for npm install reuse and partial-recovery branches on Windows; record all results.",
+        "Run native Studio build and confirm TypeScript/Vite succeed without npm EBUSY or missing tsc.",
+        "Confirm native release executable launches and developer review UI works, without automatic publication."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-RUST-SAVE-036",
+      "title": "Fix native Windows Rust review persistence E0308",
+      "summary": "Operator 0.1.35 native build failed with expected Result<(), String>, returned Result<(), &str> from final fs::rename map_err in review.rs:81. Map the error to an owned String, remove unused Path import, add three regression guards. No remote publication or authorization change.",
+      "operator_checks": [
+        "Build exact TaviX Studio 0.1.36 with Cargo on Windows and confirm E0308 at review.rs:81 and unused Path warning are absent.",
+        "Verify tavix-studio.exe exists, launch the native window, import/review a local test .tavix and save a review twice; confirm persistence after restart.",
+        "Confirm private data and release catalogs are unchanged, official-store publish remains disabled, and no Git/LoopRD/Wallet operations occurred."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-CONNECTION-DIAGNOSTICS-037",
+      "title": "Native Tavi Assets checkout connection and shareable sanitized review diagnostics",
+      "summary": "Local native folder selection persists a private source root, verifies project identity and canonical validator; health reports pending external integrations. Recent TAVIA/TAVIX review failures are redacted, bounded and copyable with exact issue codes; no network publication or credential scope changes.",
+      "operator_checks": [
+        "Open TaviX Studio 0.1.38 > Connections, select the canonical local tavi-assets checkout and verify readiness is green.",
+        "Reproduce a failing .tavia in Submission review, then open Events and copy the sanitized report; verify it includes issue/connection codes without full paths or tokens.",
+        "Restart Studio and verify the local source connection and recent safe diagnostic codes survive; test a valid .tavix package and no Git push, LoopRD publishing, Gold or Wallet activity."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-STALE-VALIDATOR-038",
+      "title": "Fix stale native Studio build and global validator failure from Windows screenshots",
+      "summary": "Operator screenshots show old Connections placeholder and global unstructured validator error despite 0.1.37 source; add compiled UI version display, Windows executable freshness gate, native blueprint listing and per-service safe error codes. Windows native acceptance remains pending.",
+      "operator_checks": [
+        "On Windows after applying 0.1.38, close old Studio, rebuild and launch the exact new native executable; verify the v0.1.38 masthead.",
+        "Check Asset blueprints shows all four built-in profiles without Python validator connection; verify Connections contains native Assets picker and distinct readiness statuses.",
+        "Copy redacted Events report from an actual failing TAVIA submission; confirm no secret, absolute user path or package contents appears.",
+        "Confirm store publication remains disabled, and no local review is automatically a GitHub or LoopRD publication."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-TAVIA-PROTOCOL-039",
+      "title": "Restore TAVIA validator error provenance and robust native review replies",
+      "summary": "A Windows 0.1.38 diagnostic showed validation ready but TAVIA_VALIDATOR_UNAVAILABLE and STUDIO_VALIDATOR_PROTOCOL on repeated imports. Preserve adapter-specific errors, capture noisy stdout, return a sanitized JSON envelope for Python internal errors, and default to no blueprint until the operator selects one. No external publication authority.",
+      "operator_checks": [
+        "Build and launch exact Studio v0.1.39 on Windows; confirm source and compiled version agree.",
+        "In Connections confirm Assets source module loads; try a known-valid .tavia and verify the canonical validator reports success independently of selected blueprint.",
+        "Import the previously failing .tavia (digest prefix f5bed8416763); verify Events now gives a specific TAVIA_VALIDATOR_* or canonical rejection code rather than a generic unstructured response.",
+        "Import a non-card .tavia with no blueprint and verify Studio does not list 52 missing playing cards; recheck with appropriate blueprint and export feedback ZIP.",
+        "Confirm diagnostic JSON contains no local paths or credentials and that official publishing remains disabled."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-BINARY-LOCK-040",
+      "title": "Native Studio rebuild while previous executable is running",
+      "summary": "Configure dedicated reusable Cargo target and content-hashed immutable launch copies with source/version/hash-bound receipt; preserve running old executable; fail closed for tampered/stale staged copies. No process termination, configuration mutation or publishing.",
+      "operator_checks": [
+        "Run Windows ZipRunner 0.1.40 while the 0.1.38/0.1.39 Studio window is open; confirm Cargo builds to studio-managed-build, not the old target/release executable.",
+        "Confirm managed launcher opens v0.1.40 from target/studio-launch/0.1.40/<hash> and earlier Studio remains unchanged; record actual path/process and source version.",
+        "After launching Studio 0.1.40, rerun the native build and confirm it can refresh the Cargo output without Access denied.",
+        "Verify all 204 Python tests and native build log, image/version and package review/feedback flow independently; no process kills, Git push, official publish or state deletion."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-PACK-BROWSER-041",
+      "title": "Native TAVIA/TAVIX contents inspection, silent validator subprocesses and publication target configuration",
+      "summary": "Add paginated read-only resources/objects/collections/files/dependencies, SHA-verified safe artwork preview even when canonical validation rejects metadata, Windows hidden validator subprocesses and operator-local non-secret GitHub/LoopRD destination fields. No remote authority.",
+      "operator_checks": [
+        "Build/launch exact 0.1.43 on Windows; import the Nr Go Up Tarot 0.1.3 and verify 79 resources, 79 objects, 8 collections and The Fool artwork without opening console windows.",
+        "Inspect Nr Go Up/Redlink TAVIX contents/dependencies without running packages or leaking local paths; rejected .tavia cannot be approved.",
+        "Save GitHub owner/repo and LoopRD HTTPS hostname, restart and verify persistence; official publish and remote preview distribution must stay unconnected and disabled.",
+        "Export feedback ZIP and confirm unchanged original SHA, review note, no Git/LoopRD/Wallet mutations; record operator decision independently."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-BUILD-RECEIPT-042",
+      "title": "Bind native Studio executable verification to active source checkout",
+      "summary": "Resolve Cargo binary output path inside build_native against the current Studio root, so older unrelated output cannot forge a successful build or staged launch. Preserve content-addressed launch and all existing approvals.",
+      "operator_checks": [
+        "Run the 0.1.43 ZipRunner overlay on Windows and confirm the full source suite passes without the prior test_builder_never_terminates_processes_and_does_not_rewrite_old_binary failure.",
+        "Confirm native Cargo/Tauri build, stage SHA-256 verified executable under 0.1.43, and launch while previous version is still running.",
+        "Review exact source diff and verify no publisher, Wallet, LoopRD, token, Git push or runtime-path changes."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-REVIEW-UX-043",
+      "title": "Guide local asset blueprint review and simplify native pack inspection",
+      "summary": "Move per-submission blueprint selection/recheck alongside findings, show explicit not-store-ready explanation, warn about Tarot resource-id conventions, collapse long archive content, use 12-row pagination with compact original artwork inspector and request token against stale previews. No validator, trust or publication changes.",
+      "operator_checks": [
+        "With the already retained Nr Go Up Tarot 0.1.4, open Submission review: observe canonical pass but blueprint still required, and choose a blueprint beside the selected pack without importing again.",
+        "Choose tarot-standard-78 and recheck: inspect exact resource-name mismatches; do not approve on the basis of 79 resources or 78 images alone. Recheck never publishes or silently grants approval.",
+        "Expand package contents, switch Resources/Objects/Collections and preview an SVG; 12 rows per page and a compact adjacent image inspector should not create a nested 430px scrolling pane.",
+        "At narrower window sizes confirm package inspector stacks rather than clipping, close/reopen preview, and verify other submission selection does not retain the previous blueprint.",
+        "Run full exact 0.1.43 Windows post-update tests, Tauri build and managed launch; verify no GitHub, LoopRD or Wallet changes and retain independent operator/release gates."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-PACK-GRID-044",
+      "title": "Grid/List toggle and safe artwork tiles in native asset package inspector",
+      "summary": "Operator-requested responsive 12-item grid for TAVIA/TAVIX resources, files and metadata, using a 3-concurrent-worker native digest-verified thumbnail path and inline failed-media fallback; list view and explicit preview remain available. No package mutations or publisher trust changes.",
+      "operator_checks": [
+        "Launch exact 0.1.44 native Studio; open previously imported Nr Go Up Tarot pack under Assets & objects; verify Grid shows image thumbnails and full item identities, List restores the prior rows.",
+        "Navigate 79 resources across pages and return; verify at most 12 items per page, SVG previews display and broken/disallowed images show an unavailable placeholder without crashing or approving review.",
+        "Switch tabs, select another package, and resize to narrower window; verify the grid adapts and stale thumbnail responses do not show previous package artwork.",
+        "Verify blueprint completeness, manual local approval, GitHub/LoopRD connections and official publishing stay unchanged and require separate authorization."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-GAME-VERSION-PICKER-045",
+      "title": "Studio game-first list and version selector",
+      "summary": "Read-only installed source candidate presentation grouped by package ID, games first, numeric/prerelease version ordering, selection per package and narrow-window list UI; exact versions never imply install or approval.",
+      "operator_checks": [
+        "Build and launch exact Studio 0.1.45 on Windows; navigate Games & apps and verify one item per package, game before app.",
+        "Choose an older release then navigate away/back and verify chosen version is retained; test name/ID search and keyboard access at narrow width.",
+        "Verify Submission review, Assets grid, publication disablement and no config/entitlement operations remain unchanged."
+      ]
+    },
+    {
+      "id": "TAVIX-TAVIA-CLIENT-CACHE-CONTRACT-045",
+      "title": "Cross-project TAVIA client distribution and cache intent",
+      "summary": "Document user-confirmed target flow: LoopRD owns entitlements, approved immutable bytes downloaded per device into shared Tavi-managed cache, host-mediated reusable SDK assets across games and offline use; no claim of implemented production workflow.",
+      "operator_checks": [
+        "Review docs/TAVIA_CLIENT_ASSET_DELIVERY_045.adoc with Tavi, Tavi Assets, LoopRD, Atrium and game owners; confirm each owner accepts its designated responsibilities.",
+        "Verify no Studio publishing, client entitlement mint, unapproved asset host or automatic local cache implementation is implied by this documentation."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-TAVIA-UNICODE-PROTOCOL-046",
+      "title": "Windows Unicode-safe native TAVIA review protocol and canonical metadata hint",
+      "summary": "Python review JSON response escapes non-ASCII characters before Windows code-page encoding; canonical invalid attribute key is a fixed allowlisted failure reason; no raw stderr/logs or grant/release authority is exposed.",
+      "operator_checks": [
+        "On Windows native Studio 0.1.46, import a TAVIA whose display name contains an em dash or Unicode; it must produce a valid review report, not STUDIO_VALIDATOR_PROTOCOL.",
+        "Import the supplied original or 0.1.1 Tarot pack in isolated review; expect canonical invalid attribute key instead of generic validator failure; no approval or publication.",
+        "Import separately repaired 0.1.2 Tarot archive, select appropriate matching blueprint or leave review pending; verify canonical status and no auto-approval.",
+        "Verify native 0.1.46 build, full checkout suite and Studio launch; keep operator acceptance separate."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-BLUEPRINT-SOURCES-047",
+      "title": "Source-labelled blueprints and operator-local JSON imports",
+      "summary": "Bundled versus operator origin, searchable list, native picker and immutable local-* profile storage, canonical validator remains independent.",
+      "operator_checks": [
+        "Search/filter built-in blueprints and inspect exact requirements and version in Studio 0.1.47.",
+        "Import examples/studio-blueprints/local-card-back-example.json, restart and verify local provenance; reject duplicate import.",
+        "Recheck matching .tavia with imported blueprint and export feedback; ensure canonical approval and separate human decision."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-PUBLISHING-REACHABILITY-047",
+      "title": "Publishing connection destination HTTPS read-only checks",
+      "summary": "Explicit operator probe of saved validated GitHub repo and LoopRD HTTPS host via trusted Python; no credentials, uploads, redirects or publisher writes.",
+      "operator_checks": [
+        "Save destinations in Connections and deliberately run the read-only reachability check; inspect safe response codes.",
+        "Change a destination and verify stale probe resets; test inaccessible and auth-required responses without credentials or full URLs.",
+        "Confirm publish remains disabled and GitHub/LoopRD authentication, Gold and entitlements remain behind separate authority."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-BLUEPRINT-WINDOWS-ISOLATION-048",
+      "title": "Repair Windows-only blueprint import test contamination",
+      "summary": "Windows 0.1.47 full checkout ran 243 tests with 2 BLUEPRINT_ALREADY_IMPORTED errors: test fixtures patched HOME but Studio correctly persists under LOCALAPPDATA. Scope both environment variables to unique temporary per-test profiles and subprocesses, keep immutable import semantics, add same-ID-separate-profiles regression. User profile and runtime data are untouched.",
+      "operator_checks": [
+        "Run exact 0.1.48 ZipRunner Windows full checkout test suite; ensure test_studio_blueprint_connections_047 runs with no BLUEPRINT_ALREADY_IMPORTED errors and no test failures.",
+        "Confirm existing operator blueprints are still present and unchanged; the tests must not add local-tarot-test to %LOCALAPPDATA%/TaviXStudio/blueprints.",
+        "Open native Studio; inspect imported blueprint provenance and duplicate rejection. Confirm reachability is still read-only and publishing disabled.",
+        "Record exact candidate Windows build evidence; mark Done only after operator acceptance, no automatic Git push or release."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-COMPACT-IMPORT-049",
+      "title": "Compact Studio navigation and explicit import-blueprint selection flow",
+      "summary": "Source implements one-row header combining current page title, compact notification details and Refresh; removes repeated full-width success banner and global intro; replaces tall import card and status cards with small import action and inline counts. Native picker retains exact package before dialog; user can associate local/bundled blueprint via recheck, retain as Custom/unmapped (not store-ready), or defer. Improves native select contrast and preserves scroll position during refresh; no new IPC, remote publication or entitlement operations.",
+      "operator_checks": [
+        "Open exact 0.1.49 native Windows Studio: on Submission review verify page title, Notifications and Refresh share a compact row; no large persistent Success alert and no duplicated page introduction.",
+        "Click Import package; confirm native OS .tavia/.tavix picker appears, canceling leaves the queue unchanged, importing opens a focused accessible review dialog with readable blueprint options.",
+        "Import a .tavia: choose Custom / no blueprint yet and verify it remains retained for later recheck, storeReady false, local approval disabled. Repeat with a compatible blueprint: verify recheck findings and that no automatic semantic mapping occurs.",
+        "Switch between review, Games & apps, blueprints and Connections; manual Refresh keeps page content mounted and does not reset scroll. Inspect Notifications for full operation feedback.",
+        "Confirm invalid/corrupt pack remains rejected, previously approved review resets after blueprint change, saved publishing destinations and operator blueprints remain intact, and remote publishing remains disabled.",
+        "Run complete Windows checkout source/Node suite and build native executable; report result and provide explicit operator acceptance independently before marking Done."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-WINDOWS-UTF8-050",
+      "title": "Repair Windows CP1252 source-reading regression tests",
+      "summary": "The exact 0.1.49 Windows ZipRunner job ran 250 Python tests and failed one test_native_studio_028 source read using default CP1252; convert source-reading tests to explicit UTF-8 and add simulated-codepage regression. Tauri 0.1.49 builds were observed but overall build stage failed. Retain project metadata, operator files, source and publication gates.",
+      "operator_checks": [
+        "Run 0.1.50 ZipRunner against complete existing Windows checkout. Confirm test_native_studio_028 NativeStudioContract.test_ui_uses_patternfly_and_node_is_build_only reads main.tsx successfully and all 250+ full Python tests pass or have independently reviewed skips.",
+        "Confirm tests/test_studio_utf8_regression_050.py passes and no other tests read repository source with the Windows default code page.",
+        "Confirm native Windows Studio reports 0.1.50 and opens with compact header, file picker, blueprint/custom review; preserve existing imported submissions and private Studio profile.",
+        "Check no Git push, LoopRD publication, entitlement, configuration or Workboard Done was automatically created."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-WINDOWS-UTF8-051",
+      "title": "Repair overbroad Studio 0.1.50 encoding regression against legacy tests",
+      "summary": "Windows 0.1.50 ran 252 Python tests with one failed assertion: 25 older implicit read_text() sites across seven legacy test files absent from Studio source ZIP. Keep the Studio CP1252 regression, scope legacy counts as explicit maximum debt (new test files and higher counts still fail), document migration and do not overwrite older Windows checkout files with an unverified remote revision. No runtime changes or publication rights.",
+      "operator_checks": [
+        "Install 0.1.51 through ZipRunner and confirm full Windows test suite no longer fails at test_studio_utf8_regression_050: 25 existing implicit-read sites are tracked and any new ones remain rejected.",
+        "Confirm test_native_studio_028 still explicitly decodes UTF-8, and Studio 0.1.51 native Windows executable builds and launches with compact review/import UI.",
+        "Confirm previous submissions, imported blueprints and destination preferences were preserved; no automatic Git push, release, registry approval or entitlement.",
+        "Track separate legacy test UTF-8 migration in the complete owned checkout; do not mark this work Done without operator acceptance."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-TAVIB-PUBLISH-052",
+      "title": "Import verified app-provided TAVIB blueprints and manage GitHub releases in Studio",
+      "summary": "Native picker inspects embedded schematics/*.tavib in verified .tavix; operator-selected immutable local provenance. Publishing workspace displays GitHub releases, current gh authentication, creates draft and separately publishes with full SHA confirmation using trusted native CLI; GitHub distribution is not official LoopRD publication.",
+      "operator_checks": [
+        "Build and launch exact 0.1.52 on Windows, confirm Source profile and imported blueprint provenance, partial pack minimum resources and no automatic app launch.",
+        "Validate a disposable .tavix containing a Redlink .tavib and negative tamper/path/duplicate cases against canonical validator; confirm local import only.",
+        "Configure a disposable GitHub repository in Studio and confirm live release list, read-only scope and authenticated draft state. Never use a real paid asset for this test.",
+        "Approve a disposable exact artifact locally; check disabled release actions without review, create private GitHub draft with whole SHA confirmation, verify no public release yet.",
+        "Separately confirm publication of the exact test draft, verify remote public state and local receipt; confirm no LoopRD registry/catalog/entitlement change.",
+        "Record native Windows CI/QA results and explicit operator acceptance; do not push source or release an actual asset without separate permission."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-PUBLISH-READINESS-053",
+      "title": "Reconcile Studio publishing gateway, diagnostics and local approval status",
+      "summary": "GitHub release gateway is identified as installed without claiming sign-in; Connections shows compact local validator status; Publishing independently inspects gh authentication, live releases and saved destination and blocks writes on unsaved settings; locally approved submissions with external asset dependencies show explicit compatibility warning.",
+      "operator_checks": [
+        "Windows ZipRunner full source tests and native 0.1.53 build/launch complete; no assertion failures.",
+        "Connections: only two compact local validator rows and a Publishing link; full safe diagnostic codes remain under optional details and Events.",
+        "Publishing: configure TheBigTreeInc/tavi-assets, save then check GitHub sign-in and public releases; with no gh login, public read still works when network available; no claim of LoopRD authorization.",
+        "Change the GitHub repository text without saving; confirm live state is stale and draft/publish actions disabled. Save to re-enable read-only discovery.",
+        "Review The Life Loop with ASSET_DEPENDENCIES_EXTERNAL; confirm locally approved is not presented as official-store publication or compatibility proof.",
+        "Do not publish any real release; use an authorized disposable test repository and exact-SHA approvals for later GH end-to-end acceptance."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-LOOPRD-TAVIB-054",
+      "title": "Add scoped LoopRD publisher adapter and inspect embedded TAVIB details",
+      "summary": "Native Studio Publishing supports saved approved HTTPS hostname and exact DAPI admin/catalog paths, read and operator inspection, and independent receipt-gated stage/publish for locally approved and revalidated TAVIA archives. Scoped credentials come exclusively from the trusted native environment; no service tokens in webview or profile. Embedded TAVIB inspection shows required/optional resources, partial minima, author notes and optional bounded WebP preview before selective import. Existing GitHub release workflows and local-only approvals remain separate.",
+      "operator_checks": [
+        "Apply 0.1.54 overlay to existing Windows TaviX checkout; full Python/Node tests and native Tauri build must succeed before acceptance. Preserve user profile and runtime data.",
+        "In Asset blueprints use Import from TaviX, choose a verified app containing a .tavib and click Inspect. Confirm required resources, minimum prefix counts, optional resources, designer checklist, README and optional WebP; no app code executed or implicit import.",
+        "In Publishing set verified LoopRD HTTPS host and distinct exact /admin and /catalog DAPI paths. Save settings and confirm no credentials are stored in webview or source.",
+        "With no scoped environment tokens, Connect shows unauthenticated checks and does not claim authorized access or publish anything; with separately authorized test credentials, read catalog and inspector return limited live status.",
+        "On an operator-authorized disposable LoopRD instance, stage only an exact locally-approved TAVIA using scoped ingest token and separate stage receipt; publish only after ready status, publisher scope, digest/manifest-bound publish receipt and independent UI confirmations.",
+        "Verify non-matching receipt/digest/endpoint, revoked scope, tampered archive, HTTP redirect and invalid TLS all fail closed; publication never grants Wallet entitlements. Do NOT use production credentials or publish during source build.",
+        "Confirm original GitHub settings and receipts persist; no Git pull/push, public release or catalog mutation occurs as part of overlay import."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-CATALOG-DRAFT-055",
+      "title": "First-class publishing inventory with Gold price, Listed, Testing and typed rows",
+      "summary": "Local type-labelled TAVIX/TAVIA/TAVIB and live-read registry inventory. Save exact-identity-bound operator draft fields to private native profile, without asserting authoritative Gold pricing or remotely changing listed/testing status. Preserve approved SHA/receipt gates.",
+      "operator_checks": [
+        "Run full Windows ZipRunner 0.1.56 tests and native launch; verify catalog table at 1280x800 and narrow width.",
+        "Edit price 0 and 50, Listed, Testing and description on two reviewed assets; restart Studio and confirm private local persistence and no remote changes.",
+        "Read authorized LoopRD catalog/inspection and confirm server-only versions are read-only, with no fabricated publication status.",
+        "Verify malformed and unknown catalog keys and oversized prices are refused by native storage; exact GitHub and LoopRD stage/publish gates remain unchanged."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-CATALOG-RUST-OWNERSHIP-056",
+      "title": "Repair Studio catalog draft Rust moved-value build failure",
+      "summary": "On Windows 0.1.55, cargo E0382: row_key consumed by serde_json::Map::insert then referenced in response. Clone the bounded identifier at insertion; preserve review/provenance and native draft persistence semantics.",
+      "operator_checks": [
+        "After 0.1.56 ZipRunner overlay, run the full 279+ tests on the existing Windows checkout and verify no build errors.",
+        "Run python tools/studio-desktop/build_windows.py and confirm cargo/tsc/Vite complete successfully and Studio shows v0.1.56.",
+        "Open Publishing catalog; save a permitted local draft, verify it persists after restarting Studio and no remote metadata/entitlements change.",
+        "Confirm Git push, public release, and LoopRD publication still require separate explicit approval."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-PUBLISHING-NAV-057",
+      "title": "Compact first-class Publishing navigation without long stacked scroll",
+      "summary": "Four accessible Publishing sections with keyboard-operable tabs: catalog remains mounted (preserving unsaved Gold/List/Testing drafts), publishing settings grouped in two columns, and GitHub/LoopRD release workflows separated; no native privilege or API change.",
+      "operator_checks": [
+        "After Windows ZipRunner build, open Publishing on 1280x800 and 1600x900: Catalog appears first; other publishing cards do not appear below its table.",
+        "Edit an unsaved catalog draft, switch to Connections then back: verify unsaved edits remain; save and restart Studio to confirm private persistence.",
+        "Use tab mouse and keyboard Left/Right/Home/End navigation; ensure focus is visible and disabled buttons still enforce the same safety gates.",
+        "From LoopRD without configured routes, use Open connections; from GitHub releases refresh live data without visiting Connections.",
+        "Confirm no Github release, LoopRD publication, credentials, entitlement or Gold changes are performed by navigating tabs."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-BLUEPRINT-NONSALE-058",
+      "title": "Separate compatibility blueprints from merchandise and publishing drafts",
+      "summary": "Remove TAVIB from publication catalog rows/filter and Publishing prop surface. Reject native blueprint draft writes; hide historical blueprint drafts in the Publishing read response without deleting private operator data. Preserve imports and app-to-pack matching.",
+      "operator_checks": [
+        "After Windows build, open Publishing > Catalog: only TAVIX applications and TAVIA asset packs appear; no TAVIB price/List/Testing inputs.",
+        "Open Asset blueprints: bundled/imported TAVIB still list and can be inspected and used to check an imported TAVIA.",
+        "Import a TAVIX containing an embedded TAVIB: allow local schema import but never create a storefront listing or entitlement.",
+        "Verify existing application/pack Gold/listed/testing drafts still persist after restart and LoopRD/GitHub remote state is unchanged."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-GITHUB-CATALOG-SYNC-060",
+      "title": "Studio GitHub Assets catalog source sync, review and draft PR",
+      "summary": "Add first-class Sync from GitHub link in Publishing Catalog and Overview, an isolated GitHub catalog tab, read-only revision/source/index snapshot, exact SHA-bound locally approved TAVIA draft proposal/diff, stale-revision detection, and explicit native gh API draft PR with confirm; browser GitHub CLI login without Studio token fields. No archive upload, catalog.json update, Gold offer or LoopRD publication.",
+      "operator_checks": [
+        "Open TaviX Studio 0.1.60 → Overview → Sync GitHub catalog (Publishing) → Sync from GitHub. Verify TheBigTreeInc/tavi-assets source revision, current 0 public packs and 0 compatibility blueprints (unless remote changed). Read-only sync does not alter GitHub.",
+        "Use Sign in with GitHub (browser) to open native gh auth login. Complete the browser/device flow, then Check GitHub sign-in. No personal access token is pasted into Studio.",
+        "Choose one locally approved TAVIA and select Review changes. Confirm proposed catalog.source.json record is draft only, with exact SHA-256 and canonical asset path. Verify no selected TAVIX, TAVIB, or awaiting-review pack can enter this proposal.",
+        "On a disposable GitHub repository with approved owner configuration (or review a dry-run mocked test), verify stale revision and mismatched digest reject PR writes. If separately approved on canonical repository, explicit two confirmations create a DRAFT PR only; verify public catalog.json unchanged, no binary uploaded and no LoopRD/Wallet effect.",
+        "Restart Studio and verify saved local catalog Gold/listed/testing drafts survive; separate GitHub release and LoopRD tabs still enforce their approvals; Windows native build and explicit operator QA remain independently required."
+      ]
     }
   ],
   "remaining": [
+    {
+      "id": "TAVIX-ZIPRUNNER-RELAY-HOST-024",
+      "title": "Tavi host grants and secure ZipRunner connection",
+      "priority": "high",
+      "summary": "Implement verified host.info feature, user grant, secure HTTPS read-only reverse relay and revoked/offline behavior in separately owned Tavi host.",
+      "operator_checks": [
+        "After Tavi host is implemented and approved, verify Windows/Android grant, denial, revoked/offline state and exact schema without exposing secrets."
+      ]
+    },
     {
       "id": "TAVIX-KLONDIKE-PUBLICATION-APPROVAL",
       "title": "Approve publishing reviewed TheBigTreeInc Klondike 0.1.1",
@@ -53,6 +483,222 @@
         "Open reviewed Klondike 0.1.2 in Windows and Android Tavi with denied and approved org.tavi.cards.standard grant.",
         "Switch a Tavi-owned card-back preference and confirm the game follows it after focus/reopen; revoke grant and verify bundled back returns.",
         "Approve collection-scoped deck authorization in TaviX/Tavi Assets/Tavi only after separate versioned security tests."
+      ]
+    },
+    {
+      "id": "TAVIX-MANAGEMENT-GIT-WRITES-026",
+      "title": "Operator-reviewed GitHub commit and storefront publication workflow",
+      "priority": "high",
+      "summary": "0.1.60 provides read-only asset source/index revision sync and an exact-review gated DRAFT PR for a proposed metadata-only source entry; still missing authoritative approved public artifact upload, deterministic public index regeneration in a reviewed PR, broader app catalog commit support, conflict/rebase handling and final publication/Pages verification.",
+      "operator_checks": [
+        "Confirm 0.1.60 asset metadata-only draft PR does not upload archive bytes or change catalog.json; keep draft PR merges behind independent human approval.",
+        "Implement approved asset upload plus deterministic tavi-assets generator and cross-project owner acceptance before an approved public pack appears in catalog.json.",
+        "Prove exact remote branch/commit conflict and authorization gates on disposable GitHub; do not auto-merge or release."
+      ]
+    },
+    {
+      "id": "TAVIX-MANAGEMENT-OFFER-ENTITLEMENT-026",
+      "title": "Authoritative object/bundle pricing and entitlements in LoopRD",
+      "priority": "high",
+      "summary": "Reconcile local priceGold proposals with versioned canonical offers, paid variant/asset ownership, child safety and wallet-funding policy via approved Social and LoopRD contracts.",
+      "operator_checks": [
+        "Complete server-side integration using disposable LoopRD/Wallet, test free-Gold floor, stale revision and unauthorized offer rejection before enabling UI price changes."
+      ]
+    },
+    {
+      "id": "TAVIX-MANAGEMENT-NATIVE-EVENTS-026",
+      "title": "Windows native operator and Git/LoopRD diagnostic acceptance",
+      "priority": "high",
+      "summary": "Real Windows/browser import failure reproduction, protected event journal permissions, credential and privacy review, and independent remote/disposable registry acceptance remain operator-owned.",
+      "operator_checks": [
+        "Reproduce original failing .tavia using the new Events report, compare the exact code/reason to the file and Assets checkout version.",
+        "Check Windows journal persistence and copy/export without exposing credentials or local paths; verify no active Git, LoopRD or Wallet publication occurred.",
+        "Run full Windows ZipRunner tests and manual acceptance on actual current repository before approval."
+      ]
+    },
+    {
+      "id": "TAVIX-TAVIA-SOURCE-PACK-REPAIR-027",
+      "title": "Review the actual operator-rejected TAVIA pack and correct the producer packaging",
+      "priority": "high",
+      "summary": "Actual rejected pack was not attached; identify offending archive member from new Events panel or exact pack, then repair the producer to emit only approved data-only file types.",
+      "operator_checks": [
+        "Reimport the original rejected .tavia and copy its new Events report. Record the offending member before changing producer source.",
+        "Only after examining that exact pack, produce a versioned, validator-approved new .tavia without silently omitting required content."
+      ]
+    },
+    {
+      "id": "TAVIX-NATIVE-STUDIO-PARITY-028",
+      "title": "Migrate approved management workflows into native Rust adapters",
+      "priority": "high",
+      "summary": "After Windows read-only acceptance, implement sandboxed package preview, canonical TAVIA adapter, OS key handling, exact-diff Git approvals and receipt-gated LoopRD operations one boundary at a time. 0.1.35 Rust E0308 is fixed in 0.1.36 source; actual Windows build and operator acceptance pending.",
+      "operator_checks": [
+        "Validate independent native security tests before granting any TaviX preview a window or renderer access.",
+        "Verify exact canonical validator and LoopRD server-side authorization parity before retiring any browser manager operation."
+      ]
+    },
+    {
+      "id": "TAVIX-NATIVE-STUDIO-WIN-ACCEPT-031",
+      "title": "Verify real managed Windows Studio build and window",
+      "priority": "high",
+      "summary": "Operator confirmed 0.1.36 native Studio builds and opens visibly on Windows. Further version-specific acceptance is pending for 0.1.38 source connection and diagnostic flows; keep the task in review until the operator verifies those checks.",
+      "operator_checks": [
+        "Confirm build log contains python tools/studio-desktop/build_windows.py and successful native Cargo output.",
+        "Confirm TaviX Studio opens in independent Windows window; read-only workspace/events and no Python server required."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-OFFICIAL-PUBLISHER-033",
+      "title": "Verified official store publication and developer preview channels",
+      "priority": "high",
+      "summary": "Introduce exact-artifact Git/catalog and LoopRD publication adapters, verified operator/publisher identity, separate preview channel trust and rollback/remote audit. Local review is not official publication.",
+      "operator_checks": [
+        "Review design for exact-digest signed approval, two publication channels and server-side publisher identities before enabling remote actions.",
+        "Prove isolated disposable Git and LoopRD end-to-end publication with wrong scopes/receipts failing closed and no automatic Gold/Wallet entitlements.",
+        "Confirm human approval/rollback, successful native Windows build and operator acceptance."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-NPM-RECOVERY-WIN-035",
+      "title": "Operator test Windows npm file-lock recovery and native Studio window",
+      "summary": "Actual Windows npm recovery, PatternFly TypeScript/Vite, Tauri build and visible application launch must be verified against 0.1.35 SHA.",
+      "operator_checks": [
+        "Run exact 0.1.35 Windows native Studio build and record whether recovery was necessary.",
+        "Verify `tavix-studio.exe` exists, opens visibly, and shows native submission review without Python server.",
+        "Check approved `.tavix`/`.tavia` original-package feedback ZIP and store publish remains disabled."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-TAVIA-LIVE-039",
+      "title": "Investigate exact failing TAVIA package and Windows adapter round-trip",
+      "summary": "Until the exact f5bed8416763 package is supplied or tested on Windows, the underlying canonical failure cannot be conclusively classified. Inspect only after operator-provided diagnostic and avoid guessing the archive content.",
+      "operator_checks": [
+        "Run the previously failing TAVIA in Studio 0.1.39 with neutral blueprint; copy Events report showing the new canonical failure code.",
+        "If the package is structurally invalid, export the original-byte feedback ZIP, document allowed resource types and leave approval disabled.",
+        "If a known-good canonical pack also fails, capture the sanitized diagnostic and independent command-only canonical validator result from the same Assets source; do not expose arbitrary subprocess stderr."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-BINARY-LOCK-WIN-040",
+      "title": "Accept dedicated Cargo target and immutable native Studio launches on Windows",
+      "priority": "high",
+      "summary": "Source regression checks passed; operator must prove new isolated target build while prior Studio runs, exact executable and launch receipt, repeat build, staged copy integrity and no publishing.",
+      "operator_checks": [
+        "Confirm source ZipRunner v0.1.40 actual native Cargo build succeeds and the managed Studio opens.",
+        "Verify a repeat build with staged Studio open does not fail Access denied.",
+        "Check source/config/private user data were not overwritten; record review and operator acceptance separately."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-TAROT-RESOURCE-MAPPING-043",
+      "title": "Review Tarot semantic resource-ID mapping against actual producer pack",
+      "priority": "high",
+      "summary": "Bundled tarot-standard-78 blueprint requires tarot.major.* / tarot.minor.* IDs; operator sample uses tarot.card.* and cannot be mapped safely from counts/screenshots. Collect actual producer pack and define a reviewed deterministic compatibility profile or correct producer metadata without weakening validator.",
+      "operator_checks": [
+        "Supply the exact approved producer 0.1.4 .tavia bytes (or a non-sensitive manifest resource mapping) to compare the 79 IDs with all 78 tarot faces and back.",
+        "Check each face, suit, rank, arcana and back mapping for uniqueness, required grouping and no missing assets using canonical Tavi Assets source.",
+        "Review resource contract changes with game consumer and designer before accepting a new blueprint; keep source and human artwork review as independent gates."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-AUTHENTICATED-PUBLISHING-047",
+      "title": "Trusted native publisher identity and scoped GitHub/LoopRD adapters",
+      "priority": "high",
+      "summary": "Future approved OS-secure scoped auth and exact artifact approval; reachability is not a connection credential.",
+      "operator_checks": [
+        "Approve native identity/vault design and verify tokens remain outside WebView.",
+        "Check scoped GitHub and LoopRD read identity with test backend, including negative authorization.",
+        "Require independent exact-artifact, price and publish confirmations with server audits before release."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-BLUEPRINT-WINDOWS-QA-047",
+      "title": "Verify new blueprint imports and probes in native Windows Studio",
+      "priority": "high",
+      "summary": "Exact build/operator QA for 0.1.47 import, native picker, persistent profile and read-only probes; source QA is not native proof.",
+      "operator_checks": [
+        "Build and start native Studio 0.1.47 in Windows ZipRunner.",
+        "Import local blueprint, restart, reject duplicate/malformed and inspect exported handoff.",
+        "Probe GitHub/LoopRD in intended environment; confirm no publication authority and accept only after independent review."
+      ]
+    },
+    {
+      "id": "TAVIX-LEGACY-PYTHON-UTF8-051",
+      "title": "Migrate historical implicit Python source reads with owner checkout evidence",
+      "summary": "25 historical unqualified Path.read_text calls in seven repository tests remain explicitly bounded, not repaired in the 0.1.51 Studio source overlay because exact active Windows checkout bytes are unavailable. Migrate each to UTF-8 with source-reviewed deltas and reduce then remove the seven exception ceilings.",
+      "operator_checks": [
+        "Compare the 25 legacy callsites to the exact complete owned source checkout; fix each to UTF-8 with source-reviewed changes and focused regression tests.",
+        "Prove legacy baseline counts reduce to zero, no new implicit reads are introduced and exact full Windows checkout tests pass.",
+        "Preserve operator approval, Git push, Workboard and publication gates."
+      ]
+    },
+    {
+      "id": "TAVI-ASSETS-TAVIB-CANONICAL-052",
+      "title": "Owner-ratify TAVIB archive schema, catalog and signed provenance in Tavi Assets",
+      "summary": "Tavi Assets must own canonical TAVIB container schema/validations and packs/schematics catalogs. Studio v0.1.52 uses a draft-compatible read-only container, not accepted cross-project canonical format.",
+      "operator_checks": [
+        "Approve exact Tavi Assets source schema and artifact limits in owner repository with independent acceptance.",
+        "Cross-project fixture tests of genuine .tavib and .tavix; verify no unknown host grants or execution."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-LOOPRD-PUBLISH-052",
+      "title": "Finish authenticated LoopRD/official store publish adapter",
+      "summary": "Studio GitHub release is public binary distribution only. Official LoopRD registry publication and entitlements require trusted backend, receipt/authority and separate operator approval.",
+      "operator_checks": [
+        "Use approved LoopRD admin credentials via trusted operator secure store, never webview.",
+        "Require server-side ecosystemAdmin and independent exact-artifact approve/commit receipts; test revoke and audit in disposable environment."
+      ]
+    },
+    {
+      "id": "TAVIX-EMBEDDED-TAVIB-VALIDATOR-052",
+      "title": "Unify all TaviX packer/JS/host validators for embedded .tavib",
+      "summary": "0.1.52 includes a separate provisional bounded packer layered over current Python canonical validator. Official generic packer/JS/host validators still require owner-reviewed extension and complete cross-runtime tests.",
+      "operator_checks": [
+        "Verify compiled app accepts only locked schematics/*.tavib and rejects all other nested archive types.",
+        "Run Python + JS + Windows/Android canonical validation against same signed fixture and reject malicious paths/symlinks/oversized entries."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-NATIVE-CONNECTION-QA-053",
+      "title": "Native Windows and scoped GitHub publishing acceptance",
+      "priority": "high",
+      "summary": "Run 0.1.53 complete Windows checkout tests and native UX verification. Real GitHub write path remains unaccepted until disposable repository test with authorized operator identity and independent digest/release checks. LoopRD adapter separately pending.",
+      "operator_checks": [
+        "Verify Windows post-update tests and native 0.1.53 Studio launch with operator profile preserved.",
+        "Inspect GitHub login not installed, unauthenticated, authenticated and network-down branches; public releases independent of gh sign-in.",
+        "Approve a disposable exact-artifact draft and public publish only in a separately authorized operator test; never treat GH distribution as LoopRD entitlement."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-LOOPRD-SESSION-BROKER-054",
+      "title": "Account-based LoopRD ecosystemAdmin session broker and exact remote QA",
+      "priority": "high",
+      "summary": "The adapter consumes appropriately scoped native process credentials but cannot mint them. Tavi/Social owner must implement a verified ecosystemAdmin delegation broker for interactive login/renew/revoke and LoopRD owner must supply approved live DAPI routes. Run authenticated disposable staging and publishing acceptance before production.",
+      "operator_checks": [
+        "Verify Tavi/Social and LoopRD issue short-lived audience-bound scoped tokens through verified trusted service principal, with explicit revocation and audit.",
+        "Perform read, stage and publish on an isolated test registry with approval receipts; verify missing/expired/revoked credentials fail closed.",
+        "Confirm no service credential is stored in Studio webview, source Git, Library or ZIP."
+      ]
+    },
+    {
+      "id": "TAVI-ASSETS-LIVE-STORE-OFFER-055",
+      "title": "Tavi Assets and LoopRD owner must ratify authoritative price/listed/testing contract",
+      "priority": "high",
+      "summary": "Current DAPI handles pack ingestion/status and read catalog only. Define auditable server-authoritative Gold price and testing/listing states, scoped capabilities, authenticated admin broker and exact-review gating before native Studio may commit catalog metadata remotely.",
+      "operator_checks": [
+        "Obtain owner-reviewed Tavi Assets contract for price, paid/free entitlement, listed and testing lifecycle plus source-of-truth and consistency rules.",
+        "Implement and test server-side scoped authorization, stale-version detection and audit for metadata changes in disposable deployment.",
+        "Only then enable native metadata submission; verify Tavi Store listing and Gold pricing independently without allowing free Gold purchases."
+      ]
+    },
+    {
+      "id": "TAVI-ASSETS-STORE-CONTRACT-BLUEPRINT-058",
+      "title": "Owners should explicitly exclude TAVIB schematics from official store offer metadata",
+      "priority": "medium",
+      "summary": "Tavi Assets/LoopRD and Tavi Store owners should enforce TAVIB as non-saleable compatibility metadata at authoritative catalog/entitlement schema boundaries. Keep source blueprint discovery separate from Gold and listing APIs.",
+      "operator_checks": [
+        "Verify official store contract rejects an offer whose target is a .tavib blueprint.",
+        "Verify only eligible .tavia/.tavix products receive price/listed/testing fields; .tavib remains accessible to Studio and app compatibility checkers."
       ]
     }
   ]

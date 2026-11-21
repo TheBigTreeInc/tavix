@@ -1,0 +1,11 @@
+= Studio connections and publishing status ownership — 0.1.53
+
+This source-only refinement keeps data and authority in the existing owning components:
+
+* `tools/studio-desktop/studio_diagnostics.py` reports local source/validator availability and **presence** of the GitHub release gateway only. It is not an authorization check.
+* `tools/studio-desktop/src/main.tsx` shows local validator status under Connections and lets operators navigate to Publishing. Local review, installed-pack compatibility and remote published state are distinct.
+* `tools/studio-desktop/src/publishing-setup.tsx` and `publishing-readiness.mjs` coordinate persisted destination, independent authenticated `gh` sign-in and read-only remote release list. The helper is a presentation guard, not a permission source.
+* Rust `studio_publish.rs` and Python `studio_release_gateway.py` retain all source-path, review, digest, destination and confirmation checks at the trusted boundary. No new write permissions are introduced by the UI.
+* Tavi Assets and LoopRD still own canonical `.tavia`/`.tavib` specifications, registry publication, entitlements and Gold purchases; no official-store adapter exists here.
+
+The source ZIP is an incremental ZipRunner overlay, not a clone/pull/push script. `delete_missing` remains false and no protected user/runtime state is packaged. Apply and publication remain independently operator gated.

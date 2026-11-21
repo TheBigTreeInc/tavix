@@ -1,0 +1,28 @@
+= TaviX 0.1.26 — Local management Events and TAVIA diagnostics
+:toc:
+
+== User problem and verified reproduction
+
+The TaviX 0.1.25 suite could successfully validate the canonical Tavi Assets 0.1.16 `examples/cards-v1` sample but hid all canonical validator reasons behind `Canonical Tavi Assets validation rejected this pack`. The user reported a failed `.tavia` import while `.tavix` installation succeeded; the exact user archive has not been inspected, so that incident's cause is not yet established. A malformed `.tavia` ZIP and a ZIP containing `manifest.json` `{}` reproduce distinct failure classes.
+
+== UI workflow
+
+Run the local suite with the real Tavi Assets source checkout, `python tools/local-client/server.py --assets-root <trusted Assets checkout>`. Open `http://127.0.0.1:8765/tools/local-client/index.html`. The **Events** navigation item lists newest-first events with timestamp, level, diagnostic code, event ID, safe message and permitted metadata. A failed API action automatically opens Events and includes the event ID in its short error toast. Choose Errors to narrow the view, click **Copy diagnostic report**, or use **Export JSON** to share the sanitized report. Existing `.tavix` install and preview are unchanged. Do not upload your private journal without reviewing its contents.
+
+The journal persists at `~/.tavix-suite/events.jsonl` (or `<--private-root>/events.jsonl`) outside Git and installed extension content. Retention is capped at 400 events and 512 KiB. Restart retains events; old events are discarded as the bounded journal rotates. The journal is diagnostic-only, never a Git release receipt or LoopRD administrative audit. Windows operator acceptance of user-data permissions remains pending.
+
+== HTTP envelope
+
+* `GET /__manager/v1/events?level=all|info|warning|error`: loopback Host restricted; returns `{schema:'tavix.events/v1',events:[...],totalEvents:N,retention:{maxEvents:400,maxBytes:524288},diagnosticOnly:true}`. No credential, package body, full local path or unrestricted traceback.
+* `POST /__manager/v1/events/client`: exact same-origin + CSRF as other local mutations; accepts only `{code:'UI_UNCAUGHT_ERROR'|'UI_UNHANDLED_REJECTION'|'UI_NETWORK_ERROR'}`. It cannot accept arbitrary messages or extension-origin events.
+* Existing `POST /__manager/v1/assets/import` success appends `TAVIA_DRAFT_VALIDATED`, with only validated pack ID, version, resource/object counts and file byte count; no publication.
+* Existing failed import appends structured `TAVIA_ARCHIVE_INVALID`, `TAVIA_VALIDATION_REJECTED`, `TAVIA_TOO_LARGE`, `TAVIA_SOURCE_MISSING`, `TAVIA_VALIDATOR_FAILED` or other bounded code. Error response is `{error,errorCode,eventId}`. When canonical Assets `AssetError` emits an allowlisted reason, its bounded reason is returned; arbitrary stderr/tracebacks never leave the validator subprocess.
+* Other local operator POST/DELETE actions log accepted/rejected outcomes without request bodies, credentials or untrusted file names. CSRF and loopback checks remain active.
+
+== Trust and validation
+
+The only asset validator is the one in `tavi-assets/src/tavi_assets/tavia.py`. TaviX adds a structured diagnostic subprocess adapter and predefined safe-reason allowlist, not independent asset schema rules. A validator with an unknown failure returns a generic safe error code rather than guessing, fabricating a file repair or revealing traceback. DAPI tokens are never included in diagnostics. The browser's copy/export works from the sanitized server response; no browser localStorage, external analytics, auto-upload or new extension permission is introduced. A malicious previewed extension cannot read the management origin because the iframe remains sandboxed without `allow-same-origin`.
+
+== Tests and acceptance
+
+Execute `python -m unittest discover -s tests -p test_manager_events_026.py -v`, prior manager suite tests and full repository/Node/strict catalog checks. Source HTTP regressions exercise invalid ZIP, canonical invalid manifest, valid Assets fixture pack, event ID, persistence, redaction, API CSRF denial and client code allowlist. Operator must reproduce the specific failing `.tavia` on Windows and verify the actual diagnostic; no remote staging, pricing, entitlement or Git push is implied.

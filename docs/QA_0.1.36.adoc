@@ -1,0 +1,38 @@
+= TaviX Studio 0.1.36 — Native Rust E0308 save-review repair
+:toc:
+
+== Exact Windows failure
+
+Operator built 0.1.35 on Windows with Tauri and Rust; frontend progressed and
+Cargo compiled the `tavix-studio` crate but failed at
+`tools/studio-desktop/src-tauri/src/review.rs:81`:
+
+[source,text]
+----
+expected Result<(), String>, found Result<(), &str>
+----
+
+The last expression in `save_review()` returned `fs::rename(...).map_err(|_| "Cannot finalize review update")`.
+Rust's `?` coercion did not apply to the final expression. The `Path` import was also unused.
+
+== Repair
+
+* Preserve the same file persistence sequence and fail-closed handling.
+* Return an owned `String` from the final `map_err` expression using `.to_string()`.
+* Remove unused `Path` import. No changed reviewer decisions, submission hashes, IPC endpoints, permissions or production publisher flows.
+* New `tests/test_studio_rust_result_036.py` guards the exact regression and package/version metadata.
+* All existing package validation, feedback exports and official publishing gates remain unchanged.
+
+== Windows operator checks
+
+. Apply exact `tavix-0.1.36-ziprunner.zip` after 0.1.35.
+. From checkout root run `python tools/studio-desktop/build_windows.py` and record complete Rust output; confirm no `error[E0308]` and no unused `Path` warning.
+. Confirm `tools/studio-desktop/src-tauri/target/release/tavix-studio.exe` exists and open it via `python tools/studio-desktop/run_windows.py`.
+. Import one trusted test package; verify review decision persists across restart, feedback ZIP contains unchanged original package and no public store publication occurs.
+
+== Limits
+
+No Rust/Cargo toolchain was available in the packaging environment, so this
+source-level repair is not a verified Windows build or native operator acceptance.
+Only the exact operator Windows compile can establish those results. The read-only
+native shell and local review workflow are not production publishing authority.

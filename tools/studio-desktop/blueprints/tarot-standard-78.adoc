@@ -1,0 +1,100 @@
+= Tarot deck — 78 cards and back — designer specification
+:toc:
+
+== Purpose
+
+A 78-card tarot design profile: 22 major arcana, 56 minor arcana and a shared card back.
+
+== Required semantic resource IDs
+
+* `tarot.major.00`
+* `tarot.major.01`
+* `tarot.major.02`
+* `tarot.major.03`
+* `tarot.major.04`
+* `tarot.major.05`
+* `tarot.major.06`
+* `tarot.major.07`
+* `tarot.major.08`
+* `tarot.major.09`
+* `tarot.major.10`
+* `tarot.major.11`
+* `tarot.major.12`
+* `tarot.major.13`
+* `tarot.major.14`
+* `tarot.major.15`
+* `tarot.major.16`
+* `tarot.major.17`
+* `tarot.major.18`
+* `tarot.major.19`
+* `tarot.major.20`
+* `tarot.major.21`
+* `tarot.minor.wands.ace`
+* `tarot.minor.wands.two`
+* `tarot.minor.wands.three`
+* `tarot.minor.wands.four`
+* `tarot.minor.wands.five`
+* `tarot.minor.wands.six`
+* `tarot.minor.wands.seven`
+* `tarot.minor.wands.eight`
+* `tarot.minor.wands.nine`
+* `tarot.minor.wands.ten`
+* `tarot.minor.wands.page`
+* `tarot.minor.wands.knight`
+* `tarot.minor.wands.queen`
+* `tarot.minor.wands.king`
+* `tarot.minor.cups.ace`
+* `tarot.minor.cups.two`
+* `tarot.minor.cups.three`
+* `tarot.minor.cups.four`
+* `tarot.minor.cups.five`
+* `tarot.minor.cups.six`
+* `tarot.minor.cups.seven`
+* `tarot.minor.cups.eight`
+* `tarot.minor.cups.nine`
+* `tarot.minor.cups.ten`
+* `tarot.minor.cups.page`
+* `tarot.minor.cups.knight`
+* `tarot.minor.cups.queen`
+* `tarot.minor.cups.king`
+* `tarot.minor.swords.ace`
+* `tarot.minor.swords.two`
+* `tarot.minor.swords.three`
+* `tarot.minor.swords.four`
+* `tarot.minor.swords.five`
+* `tarot.minor.swords.six`
+* `tarot.minor.swords.seven`
+* `tarot.minor.swords.eight`
+* `tarot.minor.swords.nine`
+* `tarot.minor.swords.ten`
+* `tarot.minor.swords.page`
+* `tarot.minor.swords.knight`
+* `tarot.minor.swords.queen`
+* `tarot.minor.swords.king`
+* `tarot.minor.pentacles.ace`
+* `tarot.minor.pentacles.two`
+* `tarot.minor.pentacles.three`
+* `tarot.minor.pentacles.four`
+* `tarot.minor.pentacles.five`
+* `tarot.minor.pentacles.six`
+* `tarot.minor.pentacles.seven`
+* `tarot.minor.pentacles.eight`
+* `tarot.minor.pentacles.nine`
+* `tarot.minor.pentacles.ten`
+* `tarot.minor.pentacles.page`
+* `tarot.minor.pentacles.knight`
+* `tarot.minor.pentacles.queen`
+* `tarot.minor.pentacles.king`
+* `card.back`
+
+== Visual and editorial acceptance
+
+* Major arcana numbering 00–21 is stable and recognizable; minor arcana includes four suits with 14 cards each.
+* Page, Knight, Queen and King are distinct in every suit; index and artwork placement are consistent.
+* If reversals matter to the consuming game, card backs must not reveal upright versus reversed orientation unless explicitly intended.
+* Provide legible labels at phone size and independent suit/icon cues beyond color.
+* Do not embed divination or game mechanics in artwork metadata; interpretation belongs to the consuming app.
+
+== Format
+
+This blueprint is a **Studio preflight review template**, not a new `.tavia` manifest version or an authorization grant. It intentionally does not require additional documents inside the `.tavia` archive. The authoritative format and safety checks remain in Tavi Assets.

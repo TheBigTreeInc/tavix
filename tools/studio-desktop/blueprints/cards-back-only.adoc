@@ -1,0 +1,21 @@
+= Playing-card backs — customization pack — designer specification
+:toc:
+
+== Purpose
+
+A small customization pack used by games that already supply card faces.
+
+== Required semantic resource IDs
+
+* `card.back`
+
+== Visual and editorial acceptance
+
+* Artwork uses the same proportions as the playing-card faces and includes full bleed and safe-area margins.
+* The back can be repeated on every card without identifying the hidden suit or rank.
+* Alternate variants use the same media type and remain readable on light/dark backgrounds.
+* State whether the pattern is directional; do not embed instructions or executable effects.
+
+== Format
+
+This blueprint is a **Studio preflight review template**, not a new `.tavia` manifest version or an authorization grant. It intentionally does not require additional documents inside the `.tavia` archive. The authoritative format and safety checks remain in Tavi Assets.

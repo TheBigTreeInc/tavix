@@ -1,0 +1,25 @@
+= TaviX 0.1.31 — Native Studio active-recipe adoption
+
+== Observed Windows failure
+
+Operator QA on installed 0.1.30 (ZIP SHA-256 `cfcff7ff8b61f5c2e041e1d0e813a6525af2d65f23d76bcbf84a8160e9e44eda`) reports `build_passed_operator_unverified`, yet environment configuration has two Python build commands and zero start commands. The delivered `project.zr` has 8 build commands and one managed start. This difference is not a Cargo/Tauri failure: the active ZipRunner configuration did not adopt the portable recipe. This report is read-only and not proof that the compiler ran.
+
+== Why
+
+ZipRunner's `recipe_proposals.py` extracts source ZIP `project.zr` only as a *pending proposal*. `recipe_review_commit.py` requires explicit human acceptance to write the reviewed portable fields to `ziprunner.config.json`; host-local paths and credentials are preserved. Source ZIPs must never bypass that requirement.
+
+== Operator procedure
+
+. In ZipRunner, select the **existing** `tavix` project and its **Configuration** / recipe review surface. Inspect any pending 0.1.30/0.1.31 recipe and approve the build and start fields if they match the reviewed source. Alternatively use its .zr import/editor to import `tavix-studio-0.1.31.zr` **into the existing `tavix` project**, then explicitly review and save. Do not create a second project.
+. Preserve the current target/command/backup directories, tokens, Git settings, publication approvals, and private config; do not replace the entire config file.
+. Confirm **active** build includes `python tools/studio-desktop/build_windows.py` and **active** start includes `python tools/studio-desktop/run_windows.py` (not only these fields in source `project.zr`).
+. After saving active settings, import `tavix-0.1.31-ziprunner.zip` by its exact versioned filename. Because this increments installed 0.1.30, it triggers the normal build/start flow without relying on a same-version retry.
+. Inspect Windows job log for actual native build invocation and final executable `tools/studio-desktop/src-tauri/target/release/tavix-studio.exe`. Confirm a separate TaviX Studio window opens. If the native build fails, supply the compiler/ZipRunner log; do not claim acceptance.
+
+== Security and evidence
+
+The `project.zr`, `tavix.zr`, and `recipes/tavix-studio.zr` build/start fields are kept aligned. This ZIP does not include `ziprunner.config.json`, private state, credentials, Node dependencies or Rust build artifacts. There is no automatic Git push or LoopRD/Wallet operation. Operator approval remains separate from build success. The legacy Python management UI is still available but is never auto-started.
+
+== Developer verification
+
+`python -m unittest discover -s tests -p test_native_studio_recipe_031.py -v` and historical source tests run from the extracted ZIP; user-machine Windows Cargo/PatternFly build and GUI acceptance remain pending.

@@ -1,0 +1,34 @@
+= TaviX 0.1.34 — PatternFly 6 Windows TypeScript compilation repair
+:toc:
+
+== Operator evidence (0.1.33 build, Windows PowerShell 5.1)
+
+Operator ran `python tools/studio-desktop/build_windows.py`. Dependency installation succeeded (86 packages) and Tauri invoked `beforeBuildCommand` (`npm run build`). `tsc --noEmit` rejected the React PatternFly `Title` for the Designer checklist at `tools/studio-desktop/src/main.tsx:154`:
+
+[source,text]
+----
+error TS2322: Type '"sm"' is not assignable to type 'Size | undefined'.
+<Title headingLevel="h3" size="sm">Designer checklist</Title>
+----
+
+This was a real TypeScript compilation failure, *not* a Rust compiler failure. The compiled Studio executable was not produced by that operator run.
+
+== Minimal source repair
+
+Replace only that `Title` size value with `md` (used already by other h3 Titles). No altered app permissions, asset validation policy, review state, remote publication or developer-preview behavior. Add `tests/test_patternfly_title_build_034.py` to reject unsupported Title sizes on subsequent source passes and confirm `tsc --noEmit && vite build` remains the build command.
+
+== Verification and operator acceptance
+
+[source,powershell]
+----
+cd C:\Users\dorbi\source\tavix
+python -m unittest discover -s tests -p test_patternfly_title_build_034.py -v
+python -m unittest discover -s tests -v
+python tools/studio-desktop/build_windows.py
+Test-Path .\tools\studio-desktop\src-tauri\target\release\tavix-studio.exe
+python tools/studio-desktop/run_windows.py
+----
+
+A successful Python source check does not prove TypeScript or Rust compilation. Record actual `tsc`, Vite, Cargo output and visible window. The configuration's `project.zr` is an operator-reviewable recipe, not a permit to rewrite active `ziprunner.config.json`.
+
+No Git push or public release is authorized. Official publishing, LoopRD registry writes, Wallet entitlements and operator acceptance remain separate gates.

@@ -3,15 +3,15 @@
   "spec_version": "1.0.0",
   "project": {
     "key": "tavix",
-    "version": "0.1.23",
-    "base_version": "0.1.22",
-    "summary": "Stage Klondike 0.1.2 opt-in Tavi Assets card-back consumer without changing prior immutable releases or bypassing approvals."
+    "version": "0.1.60",
+    "base_version": "0.1.58",
+    "summary": "TaviX Studio 0.1.60: GitHub asset catalog sync, exact source diff, browser gh sign-in and explicitly confirmed metadata-only draft PR; no release or official Store publication."
   },
   "update": {
-    "id": "TAVIX-KLONDIKE-ASSETS-023",
+    "id": "TAVIX-STUDIO-BLUEPRINT-NOT-MERCHANDISE-058",
     "kind": "source_update",
-    "created_at": "2026-11-13T12:50:00+01:00",
-    "summary": "Host-negotiated optional card-back artwork in Klondike, bundled fallback, targeted tests and exact staged package."
+    "created_at": "2026-11-19T23:59:00+01:00",
+    "summary": "Remove TAVIB schematics from saleable publishing rows and store drafts; native save refuses blueprints; existing historical draft bytes preserved. No remote effects."
   },
   "planned_work": [
     {
@@ -128,6 +128,71 @@
       "title": "Klondike optional Tavi Assets card back",
       "priority": "high",
       "acceptance_criteria": "0.1.2 package loads offline without host, uses only granted org.tavi.cards.standard/card.back through tavi.assets/v1, clears transient visuals when refreshed/revoked, keeps 0.1.1 immutable and requires reviewed Store staging."
+    },
+    {
+      "id": "TAVIX-TAVIA-RESOURCE-DIAGNOSTICS-027",
+      "title": "Show rejected TAVIA archive members in the local management Events panel",
+      "priority": "high",
+      "acceptance_criteria": "On current Windows checkout, import a rejected TAVIA including unsupported .md/.js and observe safe relative member path, suffix and count in the existing Events panel; do not relax canonical Tavi Assets validator, auto-extract forbidden code, or change publish approval gates. Import a valid .tavia and a .tavix unchanged."
+    },
+    {
+      "id": "TAVIX-NATIVE-STUDIO-BOOT-030",
+      "title": "Repair Windows Tauri resource icon and managed Studio lifecycle",
+      "priority": "high",
+      "acceptance_criteria": "Rebuild Windows with icon.ico; verify managed executable opens and original web management still works; no second privileged backend, no unauthorized writes."
+    },
+    {
+      "id": "TAVIX-STUDIO-PATTERNFLY-TITLE-034",
+      "title": "Repair invalid PatternFly Title prop causing native Windows build failure",
+      "priority": "high",
+      "acceptance_criteria": "With exact 0.1.35 source, tsc --noEmit and Vite must pass on Windows and native Studio must compile and launch; keep existing review/preview UI and publishing controls unchanged. No operator acceptance before actual Windows evidence."
+    },
+    {
+      "id": "TAVIX-STUDIO-RUST-SAVE-036",
+      "title": "Fix native Studio Rust review persistence compilation",
+      "priority": "high",
+      "acceptance_criteria": "Build exact 0.1.36 with Windows Rust toolchain, confirm error E0308 at review.rs:81 resolved and no unused Path warning; launch Studio and review a package; retain existing authorization gates."
+    },
+    {
+      "id": "TAVIX-STUDIO-CONNECTION-DIAGNOSTICS-037",
+      "priority": "high",
+      "title": "Native Tavi Assets connection and operator-safe import diagnostics",
+      "summary": "Connect local canonical Tavi Assets source with native folder chooser, health checks and bounded diagnostic report for rejected TAVIA/TAVIX; no remote credential or publisher authority.",
+      "operator_checks": [
+        "Select a valid tavi-assets source folder in native Connections and confirm validator ready, without exposing its full path.",
+        "Import a malformed .tavia and a valid .tavix; confirm specific safe issue codes, copyable sanitized report and safe persistence after restart.",
+        "Confirm native GitHub/LoopRD remain explicitly unconnected and no public store publishing, Gold or Wallet changes occur."
+      ]
+    },
+    {
+      "id": "TAVIX-STUDIO-GAME-VERSION-PICKER-045",
+      "title": "Games & apps choose package first then version",
+      "priority": "medium",
+      "acceptance_criteria": "In native Studio 0.1.45 select exactly one package per stable ID, choose the exact version, preserve per-package selection, verify numeric version ordering and narrow layout; no publication, installation, or entitlement changes."
+    },
+    {
+      "id": "TAVIX-TAVIA-CLIENT-CACHE-CONTRACT-045",
+      "title": "Document per-device shared TAVIA cache across Tavi owners",
+      "priority": "medium",
+      "acceptance_criteria": "Review non-implemented shared Tavi-managed device cache and LoopRD entitlement responsibilities with each owning project; no client entitlement bypass, publication authority, direct file paths or invented storage endpoint."
+    },
+    {
+      "id": "TAVIX-STUDIO-TAVIA-UNICODE-PROTOCOL-046",
+      "title": "Windows native Unicode-safe TAVIA import and fixed canonical error guidance",
+      "priority": "high",
+      "acceptance_criteria": "Native Tauri 0.1.46 must parse Unicode .tavia titles over Python review JSON reliably regardless of Windows code page. Known invalid attribute key rejection is blocking and actionable. Verify exact canonical valid new Tarot 0.1.2 on Windows and preserve all operator/publishing gates."
+    },
+    {
+      "id": "TAVIX-STUDIO-BLUEPRINT-SOURCES-047",
+      "title": "Manage blueprint origins and local reviewed imports",
+      "priority": "high",
+      "acceptance_criteria": "Exact 0.1.47 native Windows build, local blueprint and safe connection probe QA. No authority or publication inferred."
+    },
+    {
+      "id": "TAVIX-STUDIO-PUBLISHING-REACHABILITY-047",
+      "title": "Read-only publishing connection diagnostics",
+      "priority": "high",
+      "acceptance_criteria": "Exact 0.1.47 native Windows build, local blueprint and safe connection probe QA. No authority or publication inferred."
     }
   ],
   "done_work": [],
@@ -209,7 +274,7 @@
     }
   ],
   "validation": {
-    "model_reported": "source_passed_windows_pending",
+    "model_reported": "0.1.60 catalog sync Python tests mocked/offline; exact source syntax and focused tests to be verified. Native Windows build unverified.",
     "checks": [
       {
         "id": "TAVIX-020-FULL-PYTHON",
@@ -261,11 +326,109 @@
         "status": "passed",
         "description": "Local simulated Windows-overlay source tests: 111 Python and 16 JavaScript; exact old draft archived and checksum retained; local Companion 0.6.40 fixture synthetic, not claimed as published binary",
         "environment": "Linux source simulation; native Windows ZipRunner pending"
+      },
+      {
+        "id": "TAVIX-028-NATIVE-SOURCE",
+        "status": "passed",
+        "description": "5/5 native Studio static source contract tests passed; no Cargo/Rust compiler or PatternFly npm modules available, native app unbuilt.",
+        "command": "python -m unittest discover -s tests -p test_native_studio_028.py -v",
+        "environment": "Linux local extracted source candidate"
+      },
+      {
+        "id": "TAVIX-028-FULL-RECONSTRUCTED",
+        "status": "incomplete",
+        "description": "142 Python tests: 2 failures, 4 errors, 7 skips, caused by historical incomplete Klondike/Companion tree and missing external Tavi Assets checkout; strict repository check fails on stale index; 17/17 Node tests passed. Full canonical Windows checkout pending.",
+        "command": "python -m unittest discover -s tests -v; node --test tests/*.mjs; python tools/repository.py check --repository . --strict",
+        "environment": "Reconstructed 0.1.27 source overlay plus older full baseline"
+      },
+      {
+        "id": "TAVIX-029-POST-UPDATE-STAMP",
+        "status": "passed",
+        "description": "Post-update stamp 20 entries after combining Events+TAVIA diagnostics commands. Both module names present. Local source regression passed; Windows ZipRunner validation pending.",
+        "command": "python -m unittest discover -s tests -p test_post_update_stamp_029.py -v",
+        "environment": "Linux extracted source overlay with reconstructed checkout"
+      },
+      {
+        "id": "TAVIX-033-WINDOWS-LOG",
+        "status": "failed_on_prior_candidate",
+        "description": "Operator Windows 0.1.32 run: 171 Python tests, 4 failing assertions: 3 missing exact handoff publication sentence and one Windows-default encoding mismatch for em dash. This is historical prior-candidate evidence, not 0.1.33 acceptance.",
+        "command": "python -m unittest discover -s tests -v",
+        "environment": "Operator Windows ZipRunner 1.2.304.302"
+      },
+      {
+        "id": "TAVIX-034-PATTERNFLY-TSC-WINDOWS",
+        "status": "failed_on_prior_candidate",
+        "description": "Operator Windows 0.1.33 build: npm run tauri -- build --no-bundle invoked tsc --noEmit; TypeScript TS2322 rejected Title size=\"sm\" at src/main.tsx:154. Fixed in 0.1.35; native build pending rerun.",
+        "command": "python tools/studio-desktop/build_windows.py",
+        "environment": "Operator Windows PowerShell 5.1"
+      },
+      {
+        "id": "TAVIX-037-LOCAL-DIAGNOSTICS",
+        "status": "passed",
+        "description": "6/6 new connection and redaction checks; isolated Python -I health and canonical TAVIA unsupported-media diagnostic observed; 7/7 submission review checks. TSX transpile syntax 0 errors; native Rust/Windows build not performed locally.",
+        "command": "python -m unittest discover -s tests -p test_studio_diagnostics_037.py -v && python -m unittest discover -s tests -p test_studio_review_032.py -v",
+        "environment": "Linux source reconstruction with canonical Tavi Assets checkout"
+      },
+      {
+        "id": "TAVIX-037-RECONSTRUCTED-FULL",
+        "status": "incomplete",
+        "description": "188 Python tests ran, 1 failure and 4 errors from reconstructed old Klondike 0.1.1 draft/catalog state and missing old publication files; exact Windows checkout is authoritative.",
+        "command": "TAVI_ASSETS_ROOT=<canonical checkout> python -m unittest discover -s tests -v",
+        "environment": "Linux reconstructed source + Tavi Assets 0.1.16 snapshot"
+      },
+      {
+        "id": "TAVIX-046-UNICODE-IPC",
+        "status": "passed",
+        "description": "New Unicode-safe CLI JSON native-protocol regression: 4 passed on Linux extracted overlay. Canonical Tavi Assets live validation still pending Windows.",
+        "command": "python -m unittest discover -s tests -p test_studio_tavia_unicode_046.py -v",
+        "environment": "Linux extracted overlay"
+      },
+      {
+        "id": "TAVIX-046-STUDIO-039",
+        "status": "passed_with_one_skip",
+        "description": "Existing Studio canonical protocol regression: 6 passed, 1 canonical Assets source unavailable skip.",
+        "command": "python -m unittest discover -s tests -p test_studio_tavia_protocol_039.py -v",
+        "environment": "Linux extracted overlay"
+      },
+      {
+        "id": "TAVIX-046-FULL-OVERLAY",
+        "status": "partial",
+        "description": "107 tests executed: 95 passed, 5 skipped, 7 missing historical module import errors; 0 test assertion failures. Must run complete Windows checkout.",
+        "command": "python -m unittest discover -s tests -v",
+        "environment": "Linux incremental overlay without 7 previous module files"
+      },
+      {
+        "id": "TAVIX-046-NODE",
+        "status": "passed",
+        "description": "Node test runner reports 8 passed, 0 failed.",
+        "command": "node --test tests/test_studio_game_versions_045.mjs tests/test_klondike_asset_client_023.mjs",
+        "environment": "Linux Node v22.16.0"
+      },
+      {
+        "id": "TAVIX-046-NATIVE-WINDOWS",
+        "status": "not_run",
+        "description": "Windows Cargo/Tauri native build and operator acceptance pending.",
+        "command": "ZipRunner native build on operator Windows host",
+        "environment": "Windows not available in this run"
+      },
+      {
+        "id": "TAVIX-STUDIO-WINDOWS-BLUEPRINT-ISOLATION-048",
+        "status": "passed_source_only",
+        "description": "8/8 isolated blueprint Python tests pass, including two independent test profiles with duplicate identity protected per profile. Tests override LOCALAPPDATA and HOME for in-process and subprocess import, never touching the operator profile. Windows complete checkout not run.",
+        "command": "python -m unittest discover -s tests -p test_studio_blueprint_connections_047.py -v",
+        "environment": "Linux extracted incremental source 0.1.48"
+      },
+      {
+        "id": "TAVIX-STUDIO-WINDOWS-REPAIR-FULL-048",
+        "status": "partial",
+        "description": "Full extracted source Python suite: 115 tests, 103 passed, 5 skipped, 7 missing-module import errors, no assertion failures. Seven historical modules are absent from the incremental overlay. Complete Windows checkout test and native build still required.",
+        "command": "python -m unittest discover -s tests -v",
+        "environment": "Linux incremental source 0.1.48"
       }
     ]
   },
   "handover": {
-    "next_pass": "Import 0.1.22 into Windows ZipRunner; confirm Workboard gate, guarded legacy draft archival, full build and exact package acceptance. Then operator-approved Git/Pages publication and phone discovery test, before installation.",
+    "next_pass": "Run Windows native Studio build and verify Catalog lists only TAVIX applications and TAVIA asset packs; confirm blueprint matching and imported TAVIB work in Blueprint Library. Remote store metadata requires Tavi Assets/LoopRD contract.",
     "risks": [
       "TaviX live repository contains Companion 0.6.40, but an older local source snapshot contained 0.6.33. The safe overlay intentionally contains no older release assets and requires the current Git checkout; stale checkouts must fail closed.",
       "TheBigTreeInc publisher/free-distribution permission was explicitly confirmed; public code licensing remains NOASSERTION, not an invented SPDX license.",
@@ -273,7 +436,10 @@
       "Tavi current Store renders icon and summary; rich cover/screenshots remain packaged until future Social UI contract.",
       "Phone discovery, install, native touch and orientation remain unverified; no game sideload is needed for discovery.",
       "Tavi Assets card packs are deferred; bundled card rendering retained for this first test.",
-      "0.1.21 was rejected by ZipRunner Workboard metadata validation before source overlay; this full 0.1.22 overlay includes its unchanged migration code and fixes operator_checks for both implemented and remaining Workboard items."
+      "0.1.21 was rejected by ZipRunner Workboard metadata validation before source overlay; this full 0.1.22 overlay includes its unchanged migration code and fixes operator_checks for both implemented and remaining Workboard items.",
+      "Native Windows build and operator acceptance not run in development container.",
+      "Original Tarot 0.1.0 and optimized 0.1.1 remain invalid canonical metadata; use separately repaired 0.1.2 for next import.",
+      "0.1.47 Windows tests may already have written local-tarot-test.json to the real profile. Preserve it; do not automatically delete or overwrite local operator files. 0.1.48 isolates future tests from the real profile."
     ],
     "blockers": [
       "Git/Pages publishing requires separate operator review and approval.",
@@ -293,6 +459,18 @@
     {
       "id": "TAVIX-OP-020-3",
       "description": "Approve exact reviewed commit/Pages publication independently. On updated clean phone refresh Store Games and verify Klondike icon/details/Install BEFORE tapping Install."
+    },
+    {
+      "id": "TAVIX-OP-BLUEPRINT-048",
+      "description": "Operator reruns 0.1.48 full Windows build/test on existing current checkout and verifies no BLUEPRINT_ALREADY_IMPORTED test errors; review preserved user blueprints, read-only connections and separate approval gates."
+    },
+    {
+      "id": "TAVIX-OP-CATALOG-055",
+      "description": "Verify 0.1.55 full Windows checkout tests and Studio table; save/reopen Gold/listed/testing drafts and assert live LoopRD/GitHub unchanged. No authorization to publish."
+    },
+    {
+      "id": "TAVIX-OP-NONSALE-058",
+      "description": "Apply 0.1.58 overlay on 0.1.57, rebuild Windows Studio; check that TAVIB only appears in Blueprint Library and review compatibility, never Publishing catalog Gold/List/Testing controls or Official Storefront offers. Confirm previously saved application/pack drafts persist; no remote publish."
     }
   ],
   "release": {
@@ -304,6 +482,10 @@
     "source_test": "node --test tests/test_klondike_asset_client_023.mjs",
     "package_validation": "python tools/tavix_package.py validate-archive <klondike 0.1.2 archive>",
     "host_acceptance": "pending Windows and Android account consent/revocation",
-    "publication": "operator authorization pending"
-  }
+    "publication": "NOT_PERFORMED. Source code prepares only a metadata draft PR after explicit operator confirmations, with no archive upload, public catalog update, Wallet/LoopRD mutation, or release.",
+    "native_studio_source": "0.1.48 is a source/test-isolation repair only; native Blueprint Library and HTTPS probes remain as in 0.1.47. Windows native 0.1.47 binary builds were observed in a failed full-suite run; no native 0.1.48 compilation or operator acceptance has been verified.",
+    "windows_native_build": "NOT_RUN for 0.1.60; requires complete Windows TypeScript/Vite + Rust/Tauri build and operator review.",
+    "existing_python_manager": "unchanged"
+  },
+  "next_pass": "Run Windows native Studio build and verify Catalog lists only TAVIX applications and TAVIA asset packs; confirm blueprint matching and imported TAVIB work in Blueprint Library. Remote store metadata requires Tavi Assets/LoopRD contract."
 }

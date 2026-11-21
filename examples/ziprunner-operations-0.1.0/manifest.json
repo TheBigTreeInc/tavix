@@ -1,0 +1,32 @@
+{
+  "schema": "tavi.extension/v1",
+  "id": "inc.thebigtree.tavi.ziprunner",
+  "version": "0.1.0",
+  "name": "ZipRunner Operations",
+  "summary": "Private read-only All Projects status through a trusted Tavi host bridge (requires opt-in).",
+  "publisher": "thebigtreeinc",
+  "kind": "app",
+  "hostApi": {
+    "min": "1.0.0",
+    "maxExclusive": "2.0.0"
+  },
+  "entrypoints": {
+    "panel": "ui/index.html"
+  },
+  "contributions": [
+    {
+      "slot": "app.launcher",
+      "id": "ziprunner",
+      "label": "ZipRunner",
+      "action": "openPanel"
+    }
+  ],
+  "permissions": [
+    "ui.panel"
+  ],
+  "platforms": [
+    "web",
+    "windows",
+    "android"
+  ]
+}

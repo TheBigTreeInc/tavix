@@ -11,11 +11,17 @@
   "build": [
     "python tools/klondike_legacy_draft_archive.py --repository .",
     "python tools/ziprunner_catalog_preflight.py --repository .",
+    "python -m unittest discover -s tests -p test_manager_suite_025.py -v",
+    "python -m unittest discover -s tests -p test_manager_events_026.py -v",
     "python -m unittest discover -s tests -v",
     "node --test tests/test_klondike_asset_client_023.mjs",
-    "python tools/repository.py check --repository . --strict"
+    "node --test tests/test_studio_import_flow_049.mjs",
+    "python tools/repository.py check --repository . --strict",
+    "python tools/studio-desktop/build_windows.py"
   ],
-  "start": [],
+  "start": [
+    "python tools/studio-desktop/run_windows.py"
+  ],
   "build_window": "hidden",
   "start_window": "managed",
   "delete_missing": false,
@@ -40,5 +46,5 @@
   "require_clean_git_before_overlay": false,
   "mechanisms_require_build_success": true,
   "post_build_mechanisms": [],
-  "version": "0.1.23"
+  "version": "0.1.60"
 }

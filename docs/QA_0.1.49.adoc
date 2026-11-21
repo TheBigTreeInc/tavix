@@ -1,0 +1,39 @@
+= TaviX Studio 0.1.49 — compact review UI and picker-first blueprint workflow
+:toc:
+
+== Operator feedback and scope
+
+The 0.1.48 Windows screenshot shows a large repeated global page title/intro, top success banner, permanent local-operator/Refresh space, a tall import form and three status cards before reaching the review queue. The original select is hard to read on Windows because the `light dark` native color scheme conflicts with the light PatternFly surface. Refresh temporarily unmounts the page, disturbing scroll position.
+
+== Implemented UI
+
+* Masthead content now combines the **current section title**, an expandable compact **Notifications** control for success/error/version mismatch and **Refresh** on one row. The TaviX Studio brand/version stays at left. Repeated global introduction and full-width success banner are removed.
+* Submission review starts with a single `Import package…` action and tiny review-status counts. No tall Import card or three summary cards occupy the top of the queue. Existing review decisions, exports and inspector remain intact; findings/checklist and full SHA are collapsed on demand.
+* Import invokes the existing trusted Rust `review_import` picker with an **empty** blueprint ID. The native host selects the file and validates/retains the unchanged archive, then the renderer opens a modal for the retained review SHA-256. No file path comes from JavaScript.
+* `.tavia` dialog choices: a bundled or imported designer blueprint, or **Custom / no blueprint yet**. On confirming a new/different blueprint, existing `review_recheck` is called with the retained SHA; the canonical validator and semantic requirements still apply. Changing or clearing a prior blueprint resets local review status. Custom without an existing blueprint performs no recheck; it stays retained in `draft`, `storeReady:false`, for later selection. `Review later` closes without mutation.
+* `.tavix` imports do not receive a TAVIA blueprint. Existing Package Browser, Art preview, Workboard, original SHA and protected publishing/entitlement boundaries remain unchanged.
+* Refresh keeps existing content mounted and updates the snapshot in place, reducing scroll resets. `studio-select` explicitly renders a high-contrast light native select for Windows even if the WebView defaults to dark form controls.
+
+== Security and limits
+
+There are no new Tauri IPC methods, permission grants, URL fetches, browser file reads, Git writes, or LoopRD publishing. Native picker and immutable local review storage remain owner boundaries. No imported Blueprint grants a purchase, entitlement or store listing. Blueprint match is not proof of canonical validity. No source pack bytes are mutated by the UI. A future pre-import blueprint preview step may require a separate trusted staged-file workflow; this pass imports to local review before prompting for optional blueprint selection.
+
+== Developer QA
+
+* `python -m unittest discover -s tests -p test_studio_compact_workflow_049.py -v`
+* `node --test tests/test_studio_import_flow_049.mjs`
+* `python -m unittest discover -s tests -p test_studio_review_ux_043.py -v`
+* `python -m unittest discover -s tests -v`
+* `node --test tests/test_klondike_asset_client_023.mjs`
+* Native Windows build: `python tools/studio-desktop/build_windows.py`, plus actual operator GUI acceptance. Source ZIP is an incremental overlay, not a standalone complete historical checkout.
+
+== Operator acceptance (not automatically completed)
+
+. Launch 0.1.49 from exact candidate after ZipRunner has successfully built it; see current section title, Notifications and Refresh in one narrow row.
+. Import a `.tavia`; close native file picker once without importing and verify no red error. Reopen and choose real pack; verify the modal appears and no paths or app code are sent to JavaScript.
+. Select Custom; verify it remains in review queue without blueprint and cannot be locally approved for official store readiness. Open `Choose blueprint…` later, select compatible profile, and recheck; observe blocked/missing IDs when appropriate.
+. Select the generic Tarot profile against non-matching `tarot.card.*` pack; verify it reports semantic mismatch rather than granting approval or inventing mappings.
+. Switch pages, scroll and Refresh; ensure content and scroll remain stable. Open notification control to see latest success/error without a large persistent alert.
+. Verify high contrast select display on Windows, keyboard focus/Escape modal behavior, package inspect and unchanged native publication-disabled state.
+
+Release, Git, LoopRD remote activity, operator acceptance and Workboard Done are separate gates. Structurizr CLI parsing is unverified unless run on a machine where installed.

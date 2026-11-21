@@ -131,3 +131,89 @@ The TaviX-owned `localFileContract` component validates `files.local.import` and
 == Klondike optional asset consumer (0.1.23)
 
 A new immutable Klondike 0.1.2 compiled release in TaviX declares an optional `org.tavi.cards.standard` / `card.back` dependency and bundles the Tavi Assets read-only SDK. TaviX validates and distributes this request only. The external Tavi host controls installed-pack consent and session-bound grants; the Tavi Assets runtime supplies validated media. No new TaviX service or storage is introduced; the existing external component boundary is unchanged. Refer to `docs/KLONDIKE_ASSET_CONSUMER_0123.adoc`.
+
+== 0.1.25 Local Management Suite
+
+The pre-existing `previewServer` and `previewUi` containers are extended rather than introducing a parallel operator application. New `managerFacade`, `credentialStore`, `operatorUi` components and `managerStore` external-to-checkout private filesystem are modeled in `workspace.dsl`. They manage .tavia draft validation using the authoritative *external* Tavi Assets source, local non-authoritative Gold values, read-only GitHub API identity and LoopRD DAPI read/receipt-gated operator workflows. The suite is on loopback only with explicit Origin/CSRF mutating-request protection. Git push and public catalog publication are not implemented by this change. Remote publication is never automatic and remains subject to existing independent LoopRD operator receipt, server permission and audit requirements. Source evidence: `tools/local_client/manager.py`, `tools/local_client/manager_assets.py`, `tools/local_client/manager_secrets.py`, `tools/local-client/server.py`, `tools/local-client/manager.js` and `docs/TAVIX_MANAGEMENT_SUITE_025.adoc`. Tavi, Tavi Assets, LoopRD, Wallet and GitHub backend authorities remain external. Run a Structurizr CLI validation separately; source regression alone does not establish DSL correctness.
+
+== Local Events diagnostics (0.1.26)
+
+The local preview server now owns `eventJournal` (`tools/local_client/manager_events.py`) and the browser owns `eventsUi` (Events navigation, filter/copy/export). The JSONL journal is stored in the pre-existing operator-private `managerStore` outside the TaviX Git checkout, with bounded rotation and sanitization. The `managerFacade` records API acceptance and rejection, including structured safe TAVIA validator codes. The browser receives only the bounded loopback GET view and may submit fixed error categories over the CSRF-gated local endpoint; no event makes a release, permission grant or LoopRD audit record. This introduces no new external service or trust authority.
+
+
+== Native operator Studio (0.1.28 candidate)
+
+The new `nativeStudio` container contains the stable read-only `studioRead` Rust command boundary and `studioLayout` PatternFly/React interface. It is a distinct native executable source target, not the existing `previewUi` browser or an extension host. It currently reads local checkout/release metadata and sanitized journal event IDs; no HTML package preview, credential operations, Git push, LoopRD mutation or Gold authorization. The legacy Python browser console remains the functioning path until Windows/native parity acceptance. See link:../../docs/TAVIX_STUDIO_DESKTOP_028.adoc[Studio design decision]. Structurizr CLI parser acceptance remains pending.
+
+== Studio native lifecycle update (0.1.30)
+
+The source-managed Studio Tauri Windows executable is built by `tools/studio-desktop/build_windows.py` after the canonical TaviX validation steps and started by `tools/studio-desktop/run_windows.py`. The icon is a compile-time Windows resource under `src-tauri/icons/`. The existing local Python management console remains a separate compatibility adapter, not an automatically started sidecar. No new privileged frontend IPC commands or external service relationships are introduced; CI/Windows native build acceptance remains pending.
+
+== 0.1.32 Studio review components
+
+Native `studioReview` mediates the OS file picker, canonical validator subprocess and per-user `studioReviewStore`; `studioBlueprint` defines checked resource IDs plus human designer checklists; `studioLayout` shows package review and a gated official publishing queue. Feedback and developer preview are local read-only exports, not public catalog updates. This is a source model only; Structurizr CLI parsing is not evidenced here.
+
+=== Studio 0.1.37 connection and diagnostic delta
+
+Native Studio now validates a local Tavi Assets source selected through an OS folder chooser and persists the source preference under the operator profile. The Python review CLI returns bounded validator readiness and safe review-error codes. The UI presents copyable reports without private source paths, credentials, manifest contents or reviewer notes. Native GitHub/LoopRD connections remain pending; no new remote publishing edge is authorized.
+
+== 0.1.39 Studio review diagnostic refinement
+
+The existing native Studio to fixed Python review CLI component boundary is unchanged. Canonical Assets import errors now retain safe, bounded cause codes, and the CLI owns stdout framing. The reviewer explicitly chooses a matching blueprint after import rather than assuming a playing-card deck. No remote publishing or asset grant edge was added. Structurizr CLI validation not performed in this environment.
+
+== Native managed executable lifecycle (0.1.40)
+
+The Studio Windows builder now invokes Cargo with a separate `studio-managed-build` output directory rather than overwriting the old in-use `target/release` executable. A private, content-hashed `studio-launch` copy and SHA-256-bound `current.json` record are written only after successful compile. The managed launcher validates these before starting the desktop process. This is local OS deployment/build state, not publisher authority, a TaviX extension, an asset pack, a remote registry or a new network boundary. No remote application or other project internals are modeled. See `docs/QA_0.1.40.adoc`.
+
+== 0.1.41 native Studio component change
+
+The native Studio container adds `studioPackBrowser` (read-only digest-bound archive catalog and constrained image preview) and `studioPublishTargets` (private configuration of non-secret intended destinations). Neither component authorizes a remote publisher or grants Tavi Assets entitlements. `studioReview` retains original package and canonical validation gates, `studioLayout` displays both; operator approval is a separate external concern. Structurizr CLI parsing was not available in the authoring environment and requires independent verification.
+
+
+== Native Studio 0.1.45 and external shared assets intent
+
+`tools/studio-desktop/src/package-selector.tsx` renders read-only `workspace_snapshot` manifest rows as one game/app per stable ID with per-package versions, not separate installations; `package-catalog.mjs` is pure local presentation logic and creates no network edge or new IPC command. `studioLayout` in `workspace.dsl` reflects this bounded change. The agreed Tavi per-device `.tavia` cache, independent LoopRD entitlements and Tavi Assets canonical verification are documented in `docs/TAVIA_CLIENT_ASSET_DELIVERY_045.adoc` as *external target responsibilities* only: this Studio source does not implement the client host/cache or claim an established deployment. Structurizr CLI parser check pending where unavailable.
+
+== Native Studio 0.1.46 Unicode transport adjustment
+
+The existing Python review CLI to native Rust IPC edge still uses JSON. Encoding at the boundary is now 7-bit escaped JSON so Unicode package metadata is decoded safely by Rust even if the Windows Python process uses ANSI stdout. No new runtime component or external service is added. Canonical Assets remains the only `.tavia` validation authority; safe error codes are allowlisted.
+
+== Studio 0.1.47 blueprint and publishing transport boundaries
+
+`studioBlueprint` now includes a native operator-selected JSON import through `review_import_blueprint` and fixed `review_cli.py`/`studio_blueprint_library.py`; versioned bundled profiles and private immutable local profiles have distinct origins. The private `studioReviewStore` includes these local blueprints; the CLI retains canonical Assets validation independent of the profile match. `studioPublishTargets` has a read-only HTTPS probe using the fixed trusted Python `studio_publisher_probe.py`; only the operator-saved GitHub repository and LoopRD HTTPS hostname are used, without credentials or redirects. Git/LoopRD mutations remain unimplemented in native Studio. Structurizr CLI parser acceptance is unverified in the authoring container.
+
+== Studio 0.1.49 compact desktop workflow
+
+`studioLayout` now provides a compact one-row masthead (section title, expandable notifications and Refresh) and a native-picker-first review import dialog. `studioReview` remains the trusted Rust/Python boundary: it chooses/retains original files and validates the archive before the UI presents optional bundled/operator blueprint selection. The dialog sends only a previously issued SHA and a selected profile ID to existing `review_recheck`; custom/unmapped packs remain local and not store-ready. There is **no** new container, IPC privilege, remote service relationship or authorization edge. Structurizr DSL parser validation remains unverified in this environment. See `docs/QA_0.1.49.adoc`.
+
+=== Studio 0.1.52 source delta (pending Structurizr parser revalidation)
+
+* Studio native host `review.rs` now invokes trusted `review_cli.py` for bounded app-contained `.tavib` discovery and locally selected immutable import. `studio_tavib.py` owns passive nested archive validation and app provenance stored outside the Git checkout.
+* Studio native host `studio_publish.rs` invokes a fixed trusted Python `studio_release_gateway.py` for read-only GitHub releases/catalog lookup and explicit `gh` CLI draft/public release operations. The Tauri webview passes only a stored artifact SHA-256, never paths or tokens; each mutation rechecks local approval and exact source digest.
+* External GitHub releases and LoopRD official asset registry are distinct integration boundaries. The current release cannot publish to LoopRD or grant asset entitlements. Cross-project Tavi Assets `.tavib` schema ownership remains pending.
+* A Structurizr CLI executable was not available to this source producer; parser validation and native Windows acceptance remain pending.
+
+== Studio publisher UI boundary (0.1.53)
+
+Source evidence in `tools/studio-desktop/src/{main,publishing-setup}.tsx`, `studio_diagnostics.py` and `studio_release_gateway.py` confirms that Connections now displays local validators, while Publishing owns saved GitHub destination, optional CLI login and public release reads. GitHub source-gateway presence is not an authorization assertion; LoopRD official publication still has no approved adapter. The C4 process trust boundaries and deployment topology are unchanged.
+
+== Studio 0.1.54 LoopRD DAPI and TAVIB inspection
+
+The existing `nativeStudio` and `studioReview` components now include a trusted Python `studio_looprd_adapter.py` invoked only by native Rust commands. The new **outbound** trust boundary is an operator-saved, exact, HTTPS LoopRD DAPI endpoint with fixed operations and externally issued scoped service credentials; TLS verifies the server and the server independently checks service-principal scopes. Mutating operations require reverified local archive/review digest, a separate native-file-picker receipt, an operator confirmation and server-side state transition. No app renderer credential/data-path access, wallet entitlement, Git source push or deployment login is introduced. TAVIB member inspection stays in the existing local data-only `studio_tavib.py` boundary; bounded WebP/README fields are optional. Exact runtime LoopRD deployment and Structurizr CLI validation are operator pending.
+
+== Studio 0.1.57 proposed catalog metadata
+
+The Publishing catalog table stores only device-local operator drafts keyed by approved review identity or verified blueprint reference. LoopRD server state is read-only and not inferred from intended Gold price/listing/testing. See `docs/QA_0.1.57.adoc`.
+
+== Studio Publishing workspace 0.1.57
+
+The Studio renderer separates the local catalog draft manager, native connection settings, GitHub release actions, and the trusted LoopRD gateway into navigation panels. It retains the same typed native IPC operations and privilege boundaries. Navigating among panels does not change draft persistence, catalog ownership or publication approvals.
+
+== 0.1.58 Blueprint compatibility is separate from commerce
+
+The existing Studio component remains the local authoring/review tool. `.tavib` is a data-only compatibility schema (including application-provided definitions); it does not enter Publishing's merchandise inventory or store-offer/entitlement boundary. `.tavia` asset packs and `.tavix` apps are the only local artifact families exposed for private publication drafting. Existing Rust operator profile values are preserved, while blueprint-origin drafts become read-invisible and non-writable through the Publishing command. No new external system, deployment or transport relationship was introduced, so C4 topology is unchanged. The authoritative marketplace schema requires separate adoption in Tavi Assets/LoopRD.
+
+
+== Studio 0.1.60 GitHub asset source sync boundary
+
+`studioGithubCatalog` reads a pinned `TheBigTreeInc/tavi-assets` editorial/public index pair and validates a locally approved, digest-bound asset before preparing a draft pull request. The external GitHub system is a single opaque C4 boundary: no internal GitHub infrastructure is modeled. A PR draft adds source metadata only, never a public pack artifact, public index generation, Gold offer or entitlement. Native browser login is delegated to GitHub CLI. Structurizr CLI parser validation remains pending unless independently run on a suitable host.

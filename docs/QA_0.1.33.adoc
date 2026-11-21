@@ -1,0 +1,31 @@
+= TaviX 0.1.33 — Windows native Studio test-gate repair
+:toc:
+
+== Operator evidence (0.1.32, 2026-11-15)
+
+ZipRunner 1.2.304.302 ingested 0.1.32 and executed `python -m unittest discover -s tests -v` against the Windows checkout. 171 tests ran with four failures and eight skips. The four failures were:
+
+* `test_klondike_store_publication.test_publisher_permission_and_publication_gates_are_documented` — handoff used equivalent but not the required exact no-publication sentence.
+* `test_post_update_stamp_029.test_repair_does_not_add_publication_authority` — same missing exact sentence.
+* `test_workboard_operator_checks.test_tavix_release_approval_is_still_gated` — same missing exact sentence.
+* `test_studio_review_032.test_native_ipc_no_publisher_or_browser_path` — the test opened `src/main.tsx` with default Windows CP1252 and compared to a Unicode em dash; fix is explicit `encoding='utf-8'`.
+
+The job ended with exit code 1. A message referring to `tavix-studio.exe` in a temporary test path is not proof of a managed launcher/window or accepted Windows build.
+
+== Repair
+
+The exact sentence `No Git push or public release is authorized` is restored. In `test_studio_review_032.py`, native Rust and frontend source reads now specify UTF-8. This is a test-only text-decoding correction; the disabled `Publish to official store — integration pending` button remains unchanged. No remote publisher, key handling, Wallet/LoopRD transaction, package validator, or storefront authorization was modified.
+
+This source overlay carries the prior 0.1.32 application and asset review changes. It increments the ZipRunner project/stamp/Workboard and Studio source version to 0.1.33 and updates their expectations to agree. All immutable `extensions/` release bytes should match the previous candidate.
+
+== Author verification and Windows acceptance
+
+. Run `python -m unittest discover -s tests -p test_windows_qa_repair_033.py -v` in the extracted source.
+. Run `python -m unittest discover -s tests -v` on the actual complete Windows TaviX checkout, then inspect the exact four historical tests and skipped reasons.
+. Confirm ZipRunner's effective build includes `python tools/studio-desktop/build_windows.py` and its separately approved start includes `python tools/studio-desktop/run_windows.py`. A source recipe alone does not update live configuration.
+. Observe that the built Studio opens as a real managed native window and the developer review/feedback workflow works. Record operator acceptance separately.
+. Do not infer publication approval, Git push, asset publication, gold-price changes, or Workboard Done from build success.
+
+== Known limits
+
+Windows-native Tauri build, actual ZIP operator acceptance, and full checkout strict repository integrity are not established by locally reconstructed tests. The `tavi.assets` canonical validator checkout remains an optional external source input for specific cross-project tests.

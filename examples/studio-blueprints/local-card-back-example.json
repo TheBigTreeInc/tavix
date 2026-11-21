@@ -1,0 +1,15 @@
+{
+  "schema": "tavix.studio.asset-blueprint/v1",
+  "id": "local-card-back-example",
+  "version": "1.0.0",
+  "title": "Locally reviewed card back example",
+  "description": "Example only. Edit resource IDs, package type and design checks against the actual producer manifest before using for review.",
+  "applicablePackTypes": ["tarot"],
+  "requiredResources": ["card.back"],
+  "optionalResources": ["card.back.alt"],
+  "designerChecklist": [
+    "Confirm the selected back matches the intended card geometry and readable phone display size.",
+    "Ensure the back cannot reveal a hidden card or reverse orientation unless intentionally designed.",
+    "Verify the resource ID against the actual producer pack and the consuming game's contract."
+  ]
+}

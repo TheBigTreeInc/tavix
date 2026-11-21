@@ -1,0 +1,54 @@
+= TaviX Studio 0.1.28 — PatternFly native desktop foundation
+:toc:
+
+== Decision and desired product
+
+The user requested a PatternFly-management layout, a Rust management service and a standalone application rather than requiring a localhost browser. The selected direction is a **native Tauri 2 application** containing a PatternFly 6/React frontend and an embedded Rust operator boundary. Node/npm/Vite are *development and asset build tools only*. There is no production Node HTTP host, no localhost operator API opened by Studio and no direct privileged browser fetch path.
+
+For now the native shell lives under `tools/studio-desktop/` in TaviX so it shares versioned source and the existing reviewed contract set. It is a separately built executable, not an extension distributed in `tavi.repository.json`; a standalone repository may be split after native acceptance and a clear dependency/release contract. TaviX game/app `.tavix` manifests, Tavi Assets `.tavia` manifests and LoopRD management APIs are unchanged.
+
+== Current implemented scope (first non-privileged slice)
+
+* PatternFly 6 masthead, primary navigation and page layout with Overview, Games & apps, Assets & objects, Storefront, Connections, Operations and Events sections. The latter four are explicit *unimplemented* placeholders, not simulated connected functionality.
+* `workspace_snapshot` Rust command reads a trusted operator-configured local TaviX `project.zr` (via `TAVIX_REPO_ROOT` or a checked source-tree fallback) and bounded local `extensions/*/*/manifest.json` inventory. The Rust side also reads local Git revision and tracked-dirty indicator using only hard-coded read-only Git arguments. No arbitrary shell command, path input, or extension execution is accepted.
+* `recent_events` reads up to the 30 latest event IDs/codes/levels/timestamps from the existing default `~/.tavix-suite/events.jsonl`. It never returns free-text messages or event payloads, and ignores symlink/oversize journals. This first slice does not handle an overridden `--private-root`; the legacy Events view remains authoritative for full sanitized report exports.
+* The normal production Tauri WebView has only the core Tauri capability; no shell, filesystem, HTTP, database, upload or dialog plugins are installed. Native IPC exposes only the two named commands, both read-only and argument-free.
+* Existing Python management console, `.tavix` local preview, Tavi Assets canonical `.tavia` validator, DPAPI key handling, LoopRD receipt-gated staging and publishing and local Gold proposal tools are deliberately unmodified, so current operator workflows and their safety gates remain available during migration.
+
+== Planned trusted adapters (NOT implemented in 0.1.28)
+
+[cols="1,2,2",options="header"]
+|===
+|Area |Native Rust boundary |Existing owner/invariant
+|Package import and preview |Bounded native picker -> preflight -> reviewed package tool; isolated unprivileged preview |TaviX package validator, no .tavix content in privileged Studio WebView
+|Asset draft import |Pinned trust-checked invocation of canonical validator; diagnostic event IDs |Tavi Assets owns .tavia codecs and pack schema; no silent file deletion
+|Git publication |Exact diff/branch/commit staging, separate operator approval and verified Git identity |GitHub + ZipRunner owner confirmation; no unattended push
+|Registry |Scoped read/ingest/publish credentials stored in OS secure store; independent exact-digest receipts |LoopRD server authorization, ecosystemAdmin, audit and immutable versions
+|Gold values |Versioned offer proposals and approved authoritative entitlement APIs |LoopRD/Wallet only, no local price proposal as purchasable ownership
+|===
+
+The future adapter must prove source-level and native parity with current `tools/local_client/*` management code, including CSRF/origin behavior where a local HTTP automation endpoint is still used. Do not call the trusted Python HTTP server in a hidden loopback sidecar by default. If remote/headless service needs later arise, design a separate authenticated management API, not the browser-preview listener.
+
+== Security architecture
+
+There are three explicitly separate realms: trusted Rust operator process, PatternFly Studio UI (can invoke only approved commands) and untrusted extension preview. The third realm is **not embedded at all** in this candidate. In any future preview it MUST use a distinct unprivileged WebView/window/process with no Studio operator IPC/capability access, restricted navigation and a verifiable host boundary. Do not place customer/browser content in the main privileged window.
+
+No GitHub/LoopRD token is sent to React, bundled into the UI, stored in browser localStorage, printed in diagnostics or placed in a `.tavix`/`.tavia` package. Credential setup is not implemented here. When it is, host-owned OS secure storage with access revocation and explicit scope selection is required, with a separate operator confirmation and exact-artifact receipt for every remote mutation.
+
+== Running and acceptance
+
+The source is a Tauri 2 + Vite scaffold requiring Node, Rust, C++ build prerequisites and WebView2 on Windows. See `tools/studio-desktop/README.md`. The model environment had Node but no Cargo, npm packages or Windows host, so **Rust compilation, PatternFly typecheck/render, Windows packaging and native operator acceptance remain unverified**. No signed app is delivered. The current source ZIP only starts a reviewable native migration slice.
+
+Before approving: install pinned frontend dependencies, generate and review a lockfile, build on Windows, verify the exact two read-only IPC commands, correct package inventory and events, no production HTTP listener or privileged package preview, and no regression to the existing local console. Reassess Tauri/PatternFly dependency versions and lifecycle maintenance. Git push, installer release and LoopRD/Wallet actions remain separately operator-gated.
+
+== Rollback
+
+Remove `tools/studio-desktop/` from a reviewed source branch. The existing local browser manager and all source/package/catalog data are unchanged. Existing `~/.tavix-suite/` operator data and secrets remain untouched.
+
+== Follow-up 0.1.30: Windows resource repair and lifecycle
+
+The operator's Windows Cargo build failed because `src-tauri/icons/icon.ico` was absent. The 0.1.30 native Studio source now includes the Windows ICO and PNG icons, a single managed Tauri executable build/start path, and tests guarding the icon and lifecycle contracts. This **does not** imply frontend/Rust compilation or Windows operator acceptance has passed; dependency lock review and actual native build remain open. Existing browser console still owns privileged features not yet ported into Rust and must never run in Studio's operator IPC origin. See `docs/QA_0.1.30.adoc`.
+
+== 0.1.32 follow-up: local review commands
+
+The original 0.1.28 read-only command claims above describe the historical source candidate. In 0.1.32 a new separate `review.rs` module provides explicitly bounded, operator-initiated native file selection, canonical validation, local reviewer decisions and feedback ZIP export. It still provides no package execution, remote publishing, Git or LoopRD write path. See `TAVIX_STUDIO_REVIEW_032.adoc`.

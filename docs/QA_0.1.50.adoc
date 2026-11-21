@@ -1,0 +1,29 @@
+= TaviX Studio 0.1.50 — Windows source-text encoding repair
+:toc:
+
+== Observed exact failure
+
+The 2026-11-17 Windows ZipRunner job for 0.1.49 failed with `UnicodeDecodeError` from `tests/test_native_studio_028.py` in `NativeStudioContract.test_ui_uses_patternfly_and_node_is_build_only`. Python 3.13 `Path.read_text()` selected the operator's Windows `cp1252` code page for `tools/studio-desktop/src/main.tsx`, which is UTF-8 and includes Unicode characters. The full checkout ran 250 Python tests, 8 skipped, one error; multiple native 0.1.49 temporary executable builds succeeded, but the overall job failed and was not accepted.
+
+== Repair and preservation
+
+* Source-reading Python tests now explicitly use `read_text(encoding='utf-8')`. No Unicode characters are removed from Studio and no encoding, locale, system profile or native runtime configuration is changed.
+* `tests/test_studio_utf8_regression_050.py` verifies the actual source reproduces failure with explicit CP1252 and parses under UTF-8; also scans all `tests/test_*.py` ASTs to ensure `Path.read_text` calls declare an encoding.
+* Bump source and native app version to `0.1.50` with `base_version: 0.1.49`. Other 0.1.49 UX changes remain unchanged.
+* Existing TaviX Studio private submissions, blueprint imports, GitHub/LoopRD destination preferences, authorization and no-auto-publish gates are preserved. No cleanup of potentially contaminated operator profile files is performed.
+
+== Commands
+
+* `python -m unittest discover -s tests -p test_studio_utf8_regression_050.py -v`
+* `python -m unittest discover -s tests -p test_native_studio_028.py -v`
+* `python -m unittest discover -s tests -v` (complete Windows checkout required; extracted ZIP is an incremental overlay)
+* `node --test tests/test_studio_import_flow_049.mjs`
+* `python tools/studio-desktop/build_windows.py` on Windows after a passing full suite
+
+== Operator acceptance (pending)
+
+. Install exact 0.1.50 via ZipRunner; verify full Python suite no longer fails with CP1252 UnicodeDecodeError and the new regression passes.
+. Launch 0.1.50 native Studio; verify compact toolbar, notifications/refresh, native import picker, custom/blueprint setup and existing submissions are intact.
+. Confirm no Git push, LoopRD publication, new entitlements, runtime deletion or Workboard Done was performed.
+
+No `Structurizr` model relationship changed; CLI DSL validation is not claimed. Windows verification and operator acceptance remain pending.

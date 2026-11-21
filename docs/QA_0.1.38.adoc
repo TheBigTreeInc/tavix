@@ -1,0 +1,31 @@
+= TaviX Studio 0.1.38 — stale executable and validator isolation
+:toc:
+
+== Operator evidence
+
+The screenshots show the v0.1.36 Connections placeholder ("Trusted operator boundary") rather than v0.1.37 native "Connect Tavi Assets folder". The error "Validator did not return structured data" also appears as a global banner in unrelated screens. This supports a stale compiled executable and an unavailable/unstructured Python subprocess response; it does NOT prove whether the source overlay itself was rejected. The concrete Python failure remains unverified without the actual Windows stdout and event report.
+
+== Changes
+
+* The native masthead displays the actual bundled frontend version. When the source `project.zr` version differs, a warning distinguishes source from the currently running executable.
+* The managed Windows launcher checks frontend/Rust source freshness against its executable timestamp. It refuses to launch an older binary after a source update; no process termination or rewrite is attempted.
+* Four versioned designer blueprint JSON resources are compiled into the Rust app and no longer rely on launching Python merely to list them. Canonical package inspection is unchanged and still fail-closed with the canonical validator.
+* Rust isolates missing Python, empty CLI stdout and invalid JSON into separate safe codes. It never leaks Python stderr, full paths, package contents or credentials.
+* The React frontend scopes read-only service failures to the relevant section, retains independent data from successful calls, and includes service codes/version details in the local-only copyable report. Native GitHub and LoopRD remain unimplemented and official publishing disabled.
+
+== Operator verification
+
+. Close any old TaviX Studio window. In the source checkout, confirm `tools/studio-desktop/package.json` reports `0.1.38` and `src/main.tsx` has `STUDIO_UI_VERSION = '0.1.38'`.
+. From `C:\Users\dorbi\source\tavix`, run `python tools/studio-desktop/build_windows.py`. A source overlay by itself cannot update already-compiled Rust or Vite bundles.
+. Run `python tools/studio-desktop/run_windows.py`. Confirm the masthead displays `TaviX Studio · v0.1.38`. If it says an older version, capture that process's EXE path rather than marking the latest update accepted.
+. Open Asset blueprints; all four bundled profile cards should show even if the canonical Tavi Assets source is not connected.
+. Open Connections: verify the Assets picker and independent readiness statuses. In the absence of Python, it should show a safe code instead of blanking every page.
+. Open Events, select Copy diagnostic report, and inspect for secrets/paths before sharing. Test actual .tavia against the correct blueprint and review the recorded failure codes. No remote publish, Git write or LoopRD mutation is authorized.
+
+== Automated source tests
+
+`python -m unittest discover -s tests -p test_studio_boot_diagnostics_038.py -v`
+`python -m unittest discover -s tests -p test_studio_diagnostics_037.py -v`
+`python -m unittest discover -s tests -p test_studio_review_032.py -v`
+
+Native Rust/TypeScript build on Windows remains a separate operator acceptance gate. No source-only test proves it.

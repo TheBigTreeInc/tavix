@@ -1,0 +1,17 @@
+= TaviX 0.1.41 — Windows pack browser and publishing setup QA
+:toc:
+
+== Source validation
+
+* New `test_studio_pack_browser_041.py` covers TAVIA/TAVIX manifests, resources/objects/collections/files/dependencies, digest-bound SVG preview, malicious active SVG rejection, exact stored digest and native input boundary, Windows hidden subprocess launch and local-only publishing destinations.
+* Existing Studio/publisher/security/ZipRunner test suites must remain passing. Use the actual complete Windows checkout for authoritative full-suite result. Keep post-update stamp entries <= 20.
+* This is a source candidate; Rust/Tauri compilation and UI click behavior need independent Windows execution.
+
+== Operator verification
+
+. Install the exact `tavix-0.1.41-ziprunner.zip`. Confirm active native build/start configuration is still approved and the window header says v0.1.41.
+. Import `nr-go-up-tarot-0.1.3.tavia` without a blueprint. In Submission review or Assets & objects, open the new package browser: expect 79 resources, 79 typed objects, 8 collections and 80 ZIP members; preview The Fool SVG. Existing invalid metadata must continue to block approval.
+. Import `nr-go-up-0.1.8.tavix` and `redlink-0.1.26.tavix`; browse manifest/file resources and their optional Tavi Assets declarations; never execute the games in the operator WebView.
+. Confirm importing/rechecking no longer opens separate Python console windows. Verify failed imports generate code-only Events rather than a trace or credential leak.
+. In Connections (or Storefront), save an intended GitHub `owner/repo` and LoopRD HTTPS host, restart and confirm local values persist. Do NOT supply a token, password or private host URL with embedded credentials. Confirm the UI still identifies both native publishing connectors and private developer-preview distribution as not connected and official publishing disabled.
+. Export a feedback ZIP, verify original package SHA-256 and the `.adoc` review report. Review Workboard/operator acceptance and Git/release approval separately.

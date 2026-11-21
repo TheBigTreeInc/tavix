@@ -1,0 +1,29 @@
+= TaviX 0.1.32 — Studio reviewer/developer feedback candidate QA
+:toc:
+
+== Scope
+
+Native PatternFly Studio now reviews `.tavix` applications/games and `.tavia` asset packs, with canonical offline validator checks, designer blueprint completeness, persistent local reviewer decisions, and feedback/preview/approval ZIP handoffs preserving original package SHA-256. Actual GitHub/LoopRD/public-store publication is NOT enabled. No Tavi, LoopRD, Wallet, or existing published release behavior is changed.
+
+== Source checks (authoring environment)
+
+* `python -m unittest discover -s tests -p test_studio_review_032.py -v`: 7/7 passed, including invalid archive paths, missing deck resources, exact original bytes in the feedback ZIP, non-public preview/approval segregation and rejected `.adoc` TAVIA member detail. Canonical Tavi Assets available in the authoring reference checkout for the `.adoc` test.
+* Existing native Studio source 5/5, Windows bootstrap source 7/7, portable recipe 4/4, stamp 3/3 and Workboard 2/2 checks passed against overlay-derived source.
+* The 0.1.32 frontend TypeScript/JSX transpile completed with zero syntax diagnostics using the installed TypeScript compiler. This is NOT a dependency-resolved TypeScript typecheck or PatternFly/Tauri build.
+* `python -m unittest discover -s tests -v` executed on a synthetic full checkout (0.1.19 full source plus later partial overlay): 167 tests, 1 failure and 4 errors. Those results depend on old immutable Klondike releases/catalog and absent historical documents in that synthetic checkout. Do not infer acceptance or rejection of the current complete Windows checkout from these baseline-only results.
+* Native Rust build, Tauri dependency resolution, operator UX and exact Windows archive installation were NOT run in this environment.
+
+== Operator checks
+
+. Import a `.tavia` pack with only card-back resources using `cards-back-only`. Confirm validated and complete; switch to `cards-standard-54` and recheck, and confirm approval is prevented until missing suits/ranks/joker are supplied. Recheck must reset earlier approvals.
+. Import a valid `.tavix` app (e.g. the previously validated Klondike 0.1.2 package). Confirm canonical status and external `assetDependencies` notice; no package content executes.
+. Import malformed `.tavia` including `docs/README.adoc`. Verify relative member name and need to keep documentation in OUTER feedback ZIP. Native Studio never silently strips unsupported archive members.
+. Request changes with reviewer notes, export feedback ZIP, verify nested original `.tavia`/`.tavix` SHA, `feedback/REVIEW.adoc`, `feedback/review.json`, and selected blueprint JSON/AsciiDoc. Check notes contain no copied secrets.
+. Export a developer-preview ZIP for a canonically valid application; verify preview is clearly non-public and unlisted in official catalog. Invalid package preview must be denied.
+. Approve a complete pack after explicit operator gesture, export local-approval handoff, then confirm official publication is disabled and LoopRD, Git, Wallet, entitlements, and store catalog remain unchanged.
+. Restart Studio and verify locally persisted review and notes, native picker, event metadata, and no localhost Python HTTP server. Review security of OS user directory, no symlink traversal and no untrusted package WebView receiving privileged Tauri IPC.
+. Run on Windows against the full source checkout with approved build/start recipe and reviewed frontend dependency lockfile; record binary build, live launch and operator acceptance evidence separately.
+
+== Remaining
+
+Official publisher identity, server-side authorization, exact revision/catalog signing, preview-only distribution service, backend LoopRD approval/entitlement integration and robust native Windows secure credential handling remain independent high-priority tasks. A reviewer decision is not the official store's authoritative publish action.

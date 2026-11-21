@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tavix:studio:asset-blueprint:v1",
+  "title": "TaviX Studio local designer blueprint (proposal, not TAVIA pack manifest)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "version", "title", "description", "applicablePackTypes", "requiredResources", "optionalResources", "designerChecklist"],
+  "properties": {
+    "schema": {"const": "tavix.studio.asset-blueprint/v1"},
+    "id": {"type":"string", "pattern":"^[a-z0-9][a-z0-9-]{0,70}$"},
+    "version": {"type":"string", "pattern":"^\\d+\\.\\d+\\.\\d+$"},
+    "title": {"type":"string", "minLength":1, "maxLength":160},
+    "description": {"type":"string", "maxLength":1200},
+    "applicablePackTypes": {"type":"array", "minItems":1, "uniqueItems":true,"items":{"type":"string","maxLength":128}},
+    "requiredResources": {"type":"array", "maxItems":256,"uniqueItems":true,"items":{"type":"string","pattern":"^[a-z][a-z0-9._-]{0,126}$"}},
+    "requiredPrefixes": {"type":"object", "maxProperties":16, "propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9._-]{0,126}$"},"additionalProperties":{"type":"integer","minimum":1,"maximum":64}},
+    "optionalResources": {"type":"array", "maxItems":256, "uniqueItems":true,"items":{"type":"string","maxLength":128}},
+    "designerChecklist": {"type":"array","minItems":1,"maxItems":64,"items":{"type":"string","minLength":1,"maxLength":1000}}
+  },
+  "$comment": "This local review blueprint is not a publisher credential, a mandatory TAVIA contract, or a server entitlement. The canonical package validator runs independently."
+}

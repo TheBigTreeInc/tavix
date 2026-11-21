@@ -1,0 +1,11 @@
+= TaviX 0.1.26 — source-level verification (operator acceptance pending)
+
+* Canonical Tavi Assets 0.1.16 valid sample `examples/cards-v1` built and validated by its own tool.
+* New HTTP regression covers invalid ZIP -> TAVIA_ARCHIVE_INVALID, invalid canonical manifest -> TAVIA_VALIDATION_REJECTED with `unsupported manifest schema`, and successful draft import.
+* Private event journal caps retention at 400 / 512 KiB and retains event IDs across restart; redaction, cross-origin CSRF denial, browser diagnostic allowlist and no app/Wallet privileges exercised.
+* Previous `.tavix` installer and host grants are preserved by unchanged source files; real Windows operator acceptance is pending.
+* Test outcomes must be collected from the exact final ZIP after packaging; previous successful runs are intermediate evidence only.
+
+== Reconstructed-tree limitation
+
+The inspected 0.1.25 overlay and historical 0.1.16 full archive do not contain the immutable TheBigTreeInc Klondike 0.1.1 bundle, complete Store discovery handoff, or Companion 0.6.40 assets expected by the current catalog. The reconstructed-tree full suite therefore cannot establish strict current-release acceptance. Run on actual Git checkout without fabricating those files.

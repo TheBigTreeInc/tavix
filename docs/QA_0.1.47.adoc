@@ -1,0 +1,33 @@
+= TaviX Studio 0.1.47 — blueprint provenance and publishing reachability
+:toc:
+
+== Operator problem
+
+The built-in asset blueprint screen was an unsearchable set of cards with no provenance or local import path. Publisher destinations were saved but the native Studio could not establish whether either HTTPS endpoint responded. A saved destination could look like a connected publisher even though no authenticated adapter existed.
+
+== Changes
+
+* `Asset blueprints` now offers search, bundled/local filtering, explicit origin and version, exact required resource IDs/prefixes and designer checklists in a responsive master/detail list.
+* `Import blueprint JSON` is a trusted native OS picker; the fixed Python CLI validates `tavix.studio.asset-blueprint/v1` and atomically stores a unique, immutable `local-*` ID under the private Studio operator profile `blueprints/`. Bounded 32 KiB files, exact schema keys, ID/semantic resource validation, count and checklist validation, symlink rejection and duplicate protection apply. The renderer never passes a filesystem path. Source checkout blueprints remain embedded and unchanged.
+* Native review CLI resolves built-in and operator-local blueprints, and includes the exact JSON and static explanatory AsciiDoc in developer review exports. Import does not constitute canonical validation, store readiness, or publication authorization; actual `.tavia` packages still undergo canonical Tavi Assets validation and separate operator review.
+* `Connections` offers explicit read-only HTTPS probes for the saved GitHub repository API and LoopRD host (the native shell passes only saved, validated destination identities to the fixed Python CLI). No user credentials, redirect following, payload upload, secret disclosure, Git commit, LoopRD write, or background probing. HTTP responding, inaccessible, redirected and auth-required results have distinct safe codes. No publisher authentication or release authority is implied.
+
+== Native operator acceptance
+
+. In 0.1.47 `Asset blueprints`, search by tarot and filter to bundled. Check that the four shipped profiles show `Bundled with Studio`, ID and version; open exact required resource IDs.
+. Import `examples/studio-blueprints/local-card-back-example.json` through the native picker. It must show `Imported locally`. Restart Studio and confirm the entry persists. Reimport must fail with duplicate ID and retain the original. Reject an unknown schema or oversized file. No remote activity should occur.
+. Select the example in the library and inspect a matching `.tavia` submission, recheck explicitly and verify that canonical errors still block approval. Export feedback and inspect JSON/AsciiDoc provenance. Do not equate a matching blueprint to designer quality or publisher authorization.
+. Open `Connections`, save the actual operator-approved GitHub owner/repo and HTTPS LoopRD hostname (no tokens). Click `Check HTTPS reachability`. Verify a reachable GitHub may show `HTTPS_RESPONSE_RECEIVED` and that access denied or unreachable hosts receive safe codes; editing a destination must invalidate the prior probe result. Neither result should enable `Publish`.
+. Confirm no automatic Git push, remote LoopRD publish, price entitlement or Gold mutation; verify the legacy credentialed management path remains a separate operator-controlled adapter.
+. Run ZipRunner's complete Windows Python/Node/full native Cargo build, new Studio startup and QA; source checks are developer evidence, not operator acceptance. Exact Git/source checkout is required; incremental overlay misses historical modules.
+
+== Limitations and next priority
+
+* This is a blueprint *import* path, not an authoritative online blueprint registry or arbitrary remote download facility. Imported local blueprint IDs cannot be overwritten; author a new ID for a revised template.
+* HTTPS probes are transport-only. GitHub private repositories may return 404 and a LoopRD host may return authentication-required even when deployed. These are not login sessions.
+* Authenticating publisher identity, scoped credential storage, GitHub commits, LoopRD registry publication, exact receipt review and server authorization remain separate high-priority tasks; existing local management tools may still be used under their own approvals.
+* Windows Rust/Cargo/PatternFly native compilation and operator acceptance are not established by extracted ZIP source tests.
+
+== Additional integrity gate
+
+Operator-imported profiles are digest-bound to their submission review. If an operator or other local process edits the imported JSON after review, Studio's CLI refuses the old review ZIP handoff before creating an output file. The operator must run Recheck against the modified local blueprint, which resets previous local approval. Tests cover exact digest binding, unchanged export and refusal after modification.

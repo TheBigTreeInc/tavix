@@ -1,0 +1,30 @@
+= TaviX 0.1.42 — native managed-build path isolation repair
+:toc:
+
+== Windows ZipRunner evidence from 0.1.41
+
+ZipRunner 1.2.304.307 applied the 0.1.41 source overlay but its full Python run failed: `Ran 219 tests`, `FAILED (failures=1, skipped=8)`. The failed test was `test_builder_never_terminates_processes_and_does_not_rewrite_old_binary`: a simulated successful subprocess returned build status 0 instead of expected status 1. The cached module-level `BIN` pointed to the original Studio checkout even when the fixture changed `STUDIO`. An old Cargo output could be mistaken for the current one. The actual native build had not yet run because ZipRunner stopped on that test.
+
+== 0.1.42 repair
+
+`tools/studio-desktop/build_windows.py` now computes `build_binary` from active `STUDIO` within `build_native()` and uses the same path for sharing preflight, executable presence/PE header check, immutable `stage_build`, and diagnostics. Keeps the existing dedicated Cargo target directory, immutable launch-copy integrity checks, and no-kill policy.
+
+== Source checks
+
+Run `python -m unittest discover -s tests -v` and `python -m unittest discover -s tests -p test_studio_build_path_042.py -v`, plus the repository preflight/strict checks on the complete operator checkout. These tests use mocked commands; they do not compile the Windows executable. Review the extracted-source run recorded with the handoff.
+
+== Extracted overlay results (Linux, source-only)
+
+* `python -m unittest discover -s tests -v`: 92 discovered, 7 import errors from base-checkout modules absent from the supplied incremental ZIP, 5 skips and no test assertion failures. This is NOT a full Windows checkout result.
+* All 17 self-contained overlay modules: 85 tests, 0 failures, 0 errors, 5 skips.
+* Focused Studio suite (`test_studio_*.py`): 51 tests, 0 failures, 0 errors, 2 skips.
+* Node Klondike asset consumer tests: 4 passed.
+* Source `compileall` succeeded. No actual Windows Cargo/GUI build was run in Linux.
+
+== Windows operator acceptance
+
+. Apply the exact `tavix-0.1.42-ziprunner.zip` using existing ZipRunner configuration; do not change active project configuration implicitly.
+. Confirm all Python tests pass and the actual Windows build produces the executable under `src-tauri/target/studio-managed-build/release` and a SHA-bound launch under `src-tauri/target/studio-launch/0.1.42`.
+. Start the new Studio and verify v0.1.42, while an older Studio may remain open. Confirm no previous process was killed and no previous binary was rewritten.
+. Retest the 0.1.41 package browser with a real `.tavia` and `.tavix`, validation errors, image preview and hidden Python subprocesses. Do not approve invalid packs.
+. Inspect Git diff before any publication. GitHub/LoopRD/Wallet writes, official publication, and remote preview distribution remain disabled and subject to separate operator approval.

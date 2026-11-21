@@ -1,0 +1,20 @@
+= ZipRunner status application candidate (0.1.24)
+
+== Status
+
+This is a **TaviX extension candidate**, not a published or host-approved integration. The bundled application is a read-only All Projects viewer with a PatternFly-informed layout, not a claim that the Tavi host already implements this feature. Published TaviX catalog and previously staged apps remain unchanged.
+
+== Server contract
+
+Read-only `ziprunner.cockpit-projects.v1` maps to private `GET /api/cockpit/v1/projects` on a ZipRunner v1.2.304.282 server. ZipRunner's existing authorization rules remain active: private loopback or configured remote read access and scope controls. No public cross-origin access or credentials embedded in .tavix.
+
+== Host authorization still required
+
+Tavi host must explicitly advertise `ziprunner.status.read/v1` in `host.info().features`, grant `ziprunner.status.read` in `host.capabilities()`, and handle SDK method `ziprunner.status.read`, returning only the verified sanitized response. Permission management, secure HTTPS upstream credentials, binding to the correct ZipRunner identity and operator approval are **out of scope and pending**. The app displays Connection required until a trusted host implements this. It cannot access a PC's local loopback API from an Android phone.
+
+== Acceptance
+
+* Validate the candidate `.tavix` archive with TaviX package validator; no static catalog staging or Git publication.
+* Preview in local TaviX client; absence of host bridge must show a clear Connection required state.
+* Validate hostile data handling and no sensitive tokens in app package.
+* After a separately reviewed host relay exists, test Windows and Android read-only access, authorization, revocation and offline behavior.

@@ -1,0 +1,31 @@
+= TaviX Studio 0.1.48 — Windows blueprint test profile isolation
+:toc:
+
+== Reported failure
+
+Operator ran `tavix-0.1.47-blueprint-library-publisher-readiness-ziprunner.zip` on Windows 2026-11-17. Full source tests: 243 executed, 8 skipped and 2 `BLUEPRINT_ALREADY_IMPORTED` errors in `test_studio_blueprint_connections_047` (`test_local_profile_import_is_immutable_and_exportable` and `test_export_cannot_use_changed_local_blueprint`). Native Studio executable builds also appeared in the log but do not constitute whole-job success or operator acceptance.
+
+== Root cause
+
+The test fixture redirected only `HOME` to a temporary directory. Production `tools/studio-desktop/studio_blueprint_library.py::local_directory()` correctly uses `LOCALAPPDATA` when `os.name == 'nt'`; on the operator's Windows host it therefore reached the persistent `TaviXStudio/blueprints` profile and reused test ID `local-tarot-test`. This is an environment-isolation defect in the test, not a request to erase user files or weaken duplicate-ID security.
+
+== Bounded repair
+
+* Introduce `isolated_studio_profile()` to patch `HOME` and `LOCALAPPDATA` together for each test scope; compute expected storage path for Windows or POSIX.
+* Scope the subprocess import test's environment to both variables too (`python -I ... blueprint_import`).
+* Regression: two separate temp profiles import the same ID independently; second import in the same profile fails.
+* Keep production immutable import (`open('xb')` and `BLUEPRINT_ALREADY_IMPORTED`) unchanged. All user profiles and installed blueprints remain intact; no cleanup action on the real profile is allowed.
+* Preserve review-source digests, canonical validator, read-only GitHub/LoopRD reachability and explicit operator authorization for publication.
+
+== Developer QA
+
+Run `python -m unittest discover -s tests -p test_studio_blueprint_connections_047.py -v` in source overlay and against the fully updated Windows checkout. Also run `python -m unittest discover -s tests -v` on Windows; source ZIPs are incremental and may not include historical modules.
+
+== Operator QA
+
+. Run exact 0.1.48 ZipRunner candidate with a **higher** version than failed 0.1.47; confirm full source suite no longer raises blueprint duplicate errors.
+. Inspect `%LOCALAPPDATA%\TaviXStudio\blueprints` before and after testing: existing blueprints remain unchanged; automated tests create no `local-tarot-test.json` there.
+. Open Studio and verify a genuine operator-imported blueprint remains available, duplicate imports still fail, and changing a blueprint still invalidates a prior review export.
+. Verify publishing remains disabled, HTTPS probes are read-only, and the exact Windows build and operator acceptance gates remain separate.
+
+No Git push, LoopRD publication, approval, Gold/Wallet grant, deletion or release is performed by this repair.

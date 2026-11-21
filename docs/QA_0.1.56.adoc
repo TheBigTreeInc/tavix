@@ -1,0 +1,16 @@
+= TaviX Studio 0.1.56 — Native catalog Rust ownership repair
+:doctype: article
+
+== Cause and provenance
+Windows ZipRunner 0.1.55 reported Python suite `Ran 279 tests / OK (skipped=8)`, passed repository preflight, then failed in `python tools/studio-desktop/build_windows.py` after tsc/Vite succeeded.
+Rust E0382 at `tools/studio-desktop/src-tauri/src/studio_catalog.rs:107` resulted from moving `row_key` to `entries.insert(row_key,row.clone())` at line 86 before passing it to `json!({"rowKey":row_key})`.
+
+== Change
+Clone the bounded `row_key` on insertion, preserving the original for the reply. No change to row identity validation, storage path, published catalog, HTML/TypeScript UX, prices, entitlements, or operator approvals. Add `test_studio_catalog_rust_ownership_056.py`.
+
+== Test/acceptance plan
+* Focused Python source-contract tests and existing Studio tests against a simulated merged 0.1.55 checkout.
+* Node UI/source tests against the merged checkout.
+* Run complete Python suite and Windows native Rust build on operator's full checkout. Build is NOT proven on Linux if Rust/Cargo toolchain is unavailable.
+* Open TaviX Studio and confirm version 0.1.56. In Publishing, save a local catalog draft and restart, confirming persistence and no unexpected remote mutation.
+* All Git pushes, remote releases, staging, publication, and operator acceptance remain separate explicit gates.

@@ -1,0 +1,22 @@
+{
+  "schema": "tavix.proposed-host-connector/v1",
+  "feature": "ziprunner.status.read/v1",
+  "status": "host_pending_not_granted",
+  "method": "ziprunner.status.read",
+  "requiredCapability": "ziprunner.status.read",
+  "request": {
+    "schema": "ziprunner.cockpit-projects.v1"
+  },
+  "responseSchema": "ziprunner.cockpit-projects.v1",
+  "ownership": {
+    "taviHost": "authenticates, authorizes and securely proxies read-only data",
+    "ziprunner": "authoritative private read API; no public CORS",
+    "tavixApp": "displays sanitized status; stores no credentials"
+  },
+  "security": {
+    "noBearerTokenInPackage": true,
+    "noDirectCrossOriginHttp": true,
+    "noMutationOrGitOrRelease": true,
+    "hostPermissionMandatory": true
+  }
+}

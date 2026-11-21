@@ -46,3 +46,46 @@ Record material decisions with context, alternatives, consequences, migration, a
 
 == API documentation
 If the project exposes an API, maintain `openapi.yaml` or `openapi.yml`. Agents should inspect OpenAPI before changing endpoints, clients, or generated API types.
+
+== Local Management Suite — architecture decision (0.1.25)
+
+* Problem: The existing loopback TaviX preview was useful for launching `.tavix` but could not inspect `.tavia`, proposed Gold values or operator Git/LoopRD status.
+* Decision: Extend that same local HTTP server and browser UI; keep extension preview untrusted and operator APIs separate. Use the canonical external Tavi Assets checkout for archive validation, then existing receipt-gated Assets operator CLI for optional DAPI mutations. No reimplementation of LoopRD authorization or Tavi package grants.
+* Secrets: GitHub and LoopRD service tokens persist outside source with OS-user DPAPI/keyring when available; otherwise memory-only. Local mutation CSRF and Origin checks mitigate cross-site browser requests.
+* Storage: `~/.tavix-suite/` contains local candidates, nonsecret endpoint settings, proposals and optionally DPAPI-encrypted credentials. It is not inside ZipRunner overlays or a published release. `.tavix-local/` still holds local-only app versions.
+* Critical boundary: GitHub source push, public catalog promotion, authoritative Gold pricing/entitlement, production Tavi admin host broker and automatic asset purchasing remain unimplemented. LoopRD stage or publish can run only from explicit local operator controls with external receipt, correct service scope and server approval.
+* Rollback: stop the loopback server; original CLI and source packaging still work. Restore previous `tools/local-client/index.html` and server from Git without touching local draft or private credential storage.
+* Open decisions: GitHub exact-diff commit/PR/push review format, canonical per-object paid offer/versioning, Social `ecosystemAdmin` broker, approval receipt signature/expiry are independently gated.
+
+
+== Native TaviX Studio migration decision (0.1.28)
+
+* Decision: adopt a separately launched Tauri 2 desktop shell with a PatternFly 6 React UI. Rust owns the trusted operator commands, while Node/Vite only builds frontend assets; no Node production HTTP service. Keep the existing Python local-client operator UI as the fully functional, acceptance-tested compatibility path until all native operations pass parity tests.
+* 0.1.28 implementable boundary: read-only checkout inventory, Git status and sanitized event IDs, no credentials, imports, extension execution or remote writes. Source: `tools/studio-desktop/` and `docs/TAVIX_STUDIO_DESKTOP_028.adoc`.
+* Threat boundary: untrusted .tavix previews must never run in the native privileged Studio WebView. Future isolated preview and separately approved asset/Git/LoopRD adapters each require explicit native security and operator testing before enabling.
+* Runtime data, credential approval gates, source release catalog and existing local-client API are unchanged. Native Rust build, dependency lockfile and Windows acceptance remain pending.
+* Rollback: leave existing console in place and remove native studio source; no data migration was performed.
+
+== Canonical operator application and Windows build (0.1.30)
+
+* TaviX Studio (`tools/studio-desktop`) is the **one** canonical desktop operator UI. Rust/Tauri owns the local trusted process and PatternFly displays its management views. Tavi remains a user-facing client and cannot inherit admin credentials or publication authority.
+* Windows build now requires versioned ICO source and invokes the native Tauri release executable build during source-controlled ZipRunner build. Start invokes only that binary; no Node/HTTP runtime and no Python server fallback is started by the native app.
+* The older Python browser management console remains a manual compatibility tool while privileged native `.tavia` import, Git/LoopRD approvals and marketplace operations are unimplemented. Only remove it after explicit native parity QA; published extensions and private local config remain untouched.
+* Native build prerequisites, lockfile review and operator acceptance remain separate from Python source tests. Existing Git push, LoopRD publication, Gold/Wallet and release approvals remain unchanged.
+
+== Studio submission review and designer blueprints (0.1.32)
+
+* Native Studio is the single operator review application for `.tavix` games/apps and `.tavia` data-only packages. User-approved native package picker, SHA-bound private source retention and reviewer decisions are implemented in Rust with a trusted fixed Python CLI adapter to canonical validators. Node remains a build dependency only.
+* Designer blueprints are a Studio-local versioned JSON/AsciiDoc proposal; runtime `.tavia` manifest structure and ownership are not changed. Structural validation, blueprint resource completeness and human visual/design approval are separate evidence.
+* Original submitted package remains byte-identical inside the outer feedback/developer-preview/review-approval ZIP; `REVIEW.adoc` and `review.json` are external to its `.tavia`/`.tavix` bytes.
+* Approval decisions stored locally are not publisher authority. Remote public release and entitlement issuance remain blocked pending exact-artifact GitHub/LoopRD authorization and independent receipts. Developer preview is non-public and never listed in the official store automatically.
+* Rollback: preserve per-user review records and remove this Studio candidate; prior Python manager remains available; published packages, catalog, Wallet and LoopRD state unchanged.
+
+== 0.1.58 Non-saleable blueprint boundary
+
+Studio uses `.tavib` only to model resource compatibility and validation of `.tavia` and `.tavix` consumers. `.tavib` does not represent a storefront product, priced pack or entitlement. Publishing's local catalog inventory contains only application and asset-pack submissions plus authoritative remote packs. Native draft storage rejects blueprint writes and filters existing legacy blueprint draft values from Publishing reads without deleting protected profile state. The Asset blueprints library, imports and review matcher continue to use the complete blueprint catalog. Store-side rejection belongs to the Tavi Assets/LoopRD owner as a separately reviewed contract change.
+
+
+== 0.1.60 GitHub source catalog sync boundary
+
+The existing Studio native gateway adds an explicit read-only source-catalog client for `TheBigTreeInc/tavi-assets`, separate from `TheBigTreeInc/tavix` application releases and LoopRD official asset records. GitHub revision pins and a source/index consistency check precede any review. The GitHub CLI keeps account credentials outside Studio's untrusted WebView. A locally approved, hash-verified `.tavia` can be proposed as an unlisted `draft` metadata entry in `catalog.source.json` using an explicit, double-confirmed GitHub draft PR. No archive bytes enter a public Git tree in this first pass. No change to `catalog.json`, official offers or device entitlement follows until independently authorized pack deployment. `.tavib` remains non-saleable schema/compatibility content. This is a candidate implementation; native Windows and live operator QA remain separate.

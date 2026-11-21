@@ -1,0 +1,23 @@
+= TaviX 0.1.40 — Windows running-executable build isolation
+:toc:
+
+== Operator evidence
+
+On ZipRunner 1.2.304.305, 0.1.39 completed 204 Python tests (8 skipped), node tests and PatternFly TypeScript/Vite compilation. The native Cargo release build failed while removing `tools/studio-desktop/src-tauri/target/release/tavix-studio.exe`: `Access is denied (os error 5)`. Older Studio was running from Cargo's mutable output path. Source compile was otherwise clean apart from a harmless unused-root warning.
+
+== Source boundary
+
+`build_windows.py` uses one dedicated incremental `CARGO_TARGET_DIR=src-tauri/target/studio-managed-build`, distinct from the legacy locked executable path. The first build reuses source but recompiles Rust dependencies under a new target (additional disk and time). On success a new `studio_binary.py` stores a content-hashed immutable executable copy under `target/studio-launch/<version>/<digest-prefix>/` and atomically updates private `current.json`. `run_windows.py` validates version, manifest integrity, SHA-256 and source freshness, and launches only the immutable copy. This does not kill or close prior processes, delete generated builds or adjust ZipRunner's active config; stop remains [] until separate approval.
+
+== Windows acceptance
+
+. Keep the old Studio open as a test, install `tavix-0.1.40-ziprunner.zip` through ZipRunner and check that Cargo uses a separate `studio-managed-build` target. If resource usage is a concern, close the old Studio voluntarily before applying; it is no longer necessary for the new isolated build path.
+. Confirm ZipRunner's exact-candidate tests and native build succeed and the managed launcher prints `Verified managed launch copy:` with a path inside `target/studio-launch/0.1.40/`.
+. Confirm the Studio header says `v0.1.40`, import/feedback/Connections remain functional and running old Studio was not touched.
+. With Studio 0.1.40 open, run `python tools/studio-desktop/build_windows.py` again: Cargo should rebuild `studio-managed-build/release` without `Access is denied`.
+. Check the `current.json` version/digest and associated executable SHA-256, using read-only tooling. The launcher must refuse tampered or source-stale staged copies.
+. Do not mark operator acceptance, Workboard Done or official-store publication on source tests alone. Record exact Windows log and manual observations.
+
+== Unchanged boundaries
+
+No Git push, public release, LoopRD/Wallet write, credential change, native `.tavix`/`.tavia` validation bypass or arbitrary process termination is authorized. No config/state directories are shipped in the source overlay. The previous locked executable is retained until separately reviewed cleanup.

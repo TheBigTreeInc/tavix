@@ -1,0 +1,33 @@
+= TaviX Studio 0.1.37 — Native source connectivity and safe diagnostics
+:toc:
+
+== Operator evidence and problem
+
+0.1.36 is the first native Studio that the operator confirmed built and opened on Windows. The operator reports failures opening `.tavia` packs and connecting integrations, with insufficient information to share back. The actual failing `.tavia` bytes have not been provided; this pass improves diagnosis without asserting what caused those particular failures.
+
+== New native workflow
+
+. Open *Connections*. The Tavi Assets row reports canonical validator readiness, with a precise safe code and next step. *Connect Tavi Assets folder* opens an OS folder picker; select the `tavi-assets` project root containing `project.zr` and `src/tavi_assets/tavia.py`. Studio verifies the project key `tavi-assets` and validator source. The private preference is saved to `%LOCALAPPDATA%/TaviXStudio/assets-source.json` on Windows; the chosen path is never returned to the renderer or reported in diagnostics.
+. *Use automatic source detection* clears the operator override and tries `TAVI_ASSETS_ROOT`, then the sibling checkout. An invalid explicit source fails closed rather than silently choosing another source.
+. Import `.tavia` or `.tavix` from *Submission review*. The canonical validators remain authoritative; designer blueprints are additional completeness checks. Canonical Tavi Assets `AssetError` explanations are shown only if the whole reason exactly matches the bounded allowlist already reviewed in `tools/local_client/manager_assets.py`. Unsupported resource hints name only safe ZIP-relative members. Unknown errors are generic and fail closed.
+. Open *Events* and select *Copy diagnostic report*. The report includes readiness codes, the latest bounded local review outcomes and session failure codes, and a selected-package digest prefix and deduplicated issue codes. A read-only text area supports Ctrl+C if WebView clipboard permission is unavailable. No raw exception text, absolute path, secret, manifest contents, reviewer note or upload occurs.
+. Local diagnostics are stored in a bounded 48-entry JSON journal separate from the existing loopback server journal. The diagnostics are for troubleshooting, NOT evidence of publisher identity, operator acceptance, LoopRD registry authorization or official release.
+
+== Known external boundaries
+
+Native GitHub and LoopRD connection/publishing adapters remain **pending**. The Connections UI accurately reports this and does not attempt unapproved remote tests. A canonical Assets source connection grants no app permissions, store access, Gold entitlement or publishing authority.
+
+== Verification
+
+Run `[source,shell]`:
+
+----
+python -m unittest discover -s tests -p test_studio_diagnostics_037.py -v
+python -m unittest discover -s tests -p test_studio_review_032.py -v
+python -m unittest discover -s tests -p test_native_studio_028.py -v
+python -m unittest discover -s tests -p test_native_studio_boot_030.py -v
+python -m unittest discover -s tests -v
+node --test tests/test_klondike_asset_client_023.mjs
+----
+
+The first test includes an isolated `python -I` CLI probe, malformed archive cases, connection identity and sanitized historical events. Source tests cannot prove native Tauri compilation. On Windows, run `python tools/studio-desktop/build_windows.py`, then `python tools/studio-desktop/run_windows.py`. Verify the folder picker, screenshot of readiness check, actual imported `.tavia` results, copy/paste report and persistence after restart. Do not mark the Workboard Done until the operator accepts exact 0.1.37 evidence.

@@ -1,0 +1,121 @@
+openapi: 3.0.3
+info:
+  title: TaviX Local Management Suite (loopback-only)
+  version: 0.1.26
+  description: >-
+    Developer/operator console. Not Tavi host SDK, not a public API or admin authority.
+    All POSTs require exact same-origin Origin, 127.0.0.1 Host and X-TaviX-Local-CSRF.
+servers:
+  - url: http://127.0.0.1:8765
+paths:
+  /__manager/v1/bootstrap:
+    get:
+      summary: Read catalog, status, local drafts and a per-process CSRF token
+      responses:
+        '200': {description: Local management state; never secrets}
+  /__manager/v1/assets/import:
+    post:
+      summary: Validate and locally save a .tavia candidate
+      description: Canonical Tavi Assets validator required. No upload to LoopRD.
+      parameters:
+        - in: header
+          name: X-TaviX-Local-CSRF
+          required: true
+          schema: {type: string}
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema: {type: string, format: binary}
+      responses:
+        '201': {description: Validated local draft metadata}
+        '400': {description: Bounded structured error with errorCode and eventId; safe canonical validation reason when known}
+        '403': {description: Origin or CSRF rejected with eventId}
+  /__manager/v1/prices:
+    post:
+      summary: Save a non-authoritative local Gold price proposal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [kind, id, version, priceGold]
+              properties:
+                kind: {type: string, enum: [asset-pack, asset-object, game, store-listing]}
+                id: {type: string}
+                version: {type: string}
+                priceGold: {type: integer, minimum: 0, maximum: 1000000}
+                packId: {type: string, description: Required for asset-object; forbidden for other kinds}
+      responses:
+        '201': {description: Local proposal only, not actual price}
+  /__manager/v1/github/connect:
+    post:
+      summary: Verify GitHub user and repository then save PAT in OS store
+      responses:
+        '200': {description: Redacted connection status}
+  /__manager/v1/github:
+    get:
+      summary: Fetch connected GitHub repository metadata
+      responses:
+        '200': {description: Read-only remote result}
+  /__manager/v1/looprd/connect:
+    post:
+      summary: Save HTTPS DAPI endpoints and scoped service tokens
+      responses:
+        '200': {description: Redacted scope connection flags}
+  /__manager/v1/looprd/catalog:
+    get:
+      summary: Read authenticated LoopRD catalog on operator request
+      responses:
+        '200': {description: Authenticated read-only result}
+  /__manager/v1/looprd/inspect:
+    get:
+      summary: Read authorized registry inspection
+      responses:
+        '200': {description: Authenticated read-only result}
+  /__manager/v1/looprd/audit:
+    get:
+      summary: Read authorized registry audit
+      responses:
+        '200': {description: Authenticated read-only result}
+  /__manager/v1/looprd/stage:
+    post:
+      summary: Stage an exact validated draft using independent digest-bound operator receipt
+      responses:
+        '200': {description: Canonical Assets operator CLI stage response; never auto-publishes}
+        '400': {description: Missing receipt, token, draft or approval mismatch}
+  /__manager/v1/looprd/transition:
+    post:
+      summary: Publish/revoke only with independent exact-manifest receipt and scoped authorization
+      responses:
+        '200': {description: Canonical Assets operator CLI and LoopRD accepted transition}
+        '400': {description: Approval or authoritative operation declined}
+  /__manager/v1/events:
+    get:
+      summary: Read bounded operator-local diagnostic events (not LoopRD audit)
+      parameters:
+        - in: query
+          name: level
+          schema: {type: string, enum: [all, info, warning, error], default: all}
+      responses:
+        '200': {description: Newest-first sanitized events, max 400 entries; loopback Host required}
+        '400': {description: Unknown filter or invalid request}
+  /__manager/v1/events/client:
+    post:
+      summary: Record a known browser error kind without accepting raw message or payload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [code]
+              properties:
+                code: {type: string, enum: [UI_UNCAUGHT_ERROR, UI_UNHANDLED_REJECTION, UI_NETWORK_ERROR]}
+      responses:
+        '201': {description: Diagnostic event ID, not an audit authorization}
+        '400': {description: Unsupported diagnostic code}
+        '403': {description: Origin or CSRF denied}

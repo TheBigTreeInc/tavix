@@ -1,0 +1,55 @@
+= TaviX 0.1.25 — Local Management Suite and trusted operator boundary
+:toc:
+
+== Outcome and ownership
+
+`tools/local-client/index.html` is now a local developer/operator console with six sections: Overview, Games & apps, Assets & objects, Storefront, Connections, and Operations. It replaces the previous single-pane preview UI while retaining TaviX `.tavix` installation, removal and sandboxed iframe previews. This is not the Tavi mobile/desktop host, nor a replacement for Tavi Assets, LoopRD, GitHub or ZipRunner.
+
+* TaviX owns `.tavix` package validation, the local UI, versioned release index, and operator-side facade. Installed app previews never receive the operator's credentials or become authorized Tavi sessions.
+* Tavi Assets 0.1.16 owns `.tavia` validation, registry DAPI operator tools and content model. TaviX calls its *installed source checkout* tools (no forked validator) and requires `--assets-root` or a detected sibling checkout. The validator is subprocess-isolated with bounded input and a timeout.
+* LoopRD owns authenticated registry records, scoped service principals, publication state and audit. Only approved HTTPS `/catalog` and `/admin` endpoints may be configured; no test credentials or endpoint URLs are baked into packages.
+* GitHub owns repository identity and upstream source; a fine-grained PAT is validated using GitHub's authenticated user and repository read APIs. That identity never implies Tavi app publisher trust.
+* ZipRunner and the operator own review and release gates. Local draft prices are NOT server-authoritative Gold prices, offers or entitlements.
+
+== Run
+
+[source,powershell]
+----
+python tools/local-client/server.py --assets-root C:\Users\dorbi\source\tavi-assets
+----
+
+Open `http://127.0.0.1:8765/tools/local-client/index.html`. If a sibling `../tavi-assets` checkout exists with `project.zr` and the canonical validator, it is auto-detected and `--assets-root` may be omitted. For isolated acceptance tests, pass `--private-root` to override the default user-owned `~/.tavix-suite` state location; never point it into Git source or ZipRunner managed files.
+
+=== Local capabilities
+
+. Inspect repository catalog and versioned `.tavix` packages; install/remove local packages; preview untrusted content without a production host SDK.
+. Import and validate a `.tavia` (32 MiB compressed cap) using `tavi_assets.tavia.unpack_tavia` from a trusted local Assets checkout. Store a SHA-256-addressed candidate outside the source checkout. Display declared resources, typed objects and collections; this is NOT an actual asset installation or entitlement.
+. Save `0..1000000` Gold price proposals for game, listing, pack or *pack-scoped object* IDs in the local operator directory. These proposals do not modify a `.tavia`, `.tavix`, `tavi.repository.json`, LoopRD pricing or Wallet balance. Object-level price/entitlement semantics remain an explicit cross-project design gap.
+. Inspect local Git branch, commit and dirty tracked-file count. GitHub connection validates token and repository access read-only. Git pushes, PRs and changing the public storefront are NOT automated in this version.
+. Configure LoopRD DAPI endpoints and separately scoped `assets:read`, `assets:ingest` and `assets:publish` tokens; read catalog, registry inspection and audit only on user action.
+. Stage a validated `.tavia` only after an *independent* receipt with exact archive SHA-256 and configured admin endpoint, plus `assets:ingest` token and explicit operator UI confirmation. The trusted local backend invokes `tools/ziprunner-tavia-postrun.py --execute`; stage never publishes.
+. Publish/revoke only with another *independent exact-manifest* receipt, current staged/active server record, `assets:publish` token, and explicit operator UI confirmation. The backend delegates to `tools/looprd-registry.py --execute`. The LoopRD handler still verifies the service principal, state and audit; no UI field manufactures `ecosystemAdmin` or bypasses server authorization.
+
+=== Secrets and requests
+
+The server binds only to `127.0.0.1`. Every local mutation, including legacy install/remove, requires an exact same-origin `Origin`, loopback `Host` and a random in-memory `X-TaviX-Local-CSRF` token issued at bootstrap; there is no CORS credential sharing or wildcard remote bind. Never run this console on an untrusted shared host. The iframe uses `sandbox="allow-scripts allow-forms"` without `allow-same-origin`; network requests within untrusted apps remain possible and local preview does not substitute for browser isolation.
+
+Windows credentials are persisted with per-user DPAPI encryption outside the checkout. On other systems an OS keyring backend may be used; without one, secrets remain *session-only* and the UI says so. Tokens are never logged, returned by `/__manager/v1/bootstrap`, written to `.tavix` packages or stored in localStorage. Nonsecret endpoints and drafts are stored under `~/.tavix-suite/`. An operating-system user with full access to the local machine is within the trusted boundary, not isolated from this operator process.
+
+`GET /__manager/v1/bootstrap` is read-only and returns catalog, local Git status, draft summaries and connection flags. `POST /__manager/v1/assets/import`, `/prices`, `/github/connect`, `/looprd/connect`, `/looprd/stage`, `/looprd/transition` are strictly typed and origin/CSRF checked. `GET /__manager/v1/github` and `/looprd/{catalog,inspect,audit}` access remote services on explicit user action. Consult `openapi.yaml` for the local HTTP envelope. No HTTP API route can directly execute `git push` or edit the canonical TaviX catalog.
+
+== Approval evidence and known gaps
+
+* Windows DPAPI credential persistence, native browser UI, and real authenticated GitHub/LoopRD calls require operator acceptance; Linux tests cover mocked remote services and cross-origin rejection only. HTTPS and scoped tokens are not proof of deployed Social `ecosystemAdmin` delegation.
+* The Tavi Assets import path must be a trusted local source checkout; external package validation is not a general-purpose arbitrary Python execution permission.
+* Store listing editing is draft-only; existing `examples/store-editor/` remains a separate package/editor. GitHub write/PR workflow, rich store media promotion (the existing Store Editor can be opened from the suite for package rebuild/export), publisher attestation, child-safe Gold offers, object-level entitlements, account broker and remote pack distribution require separately reviewed contracts.
+* Asset import does not automatically install into Tavi, grant extension dependencies, or expose any new privileged SDK method. All existing extension manifest and permission gates remain unchanged.
+* No migration, Git push, tag, Tavi extension publication, LoopRD upload, price change or wallet operation has been run while building this source candidate. Only an operator action in a correctly configured local console may start the separately receipt-approved DAPI actions.
+
+== Regression and operator checks
+
+Run `python -m unittest discover -s tests -p test_manager_suite_025.py -v`, `python -m unittest discover -s tests -v`, `node --test tests/*.mjs`, and `python tools/repository.py check --repository . --strict`. Launch on Windows with the actual Assets checkout; try cross-origin POST denial, `.tavix` install/preview/removal, valid/corrupt `.tavia`, draft pricing, token verification/OS persistence, wrong receipt refusal, and separate service authorization. No test proves deployment or real Wallet purchasing. Validate C4 with Structurizr CLI separately when available.
+
+== Diagnostics extension (0.1.26)
+
+The operator-local **Events** panel now preserves bounded redacted HTTP operation and `.tavia` validator diagnostics, with copy/export and persistent event IDs under the private manager directory. A `.tavia` import that fails canonical `unpack_tavia` validation reports allowlisted reason `TAVIA_VALIDATION_REJECTED`; other failures return a safe code without a traceback. See link:TAVIX_MANAGEMENT_EVENTS_026.adoc[versioned diagnostics contract]. No change to Git, LoopRD or Wallet authorization.

@@ -1,0 +1,23 @@
+= TaviX Studio 0.1.44 — asset pack grid/list inspector
+:toc:
+
+== Scope
+
+Based on the operator's running 0.1.43 native Windows screenshots, the package inspector now defaults to a *Grid* view for each selected pack and offers a reversible *List* toggle in the page header. The resource and file tiles show the original media when available, the full resource/member identifier, and small metadata. Objects/collections/dependencies remain useful text tiles where there is no declared image member. The summary, tabs, 12-item native pagination and adjacent enlarged artwork inspector remain unchanged.
+
+== Safety and performance
+
+Only the existing SHA-256-selected `review_preview` native IPC is used for grid thumbnails; it verifies retained digest-bound original `.tavia`/`.tavix` bytes, safe declared members and constrained image types. No network or local file URLs, unrestricted paths, package execution, HTML embedding, publication authority or backend contract change. Visible tiles are limited to the existing 12-row page with at most three concurrent thumbnail requests and duplicate media member deduplication. On a pack/page/category/view change the grid unmounts and stale promises cannot update it. Failed/unavailable previews remain text-only; the independent full image preview still reports detailed failures. Manual review approval and remote publication are unaffected.
+
+== Verification and Windows acceptance
+
+. Execute focused source tests: `python -m unittest discover -s tests -p test_studio_pack_grid_044.py -v`, `test_studio_pack_browser_041.py` and `test_studio_review_ux_043.py`, followed by the full source suite in the complete Windows checkout.
+. Build exact Tauri 0.1.44 with the existing managed native builder; verify title version and stored source hash, no process replacement or new publishing capabilities.
+. In *Assets & objects*, open `Nr Go Up Tarot Pack` and confirm 79 resources/79 objects/80 files; by default the first 12 resource tiles should appear as a visual grid with digest-verified media thumbnails.
+. Click a tile and confirm the original artwork enlarges in the adjacent preview. Toggle *List* and confirm the original rows and explicit View artwork buttons return; navigate pages and sections in both modes.
+. Verify on desktop and narrow windows; deny or alter a thumbnail and confirm a placeholder is shown without changing canonical/blueprint/manual review status. Switch packages while thumbnails load and verify old thumbnails cannot leak into the new grid.
+. Confirm GitHub and LoopRD adapters are still pending, official publication disabled and preview alone cannot authorize any publish/Wallet transaction. Operator decisions and Workboard Done are separate.
+
+== QA limitations
+
+The delivered ZIP is a ZipRunner incremental overlay (`delete_missing:false`) and lacks some prior historical source modules. Source-only tests cannot establish actual Windows Tauri/React rendering, operator acceptance or exact-candidate ZipRunner post-update QA. No native Rust IPC or TaviX/TAVI Assets wire contract was changed, so the C4 component graph remains stable; the existing pack browser component now additionally renders the bounded grid.

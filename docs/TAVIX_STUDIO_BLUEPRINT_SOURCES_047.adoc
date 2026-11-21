@@ -1,0 +1,40 @@
+= Blueprint sources and publishing service connectivity (Studio 0.1.47)
+
+== Where blueprints come from
+
+A Studio designer blueprint is a **local review specification**, not a `.tavia` asset pack, a Store publication, or a game entitlement. It describes package types, required resource IDs and prefixes, optional resource names, and human designer checks. The contract is `contracts/tavix-studio-asset-blueprint-v1.schema.json`.
+
+* **Bundled:** reviewed `.json` / `.adoc` pairs at `tools/studio-desktop/blueprints/`, embedded in the Studio native executable and updated by a reviewed TaviX source version. Their source is marked `Bundled with Studio` and they remain immutable at runtime.
+* **Operator-local:** a reviewer imports a JSON file using Studio's native file picker. The strict data-only schema is checked and stored in the user's private TaviX Studio profile `blueprints/` directory. Their ID must begin `local-`, preventing collision with bundled IDs; imports never overwrite an existing file. The source label is `Imported locally` and its contents are not synchronized or published online.
+* **Future registry:** an online source-of-truth for shared organization blueprints is *not implemented*. Do not silently fetch arbitrary JSON over the network, claim trust without a signed/reviewed origin, or couple this source to user asset purchase rights.
+
+=== Creating a profile
+
+Copy `examples/studio-blueprints/local-card-back-example.json` to an operator-controlled location; assign a new stable `local-*` ID, edit the pack type, exact required resources/prefixes and designer checklist. Review every semantic ID against a real producer manifest and its consuming game. Import the JSON via `Asset blueprints` > `Import blueprint JSON`. An imported profile can then be selected in Submission review, where the package is independently checked by the canonical Tavi Assets validator and the profile. Any local approval remains a separate review decision.
+
+A Tarot deck producer with `tarot.card.*` IDs is **not automatically equivalent** to the bundled `tarot.major.*` / `tarot.minor.*` profile. Resource counts are insufficient to prove semantic card identity or artwork suitability. Add a reviewed producer-specific profile only after checking exact semantic mapping, metadata and game consumer requirements.
+
+== Publishing setup and boundaries
+
+`Connections` offers two independently saved intended destinations: an owner/repo GitHub catalog identity and a LoopRD HTTPS hostname. The native operator can then run an **explicit** read-only network reachability test using the trusted Python review tool. The probes do not include bearer tokens or cookies, never follow redirects, use short bounded timeouts and return only sanitized statuses.
+
+The connection phases are:
+
+. Configure destination names; validate and save locally (no remote contact on save).
+. Test **HTTPS reachability** on deliberate operator action. GitHub public repository API and configured LoopRD root are probed without authentication. A 200-series reply indicates transport responsiveness, not a trusted publisher session.
+. Authenticate through a separately reviewed native trusted-adapter workflow (not yet implemented). OS-secured credentials and scope-bound exact-artifact approval remain mandatory before any official staging or publish call.
+. Independently review the exact package hash, publisher identity, catalog revision, entitlements/pricing, and LoopRD registry receipts before release.
+
+The legacy operator-local Python management suite remains a compatibility adapter; it must not be silently launched as a new server or have its privileged session handed to untrusted Studio or package preview content. No background publication, Git push, entitlement grant or store listing is introduced in 0.1.47.
+
+=== Authenticated compatibility path available today
+
+The native Studio does not yet authenticate publishing providers. On a trusted Windows operator machine, the separately managed legacy management console supports OS-backed credential storage, GitHub read identity and receipt-gated LoopRD operations:
+
+[source,powershell]
+----
+cd <trusted-tavix-source-checkout>
+python tools/local-client/server.py
+----
+
+Open `http://127.0.0.1:8765/tools/local-client/index.html` locally. This is *not* started or authenticated by Studio. No remote publication, release, registry grant or source change is inferred.

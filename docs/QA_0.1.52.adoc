@@ -1,0 +1,22 @@
+= TaviX Studio 0.1.52 — provisional TAVIB import & GitHub release operations QA
+
+Source candidate based on 0.1.51. Uses source-only ZipRunner overlay and does not mutate user profile or local config on install.
+
+== Fixed tests
+
+* `python -m unittest discover -s tests -p test_studio_tavib_publishing_052.py -v`
+* Existing Studio blueprint, review, Windows UTF-8, native source contract and Node import-flow regression tests.
+* Full Windows checkout Python + native Cargo build must be run by ZipRunner.
+
+== Mandatory manual checks
+
+. On Windows confirm TaviX Studio 0.1.52 launches, Blueprint Library includes *Import from TaviX…*, native picker opens and shows app-embedded `.tavib` checklist, and imported app origin/digests appear.
+. Confirm malicious ZIP members, digest mismatches, duplicate blueprints and incomplete canonical `.tavix` all fail safely without executing or installing an app.
+. Check that a 1-icon Redlink asset pack passes the optional/minimum-prefix Blueprint review; Tarot/full-set blueprints remain strict. Tavi Assets canonical validator remains independent.
+. Configure a disposable GitHub repository, verify public live release list and authenticated `gh` login reporting. Confirm no user tokens or file paths appear in renderer outputs.
+. With a reviewed disposable artifact, create GitHub draft only after whole SHA-256 and confirmation. Verify public visibility is **not** yet granted. Publish separately with second confirmation; verify remote tag, artifact digest and private receipt.
+. Confirm no official Tavi Assets/LoopRD catalog entry or entitlement arises from GitHub release alone. Keep production publisher/LoopRD and release approval gates closed.
+
+== Unverified
+
+No Windows native 0.1.52 build, actual GH write to a disposable repository, operator acceptance or production Tavi Assets format ratification was executed by the producer. Runtime and source revision must be checked separately. No Git push or public release is authorized by the producer.

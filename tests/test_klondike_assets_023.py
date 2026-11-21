@@ -16,19 +16,19 @@ class KlondikeAssetConsumerTests(unittest.TestCase):
     def test_latest_candidate_is_valid_and_declares_optional_read_only_card_back(self):
         manifest=json.loads((NEW/'manifest.json').read_text(encoding='utf-8'))
         source=ROOT/'examples'/'klondike-assets-0.1.2'
-        self.assertEqual(manifest,json.loads((source/'manifest.json').read_text()))
+        self.assertEqual(manifest,json.loads((source/'manifest.json').read_text(encoding='utf-8')))
         self.assertEqual(manifest['version'],'0.1.2')
         self.assertEqual(set(manifest['permissions']),{'ui.panel','storage.private','assets.read'})
         self.assertEqual(validate_asset_dependencies(manifest),[{'packId':'org.tavi.cards.standard','compatibility':{'min':'0.1.0','maxExclusive':'1.0.0'},'capabilities':['card.back'],'optional':True,'requestCustomization':False}])
         self.assertEqual(validate_archive(NEW/f'{APP}-0.1.2.tavix'),validate(source))
-        self.assertEqual(json.loads((NEW/'tavix.lock.json').read_text()),validate(source))
+        self.assertEqual(json.loads((NEW/'tavix.lock.json').read_text(encoding='utf-8')),validate(source))
 
     def test_only_overlay_assets_changed_and_legacy_package_is_immutable(self):
         self.assertEqual(hashlib.sha256((OLD/f'{APP}-0.1.1.tavix').read_bytes()).hexdigest(),ORIGINAL_SHA)
         self.assertEqual((NEW/'ui/klondike.js').read_bytes(),(OLD/'ui/klondike.js').read_bytes())
         self.assertIn("import('./asset-integration.mjs')",(NEW/'ui/boot.js').read_text(encoding='utf-8'))
         self.assertIn('createTaviAssetsClient',(NEW/'ui/asset-integration.mjs').read_text(encoding='utf-8'))
-        self.assertNotIn('assets.preferences.write',json.loads((NEW/'manifest.json').read_text())['permissions'])
+        self.assertNotIn('assets.preferences.write',json.loads((NEW/'manifest.json').read_text(encoding='utf-8'))['permissions'])
 
     def test_static_catalog_candidate_points_to_exact_new_archive(self):
         catalog=json.loads((ROOT/'tavi.repository.json').read_text(encoding='utf-8'))

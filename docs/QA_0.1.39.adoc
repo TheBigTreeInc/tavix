@@ -1,0 +1,30 @@
+= TaviX Studio 0.1.39 — canonical TAVIA import protocol and blueprint diagnosis
+:toc:
+
+== Operator evidence
+
+The operator-confirmed Studio v0.1.38 reported both TAVIX_VALIDATOR_READY and TAVIA_VALIDATOR_READY, but inspection of the same .tavia (digest prefix `f5bed8416763`) repeatedly generated `TAVIA_VALIDATOR_UNAVAILABLE`, `BLUEPRINT_TYPE_MISMATCH` and missing-card resources, then `STUDIO_VALIDATOR_PROTOCOL`. Readiness means the module can load; it does not certify validation of a particular package.
+
+== Source change
+
+* `review_cli.py`: map canonical `AssetImportError` outcomes to their specific codes. Preserve rejected-archive, timeout, failed-subprocess and invalid-protocol distinctions; do not invent a reason from the package digest.
+* `review_cli.py`: suppress incidental stdout from trusted internal routines and always emit exactly one bounded JSON envelope, even for unexpected exceptions. Never forward raw traceback, usernames, paths, manifest strings or credentials.
+* `studio_diagnostics.py`: allowlist new safe codes and clarify that readiness checks module load rather than an arbitrary .tavia acceptance.
+* `src/main.tsx`: default .tavia inspections to no blueprint. Require explicit matching blueprint before review approval; a mismatch does not create 53 misleading missing-card findings.
+* Preserve all existing `.tavix`, `.tavia`, game/catalog bytes, reviewer persistence, approvals and official-store publish restrictions.
+
+== Tests
+
+Run `python -m unittest discover -s tests -p test_studio_tavia_protocol_039.py -v` and existing Studio diagnostic, review, native bootstrap and package integrity tests. Use `TAVI_ASSETS_ROOT` to run canonical sample integration. Full native Windows compile and a real import of digest `f5bed8416763` remain operator verification tasks.
+
+== Operator checks
+
+. Build native Studio and verify header v0.1.39; do not confuse previous installed executable.
+. In Connections, select the local Tavi Assets checkout and confirm import-ready state. Import a known-good pack with No blueprint; canonical validity should be true but Store Ready false until the operator selects a suitable blueprint.
+. Import the formerly failing .tavia; copy Events diagnostics. Expect a specific code (`TAVIA_CANONICAL_REJECTED`, `TAVIA_VALIDATOR_FAILED`, `TAVIA_VALIDATOR_PROTOCOL`, `TAVIA_VALIDATOR_TIMEOUT`, or `TAVIA_VALIDATOR_UNEXPECTED`) and no generic unstructured-response banner.
+. Try a mismatch blueprint only to verify one mismatch finding and no dozens of unrelated missing playing cards.
+. Export a feedback ZIP with the original package and independent `.adoc` notes. Check SHA-256 binding, no network publish and no Wallet mutations.
+
+== Boundaries
+
+No source file or ZIP submission is modified in-place; GitHub/LoopRD native publishing remains separately permission-gated. Windows test evidence and final operator acceptance are pending.

@@ -1,0 +1,28 @@
+= TaviX 0.1.29 — ZipRunner post-update stamp cap repair
+
+== Exact failure reproduced
+
+Operator ZipRunner 1.2.304.299 rejected the 0.1.28 package *before overlay* with
+`Post-update test stamp declares too many tests (21 > 20)`.
+The installed checkout remained at 0.1.27. The 0.1.29 source ZIP supersedes the failed
+0.1.28 candidate and declares base_version 0.1.27.
+
+== Minimal correction
+
+The post-update stamp retains 20 entries by merging
+`tavix-manager-events-026` and `tavix-tavia-resources-027` into a single logical
+Events + TAVIA diagnostics command using `&&`; **both test modules still execute**.
+`definition_revision` is bumped to 2. The entire 0.1.28 native Studio, local
+management console, fixtures, and immutable extension artifacts are retained.
+
+`tests/test_post_update_stamp_029.py` detects cap regression, version mismatches,
+missing diagnostics, disabled attention flags and approval gate changes.
+
+== Operator acceptance
+
+. Import the 0.1.29 ZIP on current Windows TaviX 0.1.27 and confirm pre-overlay validation succeeds.
+. Run configured complete build; verify both diagnostic test modules and the strict catalog suite on the complete current Git checkout.
+. Verify the 0.1.28 Studio source remains present, and separately build its Rust/Tauri / PatternFly frontend using reviewed locked dependencies.
+. Check the Git diff and immutable extensions; do not publish or push without operator approval.
+
+Passing author-side source tests is not a Windows acceptance receipt or native binary build.

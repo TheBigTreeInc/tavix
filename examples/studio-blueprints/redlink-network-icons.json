@@ -1,0 +1,16 @@
+{
+  "schema": "tavix.studio.asset-blueprint/v1",
+  "id": "redlink-network-icons",
+  "version": "1.0.0",
+  "title": "Redlink network icons",
+  "description": "One or more compatible icons; a complete collection is optional.",
+  "applicablePackTypes": ["redlink-network-icons"],
+  "requiredResources": [],
+  "requiredPrefixes": {"redlink.network.icon.": 1},
+  "optionalResources": ["redlink.network.icon.server", "redlink.network.icon.router"],
+  "designerChecklist": [
+    "Every supplied icon has a stable semantic resource ID.",
+    "Icons are legible on phones and tablets.",
+    "The game provides defaults or fallbacks for all absent optional icons."
+  ]
+}

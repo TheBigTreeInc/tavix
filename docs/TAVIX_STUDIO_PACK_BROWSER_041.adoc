@@ -1,0 +1,26 @@
+= TaviX Studio 0.1.41 — inspected pack contents and publication configuration
+:toc:
+
+== Operator goal
+
+The native manager must let an operator see what an imported `.tavia` or `.tavix` actually contains before requesting changes, making a local review decision or preparing a developer preview. A canonical pack validation failure must never hide the original artwork or make invalid content appear publishable. Windows validator subprocesses must not open many terminal windows.
+
+== Components and contracts
+
+* `src/pack-browser.tsx` provides a read-only PatternFly catalogue for retained local reviews, paginated 40 entries at a time. Tabs are Resources, Objects, Collections, Files and Dependencies. Summary includes id, version, type and counts. A `.tavix` lists declared optional pack dependencies and bundled image files; a `.tavia` lists resource IDs, file paths, object IDs and collection sizes.
+* `src-tauri/src/review.rs` exposes `review_catalog(id, section, offset)` and `review_preview(id, member)`. The renderer identifies the package only by its 64-character stored SHA-256. Rust resolves the trusted private storage path, checks symlinks, and calls only the fixed `review_cli.py` script. It never sends absolute operator paths to the renderer.
+* `studio_pack_catalog.py` rechecks the retained archive SHA-256 before parsing the manifest. It bounds entry count, expanded bytes, pagination and output. Previews are restricted to declared, digest-matched .svg/.png/.jpeg/.webp images up to 96 KiB. SVG preview requires a constrained drawing-only element/attribute subset and rejects active markup, entities and external references. Preview never uses an iframe, HTML injection or a privileged extension WebView. Canonical validator remains authoritative for store approval.
+* `review_cli.py` exposes only fixed `catalog` / `preview` subcommands and JSON success/failure envelope. `review.rs` uses `CREATE_NO_WINDOW` on Windows, and nested canonical Tavi Assets validation via `manager_assets.py` uses the same flag. TaviX source validator remains unchanged.
+* `src-tauri/src/studio_publish.rs` stores only the intended GitHub `owner/repo` and LoopRD HTTPS hostname in the private operator profile. It exposes `studio_publishing_targets()` and `studio_save_publishing_targets(...)` for local configuration/readiness. No credentials, authorizations, network requests, shell commands or registry mutations live in this component. Configured destinations are NOT connected publishers.
+
+== Publication responsibility and remaining gates
+
+1. Canonical .tavia / .tavix validation, intended blueprint selection, designer review, exact SHA-256 approval and package-specific publisher identity must be checked separately.
+2. The GitHub catalog publisher needs trusted native auth, reviewed exact diff/commit, integrity index, audience/channel separation and a real receipt.
+3. The Tavi Assets / LoopRD publisher needs a trusted service connection with server-side `ecosystemAdmin`, exact version digest approval, registry audit, entitlements and confirmation before any mutation.
+4. Private developer preview must use a separate access-controlled distribution channel and never auto-list in the public store.
+5. Until those adapters exist, the UI saves destinations and prepares feedback/preview/approval ZIP handoffs only. Official publish remains disabled.
+
+== QA and operator evidence
+
+Run `python -m unittest discover -s tests -p test_studio_pack_browser_041.py -v` and the existing Studio tests, then the full suite and exact ZIP checks. On Windows install 0.1.41, confirm Cargo build and standalone launch, browse the original Nr Go Up Tarot resource list and preview a card, browse Nr Go Up and Redlink .tavix files, and verify no console windows appear during import. Save non-secret publication destinations and confirm no remote requests, Git/LoopRD writes, Wallet changes or public listing is created. Use feedback ZIP to return manifest errors to the designer. No operator acceptance can be inferred from source tests.

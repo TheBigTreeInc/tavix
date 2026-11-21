@@ -1,0 +1,21 @@
+[package]
+name = "tavix-studio"
+version = "0.1.60"
+description = "Native TaviX Studio review and approval workbench"
+authors = ["TheBigTreeInc"]
+edition = "2021"
+license = "UNLICENSED"
+build = "build.rs"
+
+[lib]
+name = "tavix_studio_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rfd = "0.15"

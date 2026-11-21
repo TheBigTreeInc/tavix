@@ -1,0 +1,18 @@
+= TaviX 0.1.25 — source candidate QA
+:toc:
+
+== Baseline / exact source
+
+Based on TaviX 0.1.24 unpublished overlay (which includes the 0.1.23 Klondike asset consumer); Tavi Assets 0.1.16 canonical source was available for the local `.tavia` validator acceptance smoke. GitHub `main` was observed at TaviX 0.1.23 when this pass began; **no Git push** was performed. This is a versioned source overlay and does not contain or recreate historically approved Companion 0.6.40 distribution binaries absent from the older 0.1.19 full snapshot used for reconstruction.
+
+== Local execution evidence
+
+* Local Management Suite dedicated tests passed on Linux with `TAVI_ASSETS_ROOT` pointing to extracted 0.1.16 source. Negative cases covered strict remote endpoint parsing, missing/invalid separate operator receipts, cross-origin POST/CSRF rejection, GitHub identity read path with mocks, never leaking tokens, isolated local proposals and pack-scoped object pricing. The canonical `.tavia` validation test built an archive from Tavi Assets source, inspected and imported it, then rejected invalid archive bytes.
+* Real loopback HTTP smoke against the running source server on port 8877: same-origin/CSRF `POST /__manager/v1/prices` returned 201 for a local Klondike 0-Gold proposal; `POST /__manager/v1/assets/import` returned 201 for `org.tavi.cards.standard@0.1.1`, with SHA-256 and resource IDs. This was confined to disposable `/mnt/data` operator state; no remote calls or real tokens.
+* `node --check tools/local-client/manager.js`: passed. `node --test tests/*.mjs`: 20/20 passed. `python tools/tavix_package.py validate examples/store-editor`: passed.
+* Full reconstructed Python repository suite was executed and revealed one historical-source-only catalog failure: the 0.1.19 full release archive has Companion 0.6.33, whereas the current catalog references 0.6.40. Do not substitute a made-up 0.6.40 package, edit historical release digests, or waive this check. The exact current Windows checkout must run the full suite and strict catalog check. Pre-0.1.23 Klondike legacy archive guard also requires the historical 0.1.20 catalog sequence and must not be bypassed.
+* Chromium headless screenshot invocation in this container timed out; do not claim native/visual viewport acceptance. Structurizr CLI is unavailable here; C4 model source updated but DSL parser acceptance pending.
+
+== Unverified or gated
+
+Actual Windows DPAPI persistence, macOS secure-keyring behavior, browser UI review, personal GitHub PAT sign-in and remote DAPI credentials, disposable LoopRD stage/publish/revoke, Social ecosystemAdmin broker, Wallet/entitlement enforcement, GitHub exact-diff push, paid object offers and public Store listing release are pending. No user keys were supplied and no remote mutation was attempted. ZipRunner Windows build/operator acceptance are independent gates.

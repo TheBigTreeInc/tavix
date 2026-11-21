@@ -1,0 +1,27 @@
+= TaviX Studio 0.1.60 — GitHub catalog sync, review & direct login
+
+Status: *source candidate for operator QA; no remote catalog changed*.
+
+== Contract
+
+Studio reads `TheBigTreeInc/tavi-assets/catalog.source.json` and generated `catalog.json` pinned to one Git commit, checking published entries match approved public source rows. This is a separate repository from the app distribution catalog `tavi.repository.json`; `.tavib` schematic entries are compatibility-only and never for sale. Remote Gold prices, Listed and Testing remain out of scope until the owner-ratified LoopRD offer contract exists.
+
+== Operator task
+
+. Open Studio Overview and choose *Sync GitHub catalog (Publishing)*, then *Sync from GitHub*. The dedicated GitHub Catalog tab displays repo, branch, pinned revision, source count and public packs. No GitHub auth needed for a public repository read.
+. Click *Sign in with GitHub (browser)*. GitHub CLI opens the browser/device login through a native Windows terminal; finish the authentication and return to *Check GitHub sign-in*. Never paste a PAT in Studio. GitHub CLI uses the OS credential store when available, otherwise its own credential fallback; review `gh auth status` on the operator machine.
+. For a locally *review_approved*, canonical-valid, store-ready `.tavia`, choose it and click *Review changes*. The exact source diff adds a **draft** source record with immutable canonical artifact path and SHA-256. `catalog.json` remains unchanged and no pack bytes are uploaded.
+. Without authorizing a real GitHub write, inspect the buttons and negative tests. If the repository owner separately approves a disposable test, confirm the full package digest and both PR confirmations; verify the resulting PR is *draft*, source only. A draft PR is public in a public repository and should not include secrets or paid asset bytes.
+. Change remote source revision, alter local package digest or remove review approval; repeat; each must reject before any write.
+. Verify `.tavix` apps, `.tavib` schematics, pending reviews, and live-only registry entries cannot be used to prepare this Assets source PR. Existing application releases and LoopRD actions remain separately gated.
+. Reopen Studio and confirm local catalog Gold/List/Testing drafts are preserved. Test at desktop and smaller 1280×800 windows.
+
+== Source verification
+
+- Run `python -m unittest discover -s tests -p test_studio_github_catalog_sync_060.py -v` with CLI/network mocked.
+- Run `python -m unittest discover -s tests -p test_studio_publishing_tabs_057.py -v`.
+- Run the full current Windows build with `python tools/studio-desktop/build_windows.py`. Any missing historical modules in an incremental-only checkout are not treated as production proof.
+
+== Still blocked
+
+Approved public pack upload and deterministic `catalog.json` regeneration; official LoopRD price/listing/testing; a true Tavi-client download and entitlement flow; independent QA acceptance; Windows compilation. No Git push/merge, LoopRD publish or release is performed by building this candidate.

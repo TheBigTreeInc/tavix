@@ -32,3 +32,26 @@ List uncertainties, data/safety boundaries, dependencies, and decisions that nee
 
 == Roadmap suggestion exchange
 The planning model must return future implementation work in a strict `ZIPRUNNER_ROADMAP_SUGGESTIONS v1` block. ZipRunner imports model-authored work into Suggested only.
+
+== Management Suite milestone (0.1.25 source candidate)
+
+* Implemented for operator review: six-section loopback UI, unchanged package preview/install, canonical TAVIA draft import, nonauthoritative local value drafts, secure local credential management, GitHub read access and LoopRD read/receipt-gated canonical operator commands.
+* Next independent work: exact-reviewed GitHub commits/PRs/storefront publication, authoritative paid asset/object offer and Wallet contract, Tavi host admin broker, native Windows/Android acceptance. Existing ZipRunner Workboard IDs and operator approval gates remain authoritative.
+
+
+== Native PatternFly desktop migration (0.1.28)
+
+* Source candidate for operator review: read-only Tauri 2/Rust + PatternFly 6 native shell, package inventory, tracked Git state and safe Events identifiers. Original console remains fully available.
+* Next milestones: Windows compile and dependency lockfile, isolated native extension preview, canonical TAVIA validator invocation via Rust with exact diagnostics, safe OS credentials, independently approved Git/LoopRD commands, and storefront offer authority.
+* No legacy HTTP removal, host SDK change, package format change or automatic publication has been approved.
+
+== Native Studio Windows boot repair (0.1.30)
+
+* Correct the reproducible Tauri 0.1.28 Windows build failure caused by missing `src-tauri/icons/icon.ico`.
+* Make the ONE Studio executable buildable and launchable through ZipRunner-managed build/start, without requiring the Python browser service.
+* Preserve the Python console only as a compatibility adapter; migrate `.tavia`, Git and LoopRD privileged workflows into the canonical Rust boundary in independently verified passes before retiring it.
+* Next approval gate: Windows build and launch evidence, frontend lockfile review, manual native UX acceptance and strict repository checks.
+
+== Windows Studio 0.1.52 QA fix
+
+Windows 0.1.50 failed an overbroad encoding regression on 25 pre-existing implicit source reads in seven old tests. Studio 0.1.52 retains strict UTF-8 checks for new/Studio tests, tracks legacy ceilings and documents their separate migration in docs/QA_0.1.52.adoc. Native publish and operator gates are unchanged.

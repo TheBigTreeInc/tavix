@@ -68,7 +68,7 @@ class DocumentationContractTests(unittest.TestCase):
         self.assertEqual(repository.INDEX, j['repository']['catalogFile'])
         self.assertEqual(package.validate.__name__, 'validate')
         # Intentional guard: the 1 MiB/file policy is source-level, not exposed as a constant.
-        self.assertIn('size>1_000_000', pathlib.Path(package.__file__).read_text())
+        self.assertIn('size>1_000_000', pathlib.Path(package.__file__).read_text(encoding='utf-8'))
         self.assertEqual(j['package']['maxFileSizeBytes'], 1_000_000)
 
     def test_example_is_valid_complete_and_packable(self):
@@ -84,7 +84,7 @@ class DocumentationContractTests(unittest.TestCase):
             self.assertEqual(validate_archive(archive), lock)
 
     def test_html_asset_links_exist(self):
-        html = (ROOT / 'examples/hello-tavix/ui/index.html').read_text()
+        html = (ROOT / 'examples/hello-tavix/ui/index.html').read_text(encoding='utf-8')
         self.assertIn('href="style.css"', html)
         self.assertIn('src="main.js"', html)
         self.assertTrue((ROOT / 'examples/hello-tavix/ui/style.css').is_file())
@@ -93,8 +93,8 @@ class DocumentationContractTests(unittest.TestCase):
     def test_version_metadata_and_approval_gates(self):
         for f in ('project.zr','tavix.zr','.ziprunner-post-update-tests.json',
                   '.ziprunner-workboard-update.json'):
-            self.assertEqual(json.loads((ROOT / f).read_text())['version'], '0.1.23', f)
-        z=json.loads((ROOT / 'project.zr').read_text())
+            self.assertEqual(json.loads((ROOT / f).read_text(encoding='utf-8'))['version'], '0.1.60', f)
+        z=json.loads((ROOT / 'project.zr').read_text(encoding='utf-8'))
         self.assertIn('ziprunner.config.json', z['protected_paths'])
         self.assertEqual(z['post_build_mechanisms'], [])
         self.assertFalse(z['delete_missing'])

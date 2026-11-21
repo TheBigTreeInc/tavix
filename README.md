@@ -1,6 +1,61 @@
+> **Studio candidate 0.1.57:** Publishing now has four compact task-focused tabs (Catalog, Connections, GitHub releases and Tavi Assets / LoopRD). Navigation preserves unsaved local catalog drafts. See `docs/QA_0.1.57.adoc`. Native Windows QA and operator acceptance pending.
+
+> **TaviX Studio 0.1.49 UX candidate:** The page title, notification history and Refresh now share a compact top row; importing starts with the trusted native file picker and then offers a blueprint or Custom/unmapped state in a modal. Review screens start with the queue, not permanent banners or large import cards. No publisher or entitlement permission changes. See `docs/QA_0.1.49.adoc`.
+
+> **TaviX Studio 0.1.48 Windows QA repair:** Blueprint tests now isolate both `HOME` and `LOCALAPPDATA` and their Python subprocesses. This corrects two `BLUEPRINT_ALREADY_IMPORTED` test errors from the Windows full-checkout run without touching the real operator blueprint library, relaxing duplicate protection, or changing publisher permissions. See `docs/QA_0.1.48.adoc`.
+
+> **TaviX Studio 0.1.47:** Asset blueprints are now a searchable source-labelled library with safe local JSON imports, and Connections can explicitly check saved publishing destination HTTPS reachability without credentials. Remote publishing and authenticated service connections are **still not implemented**. See `docs/TAVIX_STUDIO_BLUEPRINT_SOURCES_047.adoc` and `docs/QA_0.1.47.adoc`.
+
+## TaviX Studio 0.1.46 — Unicode review and Tarot metadata diagnostics
+
+The native Studio reviewer now emits ASCII-safe JSON on its Python-to-Rust stdout boundary, preventing Windows code-page encoding of Unicode pack titles from becoming `STUDIO_VALIDATOR_PROTOCOL`. The canonical Tavi Assets `invalid attribute key` rejection is exposed as a fixed safe diagnostic without bypassing validation or auto-approving a pack. The separately repaired Obsidian Tarot v0.1.2 corrects invalid camelCase metadata keys; Studio does not alter imported packages. See `docs/QA_0.1.46.adoc`. The 0.1.45 game/version picker and 0.1.44 asset grid are retained.
+
+## TaviX Studio 0.1.45 — choose game, then version
+
+In **Games & apps**, Studio now groups source candidates by package ID, presents one searchable list entry per game/app, and lets the operator select the exact available version in the adjacent details pane. This is a read-only source inventory and does not change installation, review or publication. See `docs/QA_0.1.45.adoc`. Cross-project intent for verified per-device `.tavia` distribution and shared Tavi asset caching is recorded in `docs/TAVIA_CLIENT_ASSET_DELIVERY_045.adoc` as target architecture, not a deployed feature.
+
+> **TaviX Studio 0.1.44 visual asset grid:** In native package inspection, Grid/List toggles between a responsive thumbnail grid and the previous detailed list. Only currently paged items request original SHA-bound verified artwork with three concurrent native preview calls; invalid images become placeholders. Review and publication gates remain unchanged. See `docs/QA_0.1.44.adoc`.
+
+> **TaviX Studio 0.1.43 operator review UX:** A successful native 0.1.42 window/asset-preview was observed. The new submission review keeps blueprint selection next to the selected pack, explains Tarot resource-ID mismatch, and provides a compact paginated, digest-verified artwork inspector. Windows post-update exact-candidate verification and local human acceptance remain pending. See `docs/QA_0.1.43.adoc`.
+
+> **TaviX Studio 0.1.42 build-verification repair:** The native builder now resolves the Cargo output relative to the *active* Studio checkout. A stale executable from another source root cannot satisfy a test or produce a verified launch copy. Package browsing, SHA-bound previews, local-only publishing destinations and independent operator approval remain unchanged. See `docs/QA_0.1.43.adoc`.
+
+> **TaviX Studio 0.1.41 pack browsing and publication configuration:** Imported `.tavia` and `.tavix` submissions now have a read-only paginated archive browser (resources, objects, collections, files, optional dependencies), with safe, hash-checked SVG/PNG/JPEG/WebP preview. Windows validator subprocesses use no-window flags. Studio can save intended GitHub owner/repository and LoopRD HTTPS hostname **without credentials**; actual authenticated remote publication and developer preview distribution are still unimplemented and disabled. See `docs/QA_0.1.41.adoc` and `docs/TAVIX_STUDIO_PACK_BROWSER_041.adoc`.
+
+> **TaviX Studio 0.1.40 Windows running-executable repair:** Cargo's normal `target/release/tavix-studio.exe` was locked by an already-running Studio during ZipRunner 0.1.39, despite 204 passing tests and a successful Vite frontend build. Studio now compiles using a dedicated persistent `studio-managed-build` Cargo target and launches an immutable SHA-256-verified per-version copy. The first build needs one additional Cargo dependency compilation/cache; no process shutdown or path deletion is performed. See `docs/QA_0.1.40.adoc`.
+
+> **TaviX Studio 0.1.38 stale-runtime and validator isolation:** The operator's screenshots show a v0.1.36-style Connections placeholder and generic, global "Validator did not return structured data" while the v0.1.37 source contains a native Assets picker and copyable Events report. 0.1.38 visibly displays the compiled UI version, refuses to launch a source-stale EXE using the managed launcher, bundles blueprint descriptions natively, and gives page-scoped safe validator errors. Rebuild the actual Windows executable after source overlay. See `docs/QA_0.1.38.adoc`.
+
+> **TaviX Studio 0.1.36 Windows Rust repair:** Fixes operator-reproduced Rust E0308 in review persistence (`Result<(), &str>` instead of `Result<(), String>`) and unused Path import. The frontend already compiled in operator 0.1.35, native executable and review operation still require actual Windows verification. See `docs/QA_0.1.36.adoc`.
+
+> **TaviX 0.1.34 Windows native Studio TypeScript repair:** Fixes the operator-reproduced PatternFly 6 `Title size="sm"` TS2322 error in the designer checklist by using supported `md`; source regression test added. Full Windows native build and launch still require verification. See `docs/QA_0.1.34.adoc`.
+
+> **TaviX 0.1.33 Windows QA repair:** Corrects 0.1.32 Windows test failures caused by implicit CP1252 decoding of the PatternFly UI text and missing exact release-safety handoff wording. Existing native Studio submit/review/feedback behavior is preserved, publishing disabled. See `docs/QA_0.1.33.adoc`.
+
+> **TaviX 0.1.31 recipe adoption:** ZipRunner 1.2.304.300 does not automatically adopt `project.zr` from an overlay. Review the native build/start fields in its project Configuration panel or import `tavix-studio-0.1.31.zr` into the existing `tavix` project, save, then apply the 0.1.31 ZIP to trigger a real Windows Studio build. Source ingestion alone will not compile or launch Studio. See `docs/QA_0.1.31.adoc`.
+
+> **ZipRunner 0.1.29 repair:** 0.1.28 failed pre-overlay (21 post-update tests > 20). The repaired candidate combines related diagnostics without losing test coverage; native Studio acceptance remains pending. See `docs/QA_0.1.29.adoc`.
+
+## 0.1.28 — PatternFly native desktop shell (source candidate)
+
+TaviX Studio adds a separate **Tauri 2 / Rust** operator desktop application with a **PatternFly 6 / React** layout under `tools/studio-desktop/`. Node is for builds, not a live management server. This first pass is read-only: local packages, Git status, Assets checkout availability and existing event IDs. Import, store mutation, publish and preview remain in the tested Python management console until the native Rust migration passes operator acceptance. See `docs/TAVIX_STUDIO_DESKTOP_028.adoc`; Cargo/Windows native build not yet tested.
+
+## 0.1.27 — TAVIA unsupported-resource diagnostics (source candidate)
+
+Following the reproduced `unsupported TAVIA resource type` failure, the management suite now identifies a safe *archive member* and rejected suffix/count in its existing Events panel, plus guidance for rebuilding a valid data-only pack. The canonical Tavi Assets validator remains the only authority; TaviX does not remove unexpected files, accept new formats, or publish automatically. The actual operator-rejected pack has not been supplied and must be checked independently. See [`docs/TAVIX_TAVIA_RESOURCE_DIAGNOSTICS_027.adoc`](docs/TAVIX_TAVIA_RESOURCE_DIAGNOSTICS_027.adoc).
+
+## 0.1.26 — Local diagnostic Events panel (source candidate)
+
+The local TaviX management console now records **bounded, redacted, persistent** operator events in its private user directory. A failed `.tavia` import reports `errorCode` + `eventId` and shows a safe canonical Tavi Assets validator reason where one is available. Open **Events** to filter, copy a diagnostic report, or export JSON for debugging. It logs no API keys, archive content or full local file paths and is distinct from LoopRD's authoritative audit log. See `docs/TAVIX_MANAGEMENT_EVENTS_026.adoc`. This is not an extension host permission or automatic publication feature.
+
+> New in 0.1.25: the local TaviX preview is a six-section **Management Suite** with canonical TAVIA draft validation, proposed Gold values, GitHub identity, and receipt-gated LoopRD operator actions. Remote Git push/store publishing still requires a separately approved exact-diff workflow. See [`docs/TAVIX_MANAGEMENT_SUITE_025.adoc`](docs/TAVIX_MANAGEMENT_SUITE_025.adoc).
+
 # TaviX — extension tooling, local preview and reviewed distribution
 
-**Source/tooling version: 0.1.23 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
+> Previous 0.1.24 candidate: An **unpublished**, read-only ZipRunner Operations TaviX app candidate (`examples/ziprunner-operations-0.1.0`) and a proposed host relay contract; see `docs/TAVIX_ZIPRUNNER_STATUS_024.adoc`. The actual Tavi host has no implemented relay yet, so the viewer correctly reports Connection required.
+
+
+**Source/tooling version: 0.1.49 · Package standard: `tavix/1.0` · Manifest and host wire: `tavi.extension/v1`**
 
 TaviX provides a reviewed, immutable distribution repository for compiled Tavi extensions, plus Python pack/validate/staging tools and a **standalone loopback development client** for opening `.tavix` panels on a PC without Tavi. It does **not** include the Tavi messenger, a game server, the production Tavi SDK host or trusted publisher signing. The `extensions/` tree contains distributed application builds, not their original authoring source.
 
@@ -138,3 +193,58 @@ The 0.1.21 archive was rejected **before any source update or Python build** by 
 ## 0.1.21 Klondike test repair (Windows overlay)
 
 The staged 0.1.19 `example.org.klondike` draft is NOT the approved public identity. ZipRunner 0.1.20 uses non-deleting overlays; the old release directory may remain and causes `build_index()` to discover both game identities. In 0.1.21 the first build stage `tools/klondike_legacy_draft_archive.py` validates the old draft's exact immutable SHA-256 and the approved `inc.thebigtree.tavi.klondike` release, then moves **only** the verified obsolete draft to Git-ignored `.tavix-local/archived-staging-drafts/`, preserving all bytes for operator inspection. `--check-only` reports planned changes without moving. Unknown files, publisher mismatches or an occupied backup path cause a hard failure. The published `tavi.repository.json` still contains only Atrium, Companion 0.6.40, and Klondike. No Git commit, push, tag, public publication or device install occurs.
+
+## Local Management Suite (0.1.25)
+
+Launch with `python tools/local-client/server.py --assets-root ../tavi-assets` and open `http://127.0.0.1:8765/tools/local-client/index.html`. TaviX manages `.tavix` local package preview and repository catalog inventory. The canonical Tavi Assets checkout validates imported `.tavia` drafts; LoopRD stages and publishes only through its existing scoped, receipt-gated operator CLI. A local Gold value proposal is not an authoritative offer or wallet transaction. GitHub PAT verification is read-only; pushing source or Pages releases is intentionally not enabled. Secrets are OS-protected on Windows, otherwise keyring-backed or memory-only, never supplied to TaviX extensions. Full details: `docs/TAVIX_MANAGEMENT_SUITE_025.adoc` and `openapi.yaml`.
+
+### Native TaviX Studio on Windows (0.1.30)
+
+The single intended desktop operator application is `tools/studio-desktop/` (PatternFly 6 + Tauri 2/Rust). The Tauri icon resource required on Windows is now included; the source-controlled ZipRunner `build` compiles a native executable and `start` launches it directly. See `tools/studio-desktop/README.md` for manual launch and pending native operator acceptance. The Python local management server is an explicitly temporary compatibility path for capabilities not yet migrated to native Rust. It is not started by native Studio, and no remote publication happens automatically.
+
+## Native Studio review workflow (0.1.32)
+
+`tools/studio-desktop` adds PatternFly submission review of `.tavix` games/apps and `.tavia` packs, with canonical validation, designer blueprint completeness, per-package reviewer notes and feedback/developer-preview/local-approval ZIP exports. The official store publish action is deliberately disabled pending reviewed Git and LoopRD integration. See `docs/TAVIX_STUDIO_REVIEW_032.adoc` and the Studio-local blueprint contract `contracts/tavix-studio-asset-blueprint-v1.schema.json`. Neither Tavi nor Tavi Assets runtime authority is changed by this candidate.
+
+### 0.1.35 Native Studio Windows npm recovery
+
+The managed Studio build skips npm reinstallation on healthy dependencies, incrementally repairs a partially installed node_modules directory after EBUSY, validates required TypeScript/Vite/Tauri commands, and fails closed when incomplete. See `docs/QA_0.1.35.adoc`. No Git or LoopRD publishing changes.
+
+## Native Studio source connections and diagnostics (0.1.37)
+
+The operator confirmed native Studio 0.1.36 launches. Studio 0.1.37 adds operator-selected Tavi Assets source validation, bounded native readiness and copyable, privacy-safe import failure codes. Local source preferences live in the user profile; they never authorize GitHub/LoopRD publishing. See `docs/QA_0.1.37.adoc`.
+
+### Studio import protocol repair 0.1.39
+
+The native Studio preserves specific TAVIA validation errors and returns a single sanitized diagnostic response for unexpected adapter faults. New asset submissions start without an assumed 54-card blueprint. Existing store approval gates and original package bytes are unchanged; see `docs/QA_0.1.39.adoc`.
+
+## 0.1.50 Windows encoding QA repair
+Use UTF-8 explicitly when Python tests read repository source or JSON on Windows; see `docs/QA_0.1.50.adoc`. The 0.1.49 Studio UX and private operator profile are unchanged. Build, Git, LoopRD and release approvals remain separate.
+
+## Windows Studio 0.1.52 QA fix
+
+Windows 0.1.50 failed an overbroad encoding regression on 25 pre-existing implicit source reads in seven old tests. Studio 0.1.52 retains strict UTF-8 checks for new/Studio tests, tracks legacy ceilings and documents their separate migration in docs/QA_0.1.52.adoc. Native publish and operator gates are unchanged.
+
+## Studio 0.1.52 — TAVIB and publishing
+
+See `docs/TAVIB_STUDIO_PUBLISHING_052.adoc` for native app-provided `.tavib` imports, immutable local provenance, read-only GitHub release state and operator-confirmed GitHub draft/public distribution steps. The proposed blueprint container is not yet Tavi Assets canonical; LoopRD/official Store publisher integration is not implemented. Source checkout Git pull/push is not invoked by Studio.
+
+## Studio 0.1.53 — publishing readiness and compact Connections
+
+This source overlay moves GitHub/LoopRD status out of oversized Connections cards, reports GitHub gateway **source availability** without asserting authentication, shows independent live/public GitHub release discovery and `gh` login in Publishing, and distinguishes locally approved submissions with external dependencies from store-ready remotely published packages. Unsaved destination edits block remote actions, and receipts remain bound to the selected digest and repository. Existing exact-SHA and operator permission gates remain. See `docs/QA_0.1.53.adoc` and `docs/STUDIO_PUBLISHING_CONNECTIONS_053.adoc`. Windows native 0.1.53 acceptance and disposable GitHub publishing verification remain pending. No Git push or public release.
+
+## Studio 0.1.54 — LoopRD DAPI adapter and embedded TAVIB inspection
+
+Native Publishing now configures separate approved `/admin` and `/catalog` DAPI paths, verifies scoped live read/inspect responses, and provides exact-review/receipt-gated `stage` and `publish` actions for `.tavia`. Credentials must be short-lived, server-issued and injected into the trusted native Studio process; the Tavi/Social ecosystemAdmin delegation broker is not provided by this source. The Blueprint Import from TaviX dialog now offers an Inspect detail panel (exact resources, prefix minima, optional assets, checklist, readme and optional WebP) before import. See `docs/QA_0.1.54.adoc`. Windows native build and live disposable-registry acceptance are pending. No Git push or public release.
+
+## Studio 0.1.57 — catalog release metadata table
+
+Publishing begins with a searchable table of local `.tavix` applications, `.tavia` packs, `.tavib` blueprints and read-only discovered LoopRD versions. Price in Gold (blank=unset, 0=free), Listed, Testing and a short description are operator-local **publication drafts** stored by native Rust under the private profile. These fields are not live catalog mutations: the currently specified Tavi Assets `store-offer/v1` has illustrative `displayGoldPrice`, but official store listing/testing state and authoritative pricing require new, owner-approved LoopRD contracts. All release, service-token and receipt gates remain separate. See `docs/QA_0.1.57.adoc`. No Git push or public release.
+
+## Studio 0.1.58 — blueprints are not store merchandise
+
+`.tavib` schematics describe compatibility between `.tavia` asset packs and `.tavix` applications. They must not be priced, listed, tested as merchandise or granted entitlements. Studio Publishing > Catalog shows only applications (`.tavix`) and installable asset packs (`.tavia`); Asset blueprints and submission review continue to import and validate schematics. Older blueprint-only draft records remain in the private profile for safe migration, but are not exposed in the Publishing table and cannot be saved through the native catalog command. Live Tavi Store contracts still require separate Tavi Assets/LoopRD owner adoption.
+
+## Studio 0.1.60 — GitHub source catalog synchronization (candidate)
+
+Open **Publishing → Catalog → Sync from GitHub** (or Overview → **Sync GitHub catalog**). The new **GitHub catalog sync** tab fetches pinned `TheBigTreeInc/tavi-assets/catalog.source.json` and the generated `catalog.json`, reports revision and differences, and prepares a draft metadata entry for one locally approved `.tavia` asset pack. The native GitHub CLI browser-login button avoids pasting PATs into Studio. A GitHub **draft pull request** can be created only after two confirmations with exact SHA-256 and a fresh Git revision; no public archive upload, public index regeneration, Wallet price, LoopRD publish or automatic release occurs. This initial phase is a source-catalog proposal workflow, not end-to-end Store publication; see `docs/QA_0.1.60.adoc`.

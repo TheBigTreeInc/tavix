@@ -1,0 +1,37 @@
+= TaviX Studio submission review, asset blueprints and developer feedback — 0.1.32
+:toc:
+
+== Intent
+
+TaviX Studio is the operator-facing home for reviewing both `.tavix` games/apps and `.tavia` data-only assets. Developers can receive preview handoffs before store publication, and reviewers can send a feedback ZIP containing the unchanged original package and a structured report. The official TaviX storefront and LoopRD asset registry remain distinct publication backends and independent trust authorities.
+
+== Implemented native workflow
+
+* The single Tauri/PatternFly Studio gains *Submission review*, *Asset blueprints* and a separated *Official storefront* queue. A native file picker selects a `.tavix` or `.tavia`; renderer code receives no arbitrary filesystem path or package bytes.
+* Rust (`src-tauri/src/review.rs`) owns submission retention in per-user private storage and reviewer decisions. The fixed, reviewed local script `review_cli.py` invokes the canonical TaviX validator `tools/tavix_package.py` or the canonical Tavi Assets `tavi_assets.tavia.unpack_tavia` from a trusted checkout. It never executes package JavaScript, opens an untrusted extension as a privileged WebView or calls an HTTP management service.
+* Archive preflight limits entry paths, count, size, symlinks, duplicate names and decompressed size. Canonical validation is mandatory: a failure is not silently repaired, upgraded, ignored or treated as an approved package. The original bytes and SHA-256 are retained; reviewer notes are stored separately.
+* A proposed *Studio-local blueprint* `tavix.studio.asset-blueprint/v1` is a machine-readable completeness profile and `.adoc` designer checklist. It is NOT automatically part of a `.tavia` manifest. Its catalog begins with complete 52-card + named joker + back, card-back-only, 2D D6 dice faces and a 78-card tarot deck. Completeness checks compare resource IDs, required prefixes and pack type; visual quality remains human-reviewed. A `.tavix` game references Tavi Assets through its existing optional `assetDependencies` and is not rejected for lacking bundled card artwork.
+* A retained `.tavia` may be reassessed against another blueprint; reassessment always resets the earlier approval to draft. Review states: `draft`, `changes_requested`, `review_approved`. Approving requires canonical package validation, a selected and complete blueprint for `.tavia`, and an explicit operator action. Approval is LOCAL and is not a publisher signature or public store publication.
+* Export modes: `feedback` (may include invalid package and clear issues), `preview` (only canonically valid packages), and `approval` (only after local review approval). The OUTER ZIP contains `submission/<original-format>`, `feedback/REVIEW.adoc`, `feedback/review.json`, and, when used, `blueprint/<id>.json` + `.adoc`. The original inner `.tavia` stays unchanged; adding `.adoc` directly into it would violate the canonical allowed-media rule. The report identifies its source digest so a developer can produce a corrected, version-bumped replacement and return it for revalidation.
+* The public-store publishing action is deliberately disabled. A reviewed handoff proves only that this local operator made a review decision on a known digest; it does not publish, grant ownership, set Gold prices or confer `ecosystemAdmin`.
+
+== Publication and developer preview gates (future)
+
+A true official release must independently verify publisher identity, Git diff and immutable release archive, catalog integrity and release approval. For `.tavia`, the LoopRD registry requires its own authenticated service scope, exact-version publication receipt, and server-side `ecosystemAdmin` authority. Developer previews must be explicitly marked non-public and must never appear in the public catalog automatically. Neither a copied local JSON record nor a stored API key proves these permissions. Future native adapters must generate an exact-digest publish review and persist authoritative receipt/audit evidence before a final catalog/LoopRD transition.
+
+== Security and storage
+
+Original submissions and review records live under `%LOCALAPPDATA%/TaviXStudio/{submissions,reviews}` on Windows (or the corresponding user home path elsewhere), not inside Git, ZipRunner overlays or public releases. All source package and ID references in the renderer are opaque SHA-256 identifiers; file chooser, disk reads and review archive exports run in native operator commands. Export refuses overwrites and rechecks the retained package digest. No secrets, absolute paths, private state or runtime outputs are packaged in source ZIPs. The trusted original TaviX/Assets package validation code is required in the actual checkout: an incomplete or disconnected validator fails closed.
+
+== Windows operator acceptance
+
+. Approve the existing native Studio build/start recipe for `tavix` in ZipRunner. Build and run the Tauri executable on Windows with a reviewed npm lockfile. Node and Python are toolchain dependencies, not local operator web servers.
+. Import a valid `.tavia` using `cards-back-only` and check it passes canonical validation; import an incomplete card deck and confirm exact missing resource IDs and blocked approval. Import a `.tavix` and verify its digest and asset dependency note.
+. Write a reviewer note, request changes, export the feedback ZIP and verify the unchanged original `.tavix` or `.tavia` plus `REVIEW.adoc`, `review.json`, JSON blueprint and designer `.adoc` exist and can be sent to the developer.
+. Import a valid package, export a Developer Preview ZIP, and confirm it is clearly non-public and not inserted into `tavi.repository.json` or LoopRD. Explicitly approve a complete pack, export a locally approved handoff, and verify that the official publishing button remains disabled.
+. Restart Studio and verify review queue persistence. Attempt malformed archive, duplicate/unsafe ZIP paths, invalid media or mismatched canonical validator; none can be locally approved or exported as preview. Verify no arbitrary package code executes and no privileged preview WebView is exposed.
+. Observe no automatic Git push, official catalog mutation, LoopRD publish/revoke, credential movement, Gold charge or Wallet entitlement. Full Windows native build and operator acceptance remain pending until actual evidence is supplied.
+
+== Limitations
+
+The native GUI's review workflow uses Python *CLI subprocesses* as reviewed adapters to the existing canonical validators. It has no Python HTTP server. Native Cargo compilation is not proven in the authoring environment. This is an independently testable local submission/review vertical slice, not production remote publisher authority or a hosted developer self-service portal. A remote developer preview API, signed release catalog approval, role assignments, secure token/keychain workflow, artifact acquisition and rollback remain separate tasks.

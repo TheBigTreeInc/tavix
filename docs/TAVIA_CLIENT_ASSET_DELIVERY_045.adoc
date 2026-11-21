@@ -1,0 +1,41 @@
+= Tavi ecosystem — client-side `.tavia` delivery agreement (2026-11-16)
+:toc:
+
+== Status and scope
+
+*Confirmed architecture intent*, not an assertion that the complete production path exists in Tavi 0.3.x, Tavi Assets, LoopRD, Atrium or TaviX Studio 0.1.45. Shared for the maintainers of Tavi, TaviX, Tavi Assets/Asset Studio, LoopRD, Atrium and consuming games including Nr Go Up and Klondike. No production transport/storage provider, route, or entitlement wire schema is specified here. The owning projects must adopt and verify their interfaces separately.
+
+== Ownership and flow
+
+. Users discover packs in the Tavi Store or through a game/app's declared asset dependencies (required or optional). A game can bundle default artwork or request an available shared pack; it does not itself authorize installation.
+. The LoopRD/Tavi Assets registry is authoritative for registered pack identity, available versions, pricing/Gold offers, user ownership, entitlements, revocation and publisher approvals. The client never mints entitlements or trusts a dependency declaration as a grant.
+. Once authorized, a Tavi device retrieves the exact immutable `.tavia` bytes from the approved distribution host. Public static hosting can carry *free/public* bytes; restricted paid packs require an independently authenticated delivery approach. Hosting provider remains an explicit open decision.
+. Tavi's trusted asset manager checks expected identity, version, SHA-256 and canonical Tavi Assets package rules *before* activation or extraction. Reject altered, undeclared, unsafe or mismatched bytes. Download and install must fail closed.
+. Each device stores a verified, versioned copy in a *shared, Tavi-managed asset cache*, not per-game duplicate copies. Games and apps request resources through the host-mediated TaviX/Assets SDK; they do not obtain arbitrary filesystem paths or registry credentials.
+. Tavi on Windows, Android and tablets downloads its own cache copy; only ownership and pack metadata synchronize centrally. Installed assets can be used offline, subject to the host's explicit entitlement caching/revocation policy, which is not finalized here.
+. Updates are immutable side-by-side versions with integrity checks, and should never silently overwrite a different package revision. Selected-card-style preferences syncing between devices is a future option, not an implemented guarantee.
+
+== System responsibility matrix
+
+[cols="2,4",options="header"]
+|===
+|Owner |Responsibility
+|Tavi host |Store UI, consent, per-device download/install/cache/update/eviction, trusted SDK grants, installed inventory and offline playback
+|Tavi Assets engine |Canonical `.tavia` data-only validation, safe resource resolution and asset lifecycle; reusable across game consumers
+|LoopRD |Registry, account ownership, offers/Gold pricing, publication audit and entitlement authorization; never trust client claims
+|TaviX |Dependency *requests* and host-mediated grant contracts; reviewed package/catalog integrity; no direct ownership issuance
+|TaviX Studio |Producer import, original-byte inspection, blueprint review and approval handoff; not user device cache or remote entitlement authority
+|Atrium and games |Declare required/optional packs, request installed resources through host SDK, provide fallback for optional assets
+|Archive host |Serve immutable verified bytes; for paid packs follow a separately approved access-controlled delivery design
+|===
+
+== Not yet proven
+
+End-to-end discovery, authorized pack download, shared local cache, offline entitlement and revocation behavior, and client updates are *not* proven by Studio's canonical validation or native screenshots. TaviX Studio's GitHub and LoopRD publication adapters remain pending and gated. Confirm actual producer `.tavia` semantics before changing Tarot IDs (`tarot.card.*` versus `tarot.major.*` / `tarot.minor.*`); matching resource counts do not establish equivalence.
+
+== Separate acceptance expectations (owning projects)
+
+* Test one user acquiring a free pack, installing on two devices and reusing the same local cache for two different games without duplicate copies.
+* Test authorized paid ownership with wrong-account, expired, tampered, revoked and offline cases; no client-side minting or arbitrary asset read.
+* Test required-versus-optional dependencies, missing-pack fallback, digest mismatch, cancellation, update/rollback, restart persistence, device disk limits and revocation policy.
+* Keep all registry/publisher/Gold mutations, privileged Tavi permissions and release gates under separately approved server and operator authority.

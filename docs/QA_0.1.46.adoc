@@ -1,0 +1,22 @@
+= TaviX Studio 0.1.46 — Unicode review protocol / canonical error clarity
+
+== Failure seen on Windows 2026-11-16
+
+The operator diagnostics showed `STUDIO_VALIDATOR_PROTOCOL` from a `.tavia` import with digest prefix `0f3af9e6a047` and `TAVIA_VALIDATOR_FAILED` in persisted CLI findings. The exact digest matches a 0.1.1 optimized black Tarot pack. Source verification found noncanonical attribute keys (`cardNumber`, `majorNumber`, `rankNumber`, `sourceFile`) in the 0.1.0 and 0.1.1 metadata. Those keys fail the canonical `tavi_assets.metadata._token` lowercase identifier constraint.
+
+Studio's Python `review_cli.py` previously used `json.dumps(...,ensure_ascii=False)` as the final stdout response. In a redirected native Windows process, a legacy ANSI code page may encode a Unicode display title in non-UTF-8 bytes. Rust's `serde_json::from_slice` then fails even though Python constructed a valid response. The fix escapes non-ASCII at the JSON wire boundary, retaining Unicode when decoded by Rust. The canonical `invalid attribute key` reason is added to the *fixed* allowlist; arbitrary exceptions stay hidden. **Nothing is automatically approved.**
+
+== Operator verification (read-only)
+
+. Install exact ZIP via ZipRunner and confirm Studio source/native version 0.1.46; do not infer that previous 0.1.44 native build covers this release.
+. Import a package with Unicode display text (including the em dash in Obsidian Tarot) and confirm that Studio returns a structured report rather than `STUDIO_VALIDATOR_PROTOCOL`.
+. Import the *old* 0.1.1 optimized Tarot for negative testing; expect a canonical invalid-attribute-key issue and `canonicalValid=false`, not an IPC failure. Do not approve it.
+. Import the corrected separate 0.1.2 Tarot asset for positive testing. It preserves 80 optimized WebP resource bytes and migrates the four attribute key names to valid lowercase-with-hyphens metadata. Check exact version, counts, digest, canonical validity and required blueprint mapping. No store release is implied.
+. Copy redacted diagnostics and provide exact Windows build output and operator acceptance; do not include private file paths, raw stack traces, credentials or package contents.
+
+== Boundaries and evidence
+
+* No validator relaxation, publisher connection, Git push, Gold payment, LoopRD entitlement or production asset cache introduced.
+* Full original Tavi Assets validator must be executed on operator's canonical source checkout: development overlay has no live source or Windows native Cargo build.
+* An invalid pack is not made valid by changing Studio error reporting. Asset corrected separately in an unpublished 0.1.2 candidate.
+* Tests: `python -m unittest discover -s tests -p test_studio_tavia_unicode_046.py -v`; run existing Studio protocol and manager import tests; complete Windows checkout suite and native build are independent gates.

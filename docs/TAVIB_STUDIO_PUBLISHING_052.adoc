@@ -1,0 +1,32 @@
+= Studio 0.1.52 — application TAVIB and publishing workspace
+:toc:
+
+== Ownership and implementation status
+
+This is a *source candidate*, not a published cross-project standard or accepted native release. The design input is Library `/TAVIB_BLUEPRINT_INTEGRATION_2026-11-17.md`. Tavi Assets owns the final `.tavib` format; this Studio implementation uses a **provisional data-only compatibility container** with `tavi.assets.blueprint-container/v1`, which must be ratified in the Tavi Assets project. Existing `.tavia` canonical validation and optional/minimum-prefix review remains unchanged.
+
+== Portable blueprint import
+
+The native Studio `Asset blueprints` screen offers *Import from TaviX…*: a native file picker selects one `.tavix` file, the existing canonical Python TaviX validator verifies the full archive and its lock, a bounded parser discovers only `schematics/<id>.tavib` (maximum 24 entries, max 128 KiB each), and a native modal lets the operator select entries to import. The inner ZIP must contain `manifest.json`, `blueprint.json`, optionally `README.md` and `preview.webp`; no scripts, HTML or arbitrary files. `blueprint.json` must pass the existing strict Studio blueprint validator and the inner manifest SHA-256. The app's code is never executed, installed or loaded as a plugin.
+
+Imports are immutable, operator-local, assigned stable `local-app-*` identities, and retain the original app ID/version, upstream blueprint ID/version, app and inner archive SHA-256 as provenance under the private Studio profile `blueprints/.origins`. These local records are not automatically synchronized or published. Tampering, repeat imports, or missing requirements fail closed. Exporting a reviewed pack binds to the exact imported local JSON digest.
+
+An optional provisional source developer helper `python tools/tavix_embedded_blueprint_pack.py <app-directory> <output.tavix>` adds bounded lock-covered blueprint ZIPs over the existing TaviX Python archive contract. It does not modify the canonical Python packer, JS validators, app host or Tavi Assets contracts. Cross-validator support is pending owner adoption.
+
+== First-class Publishing page
+
+The native Publishing page saves GitHub `owner/repo` and a LoopRD HTTPS host without secrets, has read-only HTTPS probes, and loads the **live GitHub release list**. A `gh` session authenticated *outside* the webview (e.g. `gh auth login`) is inspected without exposing tokens. Authenticated GitHub list can show drafts; unauthenticated public requests omit drafts and label scope `public_only`.
+
+The public GitHub release workflow is two-stage: the user selects a locally `review_approved`, `canonicalValid`, `storeReady` immutable package; confirms the intended *public distribution*, manually pastes the entire SHA-256, and separately confirms a `gh release create --draft` operation. The native process rechecks review, file path and entire package SHA-256 before the CLI runs. A private receipt binds repository, tag, digest and draft status. Publishing runs `gh release edit --draft=false` only after a second, separate user action, full digest and confirmation, valid local receipt, and available authenticated GH CLI. No tokens, shell commands or arbitrary paths come from the renderer.
+
+**A GitHub release is NOT an official Tavi Assets catalog/Store publication.** It does not update LoopRD entitlements, Gold, publisher approvals, Tavi asset catalog or apps. Never publicly distribute paid/restricted assets via this workflow. This version does not offer an authenticated LoopRD write adapter, and does not pull, commit or push any source checkout. Remote write tests have NOT been run, only offline unit mocks. `gh` must be installed on the operator's Windows PATH.
+
+== Operator validation and remaining gaps
+
+- Run the extracted Python and Node regression checks and full Windows source/Studio build.
+- With an app-bundled `.tavib` and a partial `.tavia`, validate minimum resource behavior, correct provenance and safe native picker/selection behavior.
+- With a **disposable** GitHub repository and test artifact, verify live queries, CLI auth, draft-only first step and separately approved public release second step. Do not test with actual paid assets or production publisher identity.
+- Tavi Assets must ratify `.tavib`; TaviX generic packer/JS host validators must adopt it consistently. LoopRD trusted registry admin/publish and release receipts remain pending.
+- If remote GitHub returns success but receipt persistence fails, reconcile exact remote state manually before retrying. No bypass or auto-release is permitted.
+
+No Windows build, native GH write, LoopRD publication, Git push, tag, release or operator acceptance has been performed by this source producer.

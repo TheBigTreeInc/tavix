@@ -1,3 +1,25 @@
+== Studio 0.1.49 compact submission workflow
+
+* link:QA_0.1.49.adoc[Compact PatternFly Studio: one-row header, notifications, importer dialog and editable blueprint mapping].
+
+== Studio 0.1.48 Windows blueprint test isolation
+
+* link:QA_0.1.48.adoc[Repair cross-platform blueprint import tests without touching persistent Windows profiles].
+
+== Studio 0.1.47 blueprint sources and connection readiness
+
+* link:TAVIX_STUDIO_BLUEPRINT_SOURCES_047.adoc[Local/bundled designer blueprints, origin, import and publishing connection architecture].
+* link:QA_0.1.47.adoc[Native Studio blueprint library, transport-only probes and Windows acceptance].
+
+== Studio 0.1.46 TAVIA Unicode / canonical rejection
+
+* link:QA_0.1.46.adoc[Windows Unicode-safe review protocol and fixed canonical attribute failure reason].
+
+== Studio 0.1.45 and shared TAVIA delivery target
+
+* link:QA_0.1.45.adoc[Studio game-first list and per-game version selection]: precise operator acceptance on the native read-only source inventory.
+* link:TAVIA_CLIENT_ASSET_DELIVERY_045.adoc[Shared TAVIA delivery intent]: ownership in LoopRD and per-device shared Tavi-managed asset caching across games; architecture agreement, not a completed endpoint.
+
 = TaviX integration documentation index
 :toc:
 
@@ -102,3 +124,62 @@ These are local source artifacts, not newly published GitHub URLs. They do not g
 * `tests/test_klondike_asset_client_023.mjs` — independent host-consumer success, denial, revocation and malformed media checks.
 
 **Not** a full-deck permission. Collection scopes remain separately reviewed future work. No Git/Pages publication or native operator acceptance is implied.
+
+* link:TAVIX_ZIPRUNNER_STATUS_024.adoc[ZipRunner read-only app and host-mediated relay candidate (0.1.24)]
+
+== Local TaviX Management Suite (0.1.25)
+
+* link:TAVIX_MANAGEMENT_SUITE_025.adoc[Operator local management suite, canonical TAVIA validation, GitHub and LoopRD approval gates]: documentation and acceptance requirements.
+* link:../openapi.yaml[Management loopback HTTP endpoints]: not a production Tavi host API or a remotely accessible public service.
+* link:../tools/local-client/README.md[Windows launch and operator controls]: preview `.tavix` apps, inspect data-only `.tavia` packs and save nonauthoritative Gold price drafts.
+
+No new extension SDK permissions are implied. GitHub source pushes, wallet edits and Store offer publication require their own review; LoopRD stage and publish/revoke delegate to canonical Assets operator CLIs and independent exact digest/manifest approvals.
+
+== Local Management Suite diagnostics (0.1.26)
+
+* link:TAVIX_MANAGEMENT_EVENTS_026.adoc[Local Events panel, journal, TAVIA failure diagnostics and privacy boundary]: operator-only diagnostics; not Tavi SDK, publisher trust or LoopRD audit.
+* link:../openapi.yaml[Local manager OpenAPI v0.1.26]: `GET /__manager/v1/events` and CSRF-protected browser error entry, alongside existing management routes.
+
+== Local management TAVIA resource diagnostics (0.1.27)
+
+* link:TAVIX_TAVIA_RESOURCE_DIAGNOSTICS_027.adoc[Unsupported archive member diagnostics]: how to identify rejected resource names and rebuild a canonical data-only `.tavia` without bypassing validation.
+
+
+== Native PatternFly Studio (0.1.28 candidate)
+
+* link:TAVIX_STUDIO_DESKTOP_028.adoc[Native TaviX Studio boundary and migration plan]: read-only Tauri 2 + Rust operator command source, PatternFly 6 React UI, Node as build tool only. Native Windows acceptance pending; existing local manager unchanged.
+* link:../tools/studio-desktop/README.md[Studio development quickstart].
+
+== Native TaviX Studio review (0.1.32)
+
+* `TAVIX_STUDIO_REVIEW_032.adoc` — application/asset submission review, designer blueprints, developer feedback ZIPs and official-publication boundaries.
+* `QA_0.1.32.adoc` — source checks and separate Windows operator acceptance.
+
+== Native Windows Studio PatternFly Title repair (0.1.34)
+
+* link:QA_0.1.34.adoc[Operator TS2322 report, source fix and Windows build/launch acceptance].
+
+== Native Studio Windows npm dependency recovery 0.1.35
+
+* link:QA_0.1.35.adoc[Native frontend dependency health, npm EBUSY recovery, Windows acceptance].
+
+== Native Studio Windows Rust Result repair 0.1.36
+
+* link:QA_0.1.36.adoc[Exact operator Rust E0308 in save_review and Windows native acceptance].
+
+* link:QA_0.1.39.adoc[0.1.39 TAVIA import protocol diagnostics and neutral blueprint review]
+
+== Native Studio Windows lifecycle (0.1.40)
+
+* link:QA_0.1.40.adoc[Managed build and immutable launch-copy acceptance]: Cargo builds in a dedicated persistent `studio-managed-build` target and Studio executes only a SHA-256-verified versioned copy; source upgrades cannot replace running legacy executables. No process shutdown or publication rights.
+* link:../tools/studio-desktop/README.md[Native Studio operator guide]: review `.tavix`/`.tavia`, connect local Tavi Assets checkout, export developer feedback and inspect local diagnostics. Remote official publication remains separately gated.
+
+* link:TAVIX_STUDIO_PACK_BROWSER_041.adoc[Native TaviX Studio 0.1.41 pack catalogue, media preview and publication destination setup (read-only, approval gated)]
+* link:QA_0.1.41.adoc[QA 0.1.41: actual Windows content inspection, hidden validator subprocesses, and publication readiness]
+
+* link:QA_0.1.42.adoc[QA 0.1.42: native Studio managed Cargo output path isolation and Windows acceptance]
+
+* link:QA_0.1.44.adoc[Native Studio 0.1.44 optional artwork grid and list inspector QA]
+* link:QA_0.1.43.adoc[Native Studio 0.1.43 guided blueprint review and compact package inspector QA]
+
+* link:TAVIB_STUDIO_PUBLISHING_052.adoc[0.1.52 Studio TAVIB importer, GitHub release settings and explicit publishing gates] — provisional source candidate, native/operator QA pending.

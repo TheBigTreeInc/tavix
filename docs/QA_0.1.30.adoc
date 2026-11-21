@@ -1,0 +1,28 @@
+= TaviX 0.1.30 — Native Studio Windows icon and managed lifecycle repair
+
+== Operator evidence
+
+The operator ran Tauri on Windows and received:
+`src-tauri/icons/icon.ico not found; required for generating a Windows Resource file during tauri-build`.
+The original package contained no `tools/studio-desktop/src-tauri/icons/` directory.
+The reported compiler version was `tavix-studio v0.1.28` despite the source-update version 0.1.29.
+
+== Repair
+
+* Added authentic multi-resolution ICO (16, 24, 32, 48, 64, 128 and 256 pixels) plus PNG resources under the Tauri icon source path. The reviewed Tauri config now lists the exact files.
+* Bumped Studio's package, Cargo and Tauri version to 0.1.30; set the TaviX source metadata to 0.1.30 based on the accepted 0.1.29.
+* Added `build_windows.py` and `run_windows.py` and wired them into source-controlled ZipRunner build/start. Node is only a frontend build tool; Tauri's release executable and Rust own application operation. No localhost Python service starts automatically.
+* Kept the existing Python browser management adapter until TAVI/LoopRD/Git native command parity is independently accepted; no replacement product or second native app was created.
+* Preserved existing 20-entry post-update test cap and added focused native boot coverage to the existing entry.
+
+== Author-side checks
+
+`python -m unittest discover -s tests -p test_native_studio_boot_030.py -v` verifies ICO headers, Tauri config paths, version consistency, exact managed build/start commands, fail-closed missing files, and post-update cap.
+This environment has neither Windows nor Cargo and cannot exercise Tauri-native compilation, Windows WebView2, or the executable launcher. Frontend dependency lockfile resolution was attempted but npm registry access returned EAI_AGAIN. **Do not claim a successful Windows native build or runnable executable without the Windows operator's actual receipt.**
+
+== Operator checks
+
+. Run ZipRunner 0.1.30 against current 0.1.29 source and confirm the compiled Windows icon error no longer occurs and `target/release/tavix-studio.exe` is produced.
+. Confirm Studio launches as a desktop window, shows package inventory and sanitized Events, and does not open `127.0.0.1:8765`.
+. Verify `.tavix` and `.tavia` workflows remain available through the old Python manager while native parity is still pending.
+. Review locally generated npm dependency lock, native Windows build evidence, full Git diff, source integrity and operator acceptance before any Git push, installer or release.

@@ -129,31 +129,31 @@ class ClassificationTests(unittest.TestCase):
             write_source(source,{'type':'game','categories':['cards']})
             discovered=server.discover(root)
             self.assertEqual(discovered[0]['classification'],{'type':'game','categories':['cards']})
-            bad=json.loads((source/'manifest.json').read_text())
+            bad=json.loads((source/'manifest.json').read_text(encoding='utf-8'))
             bad['classification']['categories']=['utility']
             (source/'manifest.json').write_text(json.dumps(bad))
             self.assertEqual(server.discover(root),[])
 
     def test_machine_schema_and_docs_track_python_policy(self):
-        schema=json.loads((ROOT/'contracts/tavix-classification-v1.schema.json').read_text())
+        schema=json.loads((ROOT/'contracts/tavix-classification-v1.schema.json').read_text(encoding='utf-8'))
         self.assertEqual(schema['properties']['type']['enum'],list(PRIMARY_TYPES))
         self.assertEqual(schema['properties']['categories']['maxItems'],MAX_CATEGORIES)
         self.assertEqual(schema['allOf'][0]['then']['properties']['categories']['items']['enum'],list(GAME_CATEGORIES))
         self.assertEqual(schema['allOf'][0]['else']['properties']['categories']['items']['enum'],list(APP_CATEGORIES))
-        idx=json.loads((ROOT/'contracts/tavix-1.0.json').read_text())
+        idx=json.loads((ROOT/'contracts/tavix-1.0.json').read_text(encoding='utf-8'))
         self.assertEqual(idx['package']['classification']['legacyDefault'],{'type':'app','categories':[]})
         self.assertFalse(idx['package']['classification']['tavi_0_3_124_accepts_classification'])
-        proposed=json.loads((ROOT/'contracts/tavix-installed-games-v1.json').read_text())
+        proposed=json.loads((ROOT/'contracts/tavix-installed-games-v1.json').read_text(encoding='utf-8'))
         self.assertEqual(proposed['status'],'proposed-requires-tavi-and-atrium-implementation')
         self.assertEqual(set(proposed['methods']),{'games.installed.list','games.installed.open'})
         for path in ('docs/TAVIX_CLASSIFICATION.adoc','README.md','AGENTS.md','docs/INDEX.adoc',
                      'docs/TAVIX_CONTRACT.adoc','docs/TAVIX_PACKAGE_FORMAT.adoc'):
-            self.assertIn('classification',(ROOT/path).read_text().lower())
+            self.assertIn('classification',(ROOT/path).read_text(encoding='utf-8').lower())
 
     def test_json_schema_accepts_examples_and_rejects_invalid_when_validator_available(self):
         try:import jsonschema
         except ImportError:self.skipTest('optional jsonschema not installed; source tests still run')
-        schema=json.loads((ROOT/'contracts/tavix-classification-v1.schema.json').read_text())
+        schema=json.loads((ROOT/'contracts/tavix-classification-v1.schema.json').read_text(encoding='utf-8'))
         jsonschema.Draft202012Validator.check_schema(schema)
         validate_fragment=jsonschema.Draft202012Validator(schema)
         validate_fragment.validate({'type':'game','categories':['cards','solitaire']})
@@ -178,7 +178,7 @@ class ClassificationTests(unittest.TestCase):
             staged=subprocess.run([sys.executable,tool,'stage','--repository',str(repo),'--input',str(source),
                                    '--source-url','https://github.com/example/source','--license','MIT'],capture_output=True,text=True)
             self.assertEqual(staged.returncode,0,staged.stderr)
-            catalog=json.loads((repo/'tavi.repository.json').read_text())
+            catalog=json.loads((repo/'tavi.repository.json').read_text(encoding='utf-8'))
             self.assertEqual(catalog['extensions'][0]['manifest']['classification'],
                              {'type':'game','categories':['cards','solitaire']})
             checked=subprocess.run([sys.executable,tool,'check','--repository',str(repo),'--strict'],capture_output=True,text=True)
@@ -199,21 +199,21 @@ class ClassificationTests(unittest.TestCase):
             archive=pathlib.Path(tmp)/'classified.tavix'
             pack(source,archive)
             self.assertEqual(validate_archive(archive)['applicationId'],'example.org.solitaire')
-        self.assertIn('Tavi 0.3.124 rejects', (ROOT/'examples/CLASSIFIED_GAME.adoc').read_text())
+        self.assertIn('Tavi 0.3.124 rejects', (ROOT/'examples/CLASSIFIED_GAME.adoc').read_text(encoding='utf-8'))
 
     def test_workboard_boundaries_and_version(self):
-        update=json.loads((ROOT/'.ziprunner-workboard-update.json').read_text())
+        update=json.loads((ROOT/'.ziprunner-workboard-update.json').read_text(encoding='utf-8'))
         done={x['id'] for x in update['implemented']}
         pending={x['id'] for x in update['remaining']}
         self.assertFalse(done & pending)
         self.assertIn('TAVIX-KLONDIKE-DRAFT-ARCHIVE-021',done)
         # This pass uses a single new implemented ID; previous history remains in planned_work.
-        self.assertIn('TAVIX-ASSET-CONTRACT-001', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text())['planned_work']})
-        self.assertIn('TAVIX-STORE-EDITOR-017', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text())['planned_work']})
-        self.assertIn('TAVIX-CLASSIFICATION-001', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text())['planned_work']})
+        self.assertIn('TAVIX-ASSET-CONTRACT-001', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text(encoding='utf-8'))['planned_work']})
+        self.assertIn('TAVIX-STORE-EDITOR-017', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text(encoding='utf-8'))['planned_work']})
+        self.assertIn('TAVIX-CLASSIFICATION-001', {x['id'] for x in json.loads((ROOT/'ziprunner-manifest.json').read_text(encoding='utf-8'))['planned_work']})
         for fname in ('project.zr','tavix.zr','.ziprunner-post-update-tests.json'):
-            self.assertEqual(json.loads((ROOT/fname).read_text())['version'],'0.1.23')
-        self.assertEqual(json.loads((ROOT/'ziprunner-manifest.json').read_text())['project']['version'],'0.1.23')
+            self.assertEqual(json.loads((ROOT/fname).read_text(encoding='utf-8'))['version'],'0.1.60')
+        self.assertEqual(json.loads((ROOT/'ziprunner-manifest.json').read_text(encoding='utf-8'))['project']['version'],'0.1.60')
 
 
 if __name__=='__main__':unittest.main()

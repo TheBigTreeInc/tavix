@@ -1,0 +1,34 @@
+= TaviX 0.1.35 — Windows npm partial-install recovery
+
+== Operator reproduction
+
+On an operator Windows machine, Studio 0.1.34 was installed correctly but
+`npm ci` encountered `EBUSY` unlinking a PatternFly icon from `node_modules`.
+The interrupted install removed `node_modules/.bin/tsc.cmd`, causing `npm run
+build` to report `tsc is not recognized` before TypeScript compilation.
+
+== Remediation and scope
+
+* Use local npm shims + offline `npm ls --depth=0` before installing.
+* Healthy dependencies are reused without unlinking/reinstalling anything.
+* Incomplete *populated* `node_modules` is repaired incrementally with `npm install`.
+* Clean tree + local package-lock uses `npm ci`; if no lock, warn and generate locally.
+* Fail closed if dependencies remain invalid after repair, or if frontend/Tauri versions disagree.
+* Never delete private/runtime state, kill Windows processes or weaken review/publishing gates.
+
+== Windows operator checks
+
+1. Verify `package.json` and `tauri.conf.json` report 0.1.35.
+2. Run `python tools/studio-desktop/build_windows.py` from repository root;
+   record whether npm dependencies were reused or repaired and ensure `tsc`
+   and Vite build succeeded.
+3. Confirm `tools/studio-desktop/src-tauri/target/release/tavix-studio.exe`
+   exists and launches through `python tools/studio-desktop/run_windows.py`.
+4. Review exact submission feedback ZIP and do not publish to official store
+   without approved Git/LoopRD separate authorization.
+
+== Verification limits
+
+Source unit tests cannot prove Windows file locks have cleared or that the
+native executable launched in an operator session. No public release, Wallet,
+Git push, LoopRD mutation or new permission is part of this repair.

@@ -1,0 +1,29 @@
+{
+  "schema": "tavix.studio.asset-blueprint/v1",
+  "id": "dice-d6-2d",
+  "version": "1.0.0",
+  "title": "Six-sided die — 2D face set",
+  "description": "Six independent visual face resources for a traditional cubic D6 in 2D. No 3D engine or GLTF contract is assumed.",
+  "applicablePackTypes": [
+    "dice",
+    "dice-2d"
+  ],
+  "requiredResources": [
+    "die.face.one",
+    "die.face.two",
+    "die.face.three",
+    "die.face.four",
+    "die.face.five",
+    "die.face.six"
+  ],
+  "optionalResources": [
+    "die.animation.roll"
+  ],
+  "designerChecklist": [
+    "All six die faces are supplied at a consistent square aspect ratio and comparable line/pip weight.",
+    "Pip arrangements use standard values 1–6; opposite faces pair to seven (1–6, 2–5, 3–4).",
+    "Face edges, corner rounding, lighting direction and shadows are consistent.",
+    "Each value is discernible without relying solely on color; provide text alternatives through object metadata.",
+    "Rolling animation and materials are optional and must not affect game randomness or outcome."
+  ]
+}

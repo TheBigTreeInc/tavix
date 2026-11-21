@@ -1,6 +1,6 @@
 {
   "schema": "ziprunner.post-update-tests.v1",
-  "version": "0.1.23",
+  "version": "0.1.60",
   "tests": [
     {
       "kind": "command",
@@ -143,6 +143,42 @@
       "definition_revision": "1",
       "rerun_policy": "every_update",
       "command": "node --test tests/test_klondike_asset_client_023.mjs",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-ziprunner-status-app-024",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest tests.test_ziprunner_status_024 -v",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-management-suite-025",
+      "definition_revision": "1",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_manager_suite_025.py -v",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-manager-events-026",
+      "definition_revision": "2",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_manager_events_026.py -v && python -m unittest discover -s tests -p test_tavia_resource_diagnostics_027.py -v",
+      "attention_on_failure": true,
+      "gating": false
+    },
+    {
+      "kind": "command",
+      "semantic_id": "tavix-native-studio-source-contract",
+      "definition_revision": "8",
+      "rerun_policy": "every_update",
+      "command": "python -m unittest discover -s tests -p test_native_studio_028.py -v && python -m unittest discover -s tests -p test_native_studio_boot_030.py -v && python -m unittest discover -s tests -p test_studio_review_032.py -v && python -m unittest discover -s tests -p test_studio_npm_windows_035.py -v && python -m unittest discover -s tests -p test_studio_diagnostics_037.py -v && python -m unittest discover -s tests -p test_studio_boot_diagnostics_038.py -v && python -m unittest discover -s tests -p test_studio_tavia_protocol_039.py -v && python -m unittest discover -s tests -p test_studio_managed_binary_040.py -v && python -m unittest discover -s tests -p test_studio_pack_browser_041.py -v && python -m unittest discover -s tests -p test_studio_build_path_042.py -v && python -m unittest discover -s tests -p test_studio_pack_grid_044.py -v && python -m unittest discover -s tests -p test_studio_game_versions_045.py -v && node --test tests/test_studio_game_versions_045.mjs && python -m unittest discover -s tests -p test_studio_compact_workflow_049.py -v && node --test tests/test_studio_import_flow_049.mjs && python -m unittest discover -s tests -p test_studio_tavib_publishing_052.py -v && python -m unittest discover -s tests -p test_studio_publishing_connection_053.py -v && node --test tests/test_studio_publishing_readiness_053.mjs && python -m unittest discover -s tests -p test_studio_looprd_preview_054.py -v && python -m unittest discover -s tests -p test_studio_catalog_management_055.py -v && node --test tests/test_studio_catalog_rows_055.mjs && python -m unittest discover -s tests -p test_studio_blueprints_not_merchandise_058.py -v && node --test tests/test_studio_blueprints_not_merchandise_058.mjs && python -m unittest discover -s tests -p test_studio_github_catalog_sync_060.py -v && python -m unittest discover -s tests -p test_studio_publishing_tabs_057.py -v",
       "attention_on_failure": true,
       "gating": false
     }

@@ -1,0 +1,25 @@
+= TaviX Studio 0.1.45 — games list, version selector and `.tavia` delivery boundary
+:toc:
+
+== User-facing change
+
+*Games & apps* no longer renders one row for every version. One labeled, searchable game/app entry is shown per repository package ID (games first). Selecting an entry shows its explicitly available versions newest first, with a version picker, exact ID, classification and count. The selected version remains associated with that package while navigating other packages; if a source refresh removes it, the newest observed version is shown safely instead. Duplicated identical ID/version manifest entries do not create duplicate choices. No install/preview/approval action is inferred from the selection.
+
+Native source inventory remains read-only and bounded at the existing 250 entries. The viewport becomes a single column at narrow widths and retains keyboard-accessible native version selection. No new Rust command, local filesystem privilege, remote publisher, LoopRD, Wallet or entitlement operation was added. The Studio submission review and artwork inspector are unchanged.
+
+== Cross-project design decision recorded
+
+`TAVIA_CLIENT_ASSET_DELIVERY_045.adoc` documents the agreed per-device shared Tavi cache, independently authorized LoopRD ownership and host SDK model for Tavi/Tavi Assets/LoopRD/Atrium/game owners. This documentation is *target architecture only* and does not assert deployed download/entitlement/cache support. Tarot exact producer resource mapping remains pending.
+
+== Verification
+
+. Run `node --test tests/test_studio_game_versions_045.mjs` and `python -m unittest discover -s tests -p test_studio_game_versions_045.py -v`.
+. Run full tests in a complete Windows checkout, then managed Tauri build and launch exact 0.1.45 executable.
+. Open *Games & apps*. Observe one row per package, games before apps. Pick a game with multiple versions, select the older version, switch to another package, and return; the chosen version should remain. Search by name and ID; verify a no-match message.
+. Confirm selected version detail displays the exact manifest version and classification; no install, entitlement, review approval or publication is initiated.
+. Resize to a narrow Windows window; ensure the selection list precedes the version details and remains keyboard operable.
+. Check the existing .tavia canonical validator, blueprint review, grid/list inspector, official publish disablement and saved operator config are unaffected.
+
+== Limits
+
+The source ZIP is an incremental ZipRunner overlay, not a stand-alone historical repository. Tests may be missing modules from earlier source revisions. Native Windows rendering and actual download/cache/entitlement behavior require independent evidence and operator acceptance. Existing 0.1.44 screenshots/build evidence do not prove 0.1.45. No Git push or public release is authorized.

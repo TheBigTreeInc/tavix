@@ -56,3 +56,94 @@ Before changing file-import permissions, picker methods, SDK wrappers or native 
 ## UI kit source parity (0.1.14+)
 
 If changing an application icon, typography, theme or public UI helper, update `docs/TAVIX_UI_KIT_001.adoc`, `contracts/tavix-ui-kit-v1.json`, `sdk/ui-kit/` and the packable `examples/ui-kit/` together, with source-bound regression tests. This kit is independent from host SDK grants, and source parity is not Windows/Android operator acceptance.
+
+## Local Management Suite (0.1.25+)
+
+Before modifying the local test UI, operator credentials, `.tavia` import, draft Gold values, or LoopRD/GitHub controls, read `docs/TAVIX_MANAGEMENT_SUITE_025.adoc`, `openapi.yaml`, and Tavi Assets' `looprd/INTEGRATION.adoc`. Preserve owner boundaries: no TaviX duplicate asset validator, no direct prices/entitlements from local drafts, no secrets in package payload or JavaScript state, no automatic Git pushes. Every mutation requires local origin and CSRF; independent exact-artifact operator receipts and backend scope checks remain required for remote actions. Run `tests/test_manager_suite_025.py`, full source, strict repository and Windows operator acceptance.
+
+## Local diagnostics (0.1.26+)
+
+Read `docs/TAVIX_MANAGEMENT_EVENTS_026.adoc` before modifying import diagnostics or event logging. Diagnostics are bounded, private, credential-free and never authoritative for Git, Wallet or LoopRD. Preserve safe canonical Assets error allowlists, event IDs, CSRF checks and local-only browser/export behavior; run `tests/test_manager_events_026.py` and all previous tests.
+
+
+## Native Studio desktop boundary (0.1.28+)
+
+Before modifying `tools/studio-desktop/`, read `docs/TAVIX_STUDIO_DESKTOP_028.adoc` and current PatternFly/Tauri versioned documentation. Rust owns trusted operator commands; Node only builds the PatternFly UI. Keep untrusted TaviX previews separate from operator IPC and retain the existing Python console until native acceptance. No GitHub/LoopRD/Wallet authority or secret-handling is delegated to web content. Cargo/native build and dependency-lock verification are explicit operator checks, not inferred from static tests.
+
+## ZipRunner post-update limit (0.1.29)
+
+Post-update test stamps are limited to 20 entries by ZipRunner 1.2.304.299. Retain both suites when combining related checks, and run `tests/test_post_update_stamp_029.py`. The native 0.1.28 Studio source remains unchanged.
+
+## Studio Windows build/launch (0.1.30)
+
+The canonical operator application is `tools/studio-desktop` (PatternFly + Rust/Tauri). Review `docs/QA_0.1.30.adoc` and `tools/studio-desktop/README.md` before altering build/start. Tauri Windows resource icons must be present in source. `project.zr` may start the built Studio binary only after a successful native build; never use the Python preview server as an implicit fallback. Preserve all existing TaviX/Tavi Assets/LoopRD contracts and operator approval gates. Do not ship `node_modules`, compiled `target`, local secrets, generated lockfiles of unknown provenance or preview data.
+
+## Native Studio ZipRunner recipe (0.1.31)
+
+Portable `project.zr` in a source archive is a *review-only proposal* in ZipRunner 1.2.304.300, not active host configuration. The `recipes/tavix-studio.zr` file is a standalone proposal template for import into the *existing* `tavix` project. The operator must review and approve build/start changes and preserve local paths and approval gates. A successful ZIP build with old active settings does not prove a native Studio build. See `docs/QA_0.1.31.adoc`.
+
+## Native Studio submission review (0.1.32)
+
+Read `docs/TAVIX_STUDIO_REVIEW_032.adoc`, `contracts/tavix-studio-asset-blueprint-v1.schema.json` and `tools/studio-desktop/review_cli.py` before editing native package review/blueprint logic. The Rust-native chooser and per-user review storage must never expose arbitrary operator paths to the privileged renderer. Canonical TaviX or Tavi Assets validation is required and independent from designer completeness and local review approval. Feedback ZIPs wrap the unchanged package and external `.adoc` guidance; never insert README/ADOC into `.tavia`. A local preview or review approval never publishes to GitHub, LoopRD or the Wallet. Run `tests/test_studio_review_032.py` and full source checks, then actual Windows native build/operator acceptance.
+
+## Native Studio source connections and diagnostics (0.1.37)
+
+The operator confirmed native Studio 0.1.36 launches. Studio 0.1.37 adds operator-selected Tavi Assets source validation, bounded native readiness and copyable, privacy-safe import failure codes. Local source preferences live in the user profile; they never authorize GitHub/LoopRD publishing. See `docs/QA_0.1.37.adoc`.
+
+## Studio 0.1.38 operator screenshots
+The operator confirmed 0.1.36 built/ran, but subsequent screenshots show the pre-0.1.37 Connections placeholder and a global Python validator error. Never infer an installed source update rebuilds the executable. Native Studio version must be visibly displayed and managed launcher must fail safely on a stale binary. Bundled asset blueprint listing must not require a Python process; canonical TAVIA validation still does. No Git/LoopRD publishing changes.
+
+## Native Studio package browsing / publishing destinations (0.1.41)
+
+Before editing package contents or publish setup, read `docs/TAVIX_STUDIO_PACK_BROWSER_041.adoc`. Pack viewer must only read the exact retained SHA-bound original, paginate and validate safe declared image previews, never execute app JavaScript or treat a preview as canonical approval. Publication destination fields are non-secret local configuration only; GitHub and LoopRD remote operations remain independently unimplemented and gated, with no publisher credentials in the renderer or package. Run `tests/test_studio_pack_browser_041.py` and Windows Tauri build before operator acceptance.
+
+## Native Studio builder isolation repair (0.1.43)
+
+Resolve the executable path relative to the active Studio checkout inside the native build call, not from an import-time cached constant. A successful subprocess exit without a PE under that checkout must fail closed. Preserve the no-process-kill/immutable-launch design and approval gates. See `docs/QA_0.1.43.adoc`; Windows native build is operator acceptance only.
+
+## Native Studio operator review UX (0.1.43)
+
+Review `docs/QA_0.1.43.adoc` before editing blueprint selection or package browser layout. Asset blueprint checks still use exact declared resource IDs, never visual count alone. `tarot.card.*` does not auto-map to `tarot.major.*` / `tarot.minor.*`; a separate evidence-backed mapping decision is pending. Browse only private SHA-bound packages, keep a 12-row native page, never execute package code, preserve approval/publishing gates and test the focused 0.1.43 source contract and Windows native behavior.
+
+## Native Studio package grid (0.1.44)
+
+Before editing `src/pack-grid.tsx`, review `docs/QA_0.1.44.adoc`. Keep the 12-entry native page and three-concurrent original-preview limit, stale-request cleanup, keyboard-accessible Grid/List selection and unchanged data-only SHA-bound artwork preview policy. No package or publisher authority from thumbnails; run focused 0.1.44 checks and Windows Tauri acceptance.
+
+## Shared TAVIA client delivery boundary (0.1.45)
+
+Before adding Studio distribution, Tavi client asset requests or `.tavia` host support, read `docs/TAVIA_CLIENT_ASSET_DELIVERY_045.adoc`. The operator-confirmed *target* is per-device downloaded, canonical-SHA-verified `.tavia` packages in a shared Tavi-managed cache, with central LoopRD entitlements and host-mediated reuse across games. TaviX Studio remains an inspection/approval tool, not a trusted client cache or entitlement server. Do not claim these pending cross-project integrations already run or treat public archive availability as paid-pack access control.
+
+## 0.1.46 Windows IPC boundary
+
+The Python `review_cli.py` native output must stay ASCII-safe JSON (`ensure_ascii=True`), so decoded Unicode text does not depend on Windows stdout code pages when Rust parses its response. Only fixed, known canonical asset validation reasons may be shown to UI. Never report arbitrary stderr or weaken content/entitlement/publisher gates. See `docs/QA_0.1.46.adoc`.
+
+## 0.1.48 Windows QA regression
+
+Tests invoking Studio blueprint import MUST isolate both `HOME` and `LOCALAPPDATA` (and pass both to Python subprocesses). On Windows production code correctly uses `%LOCALAPPDATA%/TaviXStudio/blueprints`; `HOME` alone is not a safe test sandbox. Do not delete user-imported blueprints to make tests pass. Preserve `BLUEPRINT_ALREADY_IMPORTED`, native service-authorization, operator review and publication gates. See `docs/QA_0.1.48.adoc`.
+
+## 0.1.49 Studio compact UI contract
+
+Do not reintroduce full-width success banners, repeated global page intro text, or permanent tall import/queue statistic cards ahead of Submission review. Native Tauri picker owns file selection and digest-bound retention; only after that step may renderer display the optional blueprint/custom modal. Custom/unmapped imports remain local, not store-ready, and no automatic semantic resource ID mapping is authorized. Changing/clearing a previous blueprint uses `review_recheck` to reset review approval. Refresh must not unmount the entire content. Keep readable native Windows select contrast and operator-only publication boundary. Regression: `tests/test_studio_compact_workflow_049.py` and `tests/test_studio_import_flow_049.mjs`. See `docs/QA_0.1.49.adoc`.
+
+### 0.1.50 Windows encoding QA repair
+Use UTF-8 explicitly when Python tests read repository source or JSON on Windows; see `docs/QA_0.1.50.adoc`. The 0.1.49 Studio UX and private operator profile are unchanged. Build, Git, LoopRD and release approvals remain separate.
+
+## Windows Studio 0.1.52 QA fix
+
+Windows 0.1.50 failed an overbroad encoding regression on 25 pre-existing implicit source reads in seven old tests. Studio 0.1.52 retains strict UTF-8 checks for new/Studio tests, tracks legacy ceilings and documents their separate migration in docs/QA_0.1.52.adoc. Native publish and operator gates are unchanged.
+
+## Studio 0.1.53 — publishing readiness and compact Connections
+
+This source overlay moves GitHub/LoopRD status out of oversized Connections cards, reports GitHub gateway **source availability** without asserting authentication, shows independent live/public GitHub release discovery and `gh` login in Publishing, and distinguishes locally approved submissions with external dependencies from store-ready remotely published packages. Unsaved destination edits block remote actions, and receipts remain bound to the selected digest and repository. Existing exact-SHA and operator permission gates remain. See `docs/QA_0.1.53.adoc` and `docs/STUDIO_PUBLISHING_CONNECTIONS_053.adoc`. Windows native 0.1.53 acceptance and disposable GitHub publishing verification remain pending. No Git push or public release.
+
+## Studio 0.1.54 — LoopRD DAPI adapter and embedded TAVIB inspection
+
+Native Publishing now configures separate approved `/admin` and `/catalog` DAPI paths, verifies scoped live read/inspect responses, and provides exact-review/receipt-gated `stage` and `publish` actions for `.tavia`. Credentials must be short-lived, server-issued and injected into the trusted native Studio process; the Tavi/Social ecosystemAdmin delegation broker is not provided by this source. The Blueprint Import from TaviX dialog now offers an Inspect detail panel (exact resources, prefix minima, optional assets, checklist, readme and optional WebP) before import. See `docs/QA_0.1.54.adoc`. Windows native build and live disposable-registry acceptance are pending. No Git push or public release.
+
+## Studio 0.1.57 — catalog release metadata table
+
+Publishing begins with a searchable table of local `.tavix` applications, `.tavia` packs, `.tavib` blueprints and read-only discovered LoopRD versions. Price in Gold (blank=unset, 0=free), Listed, Testing and a short description are operator-local **publication drafts** stored by native Rust under the private profile. These fields are not live catalog mutations: the currently specified Tavi Assets `store-offer/v1` has illustrative `displayGoldPrice`, but official store listing/testing state and authoritative pricing require new, owner-approved LoopRD contracts. All release, service-token and receipt gates remain separate. See `docs/QA_0.1.57.adoc`. No Git push or public release.
+
+## 0.1.58 Studio blueprint boundary
+
+TAVIB is validation/compatibility metadata, **not a saleable shop SKU**. Publishing catalog drafts include only app and asset-pack submissions, never blueprint definitions; imported blueprints remain discoverable via Asset blueprints and available to review. Preserve any old operator blueprint draft bytes rather than deleting them; reject new blueprint publication drafts natively. The remote store offer contract is owned by Tavi Assets/LoopRD and must separately adopt this exclusion. Do not waive receipt gates or infer remote publication.
